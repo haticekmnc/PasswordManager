@@ -1,0 +1,91 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 08.Mar.2024, 08:45:46
+    Author     : hatice.kemence
+*/
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color:#e0e3df;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* İki sütuna ayır */
+    grid-template-rows: auto; /* Satır yüksekliği içeriğe göre ayarlanır */
+    width: 80%;
+    max-width: 1200px; /* Container genişliğini ve yüksekliğini ayarla */
+    min-height: 600px; /* Container için minimum yükseklik */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden; /* Yuvarlak köşeler için */
+    background-color: #d9dcd8;
+}
+
+.login-image {
+    background: url("../images/login.jpg") no-repeat center center; 
+    background-size: cover;
+    grid-column: 1 / 2; /* İlk sütunda yer alır */
+}
+
+
+.login-form {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    grid-column: 2 / 3; /* İkinci sütunda yer alır */
+}
+
+.form-field {
+    margin-bottom: 20px;
+}
+
+.form-field input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.login-button {
+    padding: 10px;
+    background-color: #800080;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #5c005c;
+}
+/* Password stilleri*/
+.form-field .password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input {
+    width: calc(100% - 30px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+
+
+

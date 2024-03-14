@@ -1,0 +1,45 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 11.Mar.2024, 13:15:28
+    Author     : hatice.kemence
+*/
+
+.navbar {
+            background-color: #333; /* Navbar arka plan rengi */
+            overflow: hidden;
+        }
+        
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2; /* Navbar bağlantı rengi */
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+        
+        .navbar a:hover {
+            background-color: #ddd; /* Navbar üzerine gelindiğinde arka plan rengi */
+            color: black;
+        }
+        
+        .navbar input[type=text] {
+            float: right;
+            padding: 6px;
+            margin-top: 8px;
+            margin-right: 16px;
+            border: none;
+            font-size: 17px;
+        }
+        .table-container {
+    display: flex;
+    justify-content: center;
+}
+
+        .table-container table {
+    margin-top: 20px; /* İstediğiniz boşluğa göre ayarlayabilirsiniz */
+}

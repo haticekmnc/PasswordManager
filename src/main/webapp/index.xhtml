@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <h:outputStylesheet name="css/index_style.css"/>
+</h:head>
+<h:body>
+    <div class="navbar">
+        <a href="#">Anasayfa</a>
+        <a href="#">Hakkımızda</a>
+        <a href="#">Ürünler</a>
+        <a href="#">İletişim</a>
+        <input type="text" placeholder="Ara..." />
+    </div>
+    
+    <div class="table-container">
+        <h:dataTable value="#{passwordMB.passwordList}" var="password" border="1">
+            <h:column>
+                <f:facet name="header">Title</f:facet>
+                #{password.title}
+            </h:column>
+            <h:column>
+                <f:facet name="header">URL</f:facet>
+                #{password.url}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Username</f:facet>
+                #{password.username}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Actions</f:facet>
+                <h:commandLink value="Edit" action="#{passwordMB.editPassword(password)}" />
+                <h:commandLink value="Delete" action="#{passwordMB.deletePassword(password)}" />
+            </h:column>
+        </h:dataTable>
+    </div>
+
+    <h:form>
+        <h:commandButton value="Add Password" action="addPassword.xhtml"/>
+    </h:form>
+</h:body>
+
+
+</html>
