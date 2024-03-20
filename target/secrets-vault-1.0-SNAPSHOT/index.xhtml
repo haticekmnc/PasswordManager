@@ -59,11 +59,13 @@
     <a href="#">Hakkımızda</a>
     <a href="#">Ürünler</a>
     <a href="#">İletişim</a>
-    <input type="text" placeholder="Ara..." />
+    <input type="text" placeholder="Ara..." onkeyup="searchTable()" />
     <h:form>
         <p:commandButton value="Add Password" oncomplete="PF('addPasswordDlg').show();" styleClass="add-button" />
     </h:form>
 </div>
+    
+    
 
     
     <!-- DataTable Container -->
