@@ -5,8 +5,10 @@
 package com.company.secrets.vault.security;
 
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -43,11 +45,20 @@ public void setConfirmPassword(String confirmPassword) {
     this.confirmPassword = confirmPassword;
 }
     
-    public String register(){
-        UserDAO userDAO = new UserDAO();
-        userDAO.registerUser(username, password);
-        return "login.xhtml?faces-redirect=true";
+    public String register() {
+    if (!password.equals(confirmPassword)) {
+        // Parolalar eşleşmiyorsa
+        // Hata mesajı göster
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Passwords do not match!"));
+        return null; // Kayıt başarısız olduğu için null döndür
     }
+    
+    // Parolalar eşleşiyorsa
+    UserDAO userDAO = new UserDAO();
+    userDAO.registerUser(username, password);
+    return "login.xhtml?faces-redirect=true"; // Kayıt başarılı olduğu için giriş sayfasına yönlendir
+}
+
    
 }
 

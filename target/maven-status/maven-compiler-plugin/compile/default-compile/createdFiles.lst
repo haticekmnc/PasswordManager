@@ -1,6 +1,6 @@
 com\company\secrets\vault\security\LoginMB.class
-com\company\secrest\vault\passwordmanager\PasswordMB.class
 com\company\secrets\vault\security\RegisterMB.class
+PasswordMB.class
 com\mycompany\secrets\vault\JAXRSConfiguration.class
 com\mycompany\secrets\vault\resources\JavaEE8Resource.class
 com\company\secrest\vault\passwordmanager\PasswordEntry.class

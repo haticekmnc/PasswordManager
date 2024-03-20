@@ -1,34 +1,34 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.company.secrest.vault.passwordmanager;
-
+import com.company.secrest.vault.passwordmanager.PasswordEntry;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import com.company.secrest.vault.passwordmanager.PasswordEntry;
 
-/**
- *
- * @author hatice.kemence
- */
-@ManagedBean
-@ViewScoped
-public class PasswordMB implements Serializable{
-    
+
+@ManagedBean(name = "passwordMB")
+@SessionScoped
+public class PasswordMB implements Serializable {
     private String title;
     private String url;
     private String username;
     private String password;
     private String confirmPassword;
     private String notes;
-    private List<PasswordEntry> passwordList;
-    
-    // Getter and setter methods
+    private List<PasswordEntry> passwords;
+
+
+    // Getter and Setter methods
 
     public String getTitle() {
         return title;
@@ -77,48 +77,113 @@ public class PasswordMB implements Serializable{
     public void setNotes(String notes) {
         this.notes = notes;
     }
-    
-    public List<PasswordEntry> getPasswordList(){
-        if (passwordList == null) {
-            passwordList = new ArrayList<>();
-        }
-        return passwordList;
-    }
-    
-    public void setPasswordList(List<PasswordEntry> passwordList) {
-        this.passwordList = passwordList;
-    }
-    
-    
-    
-    // Action method for saving password
-public String savePassword(){
-    // Check if passwords match
-    if (!password.equals(confirmPassword)){
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password and confirm password do not match", null);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        return null; // Stay on the same page
-    }
-    
-    getPasswordList().add(new PasswordEntry(title, url, username, password, notes));
-    
-    title = "";
-    url = "";
-    username = "";
-    password = "";
-    confirmPassword = "";
-    notes = "";
-    
-    
-    // Redirect to index.xhtml after saving
-    return "index.xhtml?faces-redirect=true";
-}
-     public void editPassword(PasswordEntry password){
-         // düzenleme işlevselliği buraya eklenecek
-     }
-     
-     public void deletePassword(PasswordEntry password){
-         getPasswordList().remove(password);
-     }
 
+    public List<PasswordEntry> getPasswords() {
+        return passwords;
+    }
+
+    public void setPasswords(List<PasswordEntry> passwords) {
+        this.passwords = passwords;
+    }
+    
+    @PostConstruct
+    public void init() {
+        // Şifreleri veritabanından yükle
+       loadPasswordsFromDatabase();
+    }
+    
+    public void loadPasswordsFromDatabase()
+    {
+        passwords = new ArrayList<>();
+        
+        try {
+            // Veritabanı bağlantısı oluştur
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\hatice.kemence\\Desktop\\mydatabase\\haticeDatabase.db");
+            
+            //SQL sorgusu oluştur
+            String sql = "SELECT * FROM passwords";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            
+            //Sorguyu çalıştır ve sonuçları al
+            ResultSet resultSet = statement.executeQuery();
+            
+            //Sonuçları dolaşarak PasswordEntry nesnelerini oluştur ve password listesine ekle
+            while (resultSet.next()) {
+                PasswordEntry entry = new PasswordEntry(title, url, username, password, notes);
+                entry.setTitle(resultSet.getString("title"));
+                entry.setUrl(resultSet.getString("url"));
+                entry.setUsername(resultSet.getString("username"));
+                entry.setPassword(resultSet.getString("password"));
+                entry.setNotes(resultSet.getString("notes"));
+                passwords.add(entry);
+            }
+            
+            //Bağlantıyı kapat
+            connection.close();
+        }catch (SQLException e) {
+            System.out.println("Hata: " +e.getMessage());
+        }
+        
+    }
+    
+    public String savePassword() {
+        if (title== null || title.isEmpty() || password== null || password.isEmpty()){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hata", "Başlık ve şifre alanları zorunludur."));
+            return null;
+            
+        }
+        
+        
+        try {
+            // Veritabanı bağlantısı oluştur
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\hatice.kemence\\Desktop\\mydatabase\\haticeDatabase.db");
+
+            // SQL sorgusu oluştur
+            String sql = "INSERT INTO passwords (title, url, username, password, notes) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, title);
+            statement.setString(2, url);
+            statement.setString(3, username);
+            statement.setString(4, password);
+            statement.setString(5, notes);
+
+            // Sorguyu çalıştır
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                // Kayıt başarıyla eklendi
+                System.out.println("Kayıt başarıyla eklendi.");
+                
+                // Başarı mesajı göster
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Başarılı", "Şifre başarıyla kaydedildi."));
+                
+                //Yeni şifreyi passwords listesine ekle
+                PasswordEntry newEntry = new PasswordEntry(title, url, username, password, notes);
+                newEntry.setTitle(title);
+                newEntry.setUrl(url);
+                newEntry.setUsername(username);
+                newEntry.setPassword(password);
+                newEntry.setNotes(notes);
+                passwords.add(newEntry);
+                
+                // Formu temizle
+                title = null;
+                url = null;
+                username = null;
+                password = null;
+                confirmPassword = null;
+                notes = null;
+            } else {
+                // Kayıt ekleme başarısız oldu
+                System.out.println("Kayıt ekleme başarısız oldu.");
+                // Hata mesajı gösterilebilir
+            }
+
+            // Bağlantıyı kapat
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println("Hata: " + e.getMessage());
+        }
+        
+        return null; // JSF navigasyonu için null döndür
+    }
 }

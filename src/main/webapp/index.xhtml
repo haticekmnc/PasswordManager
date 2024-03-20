@@ -1,45 +1,107 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <h:head>
+    <title>Password Manager</title>
     <h:outputStylesheet name="css/index_style.css"/>
+    <style>
+        /* CSS ile navbar'ı sayfanın en üstüne yerleştirme */
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background-color: #9932CC; /* Navbar'ın arka plan rengi */
+            padding: 10px; /* Navbar içeriğinin etrafına boşluk bırakma */
+            z-index: 1000; /* Navbar'ın diğer içeriklerin üzerinde olmasını sağlama */
+        }
+
+        /* Sayfa içeriğinin navbar'ın altında başlaması için üst boşluk ekleyin */
+        body {
+            padding-top: 60px; /* Navbar yüksekliği kadar üst boşluk bırakma */
+            margin: 0; /* Sayfa kenar boşluklarını sıfırlama */
+            overflow-x: hidden; /* Yatay kaydırmayı devre dışı bırakma */
+        }
+
+        /* DataTable için ortalama */
+        .datatable-container {
+            position: fixed;
+            top: 60%; /* Navbar yüksekliği kadar üst boşluk bırakma */
+            left: 20px;
+            right: 20px;
+            bottom: 0;
+            margin: auto;
+            width: calc(100% - 40px); /* sayfa genişliğinin sağ ve solundaki 2opx' lik kenar boşlukları bırakır' */
+            height: calc(100% - 60px); /* Sayfa yüksekliğinin navbar yüksekliği hariç olan kısmını kaplamak için*/
+            overflow-y: auto; /* Dikey kaydırmayı etkinleştirme */
+            padding: 10px; /* Kenar boşlukları ayarlama */
+        }
+        
+        /* Add Password butonunu genişletme */
+        .add-button {
+            width: 200px; /* Buton genişliğini ayarlama */
+            margin: 20px; /* Butonun kenar boşluklarını ayarlama*/
+        }
+       
+
+
+
+
+    </style>
 </h:head>
 <h:body>
+    <!-- Navbar -->
     <div class="navbar">
-        <a href="#">Anasayfa</a>
-        <a href="#">Hakkımızda</a>
-        <a href="#">Ürünler</a>
-        <a href="#">İletişim</a>
-        <input type="text" placeholder="Ara..." />
-    </div>
-    
-    <div class="table-container">
-        <h:dataTable value="#{passwordMB.passwordList}" var="password" border="1">
-            <h:column>
-                <f:facet name="header">Title</f:facet>
-                #{password.title}
-            </h:column>
-            <h:column>
-                <f:facet name="header">URL</f:facet>
-                #{password.url}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Username</f:facet>
-                #{password.username}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Actions</f:facet>
-                <h:commandLink value="Edit" action="#{passwordMB.editPassword(password)}" />
-                <h:commandLink value="Delete" action="#{passwordMB.deletePassword(password)}" />
-            </h:column>
-        </h:dataTable>
-    </div>
-
+    <a href="#">Anasayfa</a>
+    <a href="#">Hakkımızda</a>
+    <a href="#">Ürünler</a>
+    <a href="#">İletişim</a>
+    <input type="text" placeholder="Ara..." />
     <h:form>
-        <h:commandButton value="Add Password" action="addPassword.xhtml"/>
+        <p:commandButton value="Add Password" oncomplete="PF('addPasswordDlg').show();" styleClass="add-button" />
     </h:form>
+</div>
+
+    
+    <!-- DataTable Container -->
+    <div class="datatable-container">
+        <h:dataTable value="#{passwordMB.passwords}" var="password" border="1" styleClass="custom-datatable">
+    <h:column>
+        <f:facet name="header">Title</f:facet>
+        <h:outputText value="#{password.title}" style="width: 25%; height: 25%;"/>
+    </h:column>
+    <h:column>
+        <f:facet name="header">URL</f:facet>
+        <h:outputText value="#{password.url}" style="width: 20%;"/>
+    </h:column>
+    <h:column>
+        <f:facet name="header">Username</f:facet>
+        <h:outputText value="#{password.username}" style="width: 15%;"/>
+    </h:column>
+    <h:column>
+        <f:facet name="header">Password</f:facet>
+        <h:outputText value="#{password.password}" style="width: 15%;"/>
+    </h:column>
+    <h:column>
+        <f:facet name="header">Notes</f:facet>
+        <h:outputText value="#{password.notes}" style="width: 25%;"/>
+    </h:column>
+</h:dataTable>
+
+
+    </div>
+
+    
+    <!-- Add Password Butonu -->
+    
+
+    <!-- Pop-up penceresi için dialog bileşeni -->
+    <p:dialog header="Add Password" widgetVar="addPasswordDlg" modal="true" resizable="false">
+        <ui:include src="addPassword.xhtml"/>
+    </p:dialog>
+     
 </h:body>
-
-
 </html>
