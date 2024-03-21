@@ -26,6 +26,7 @@ public class PasswordMB implements Serializable {
     private String confirmPassword;
     private String notes;
     private List<PasswordEntry> passwords;
+    
 
 
     // Getter and Setter methods
