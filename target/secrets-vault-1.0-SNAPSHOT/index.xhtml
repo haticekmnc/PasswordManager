@@ -4,72 +4,141 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<h:head>
-    <title>Password Manager</title>
-    <h:outputStylesheet name="css/index_style.css"/>
-    <style>
-        /* CSS ile navbar'ı sayfanın en üstüne yerleştirme */
-        .navbar {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            background-color: #9932CC; /* Navbar'ın arka plan rengi */
-            padding: 10px; /* Navbar içeriğinin etrafına boşluk bırakma */
-            z-index: 1000; /* Navbar'ın diğer içeriklerin üzerinde olmasını sağlama */
-        }
+    <h:head>
+        <title>Password Manager</title>
+        <h:outputStylesheet name="css/index_style.css"/>
+        <style>
+            /* CSS ile navbar'ı sayfanın en üstüne yerleştirme */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: fixed;
+                width: 100%;
+                top: 0;
+                left: 0;
+                background-color: #9932CC;
+                padding: 10px;
+                z-index: 1000;
+            }
 
-        /* DataTable için container */
-        .datatable-container {
-            padding-top: 60px; /* Navbar yüksekliği kadar üst boşluk bırakma */
-            overflow-y: auto; /* Dikey kaydırmayı etkinleştirme */
-            margin-top: 60px; /* DataTable container'ı navbar'ın altında başlatma */
-        }
+            /* DataTable için container */
+            .datatable-container {
+                padding-top: 60px;
+                overflow-y: auto;
+                margin-top: 60px;
+            }
 
-        /* DataTable */
-        .custom-datatable {
-            width: 100%;
-        }
-    </style>
-</h:head>
-<h:body>
-    <!-- Navbar -->
-    <div class="navbar">
-        <a href="#">Anasayfa</a>
-        <a href="#">Hakkımızda</a>
-        <a href="#">Ürünler</a>
-        <a href="#">İletişim</a>
-        <input type="text" placeholder="Ara..." onkeyup="searchTable()" />
-        <h:form>
-            <p:commandButton value="Add Password" oncomplete="PF('addPasswordDlg').show();" styleClass="add-button" />
-        </h:form>
-    </div>
-    
-    <!-- DataTable Container -->
-    <div class="datatable-container">
-        <h:dataTable value="#{passwordMB.passwords}" var="password" border="1" styleClass="custom-datatable">
-            <h:column>
-                <f:facet name="header">Title</f:facet>
-                <h:outputText value="#{password.title}" style="width: 25%; height: 25%;"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">URL</f:facet>
-                <h:outputText value="#{password.url}" style="width: 25%;" />
-            </h:column>
-            <h:column>
-                <f:facet name="header">Username</f:facet>
-                <h:outputText value="#{password.username}" style="width: 15%;"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Password</f:facet>
-                <h:outputText value="#{password.password}" style="width: 15%;"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Notes</f:facet>
-                <h:outputText value="#{password.notes}" style="width: 25%;"/>
-            </h:column>
-            
-        </h:dataTable>
-    </div>
-</h:body>
+            /* DataTable */
+            .custom-datatable {
+                width: 100%;
+            }
+
+            /* Logout ve Add Password düğmeleri */
+            .navbar a.logout,
+            .navbar a.add-password {
+                margin-left: 10px;
+            }
+
+            /* Search bar */
+            .navbar input[type="text"] {
+                margin-left: 10px;
+            }
+
+            /* Navbar linkleri */
+            .navbar a.nav-link {
+                margin: 0 5px;
+            }
+
+            /* Butonlar */
+            .btn-delete {
+                background-color: red;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+                margin-left: 5px;
+            }
+
+            .btn-edit {
+                background-color: green;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+                margin-left: 5px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <!-- Navbar -->
+        <div class="navbar">
+            <div>
+                <a href="#" class="nav-link">Anasayfa</a>
+                <a href="#" class="nav-link">Hakkımızda</a>
+                <a href="addPassword.xhtml" class="add-password">Add Password</a>
+                <a href="#" class="nav-link">İletişim</a>
+            </div>
+            <div>
+                <input type="text" placeholder="Ara..." onkeyup="searchTable()" />
+                <a href="login.xhtml" class="logout">Logout</a>
+            </div>
+        </div>
+
+        <!-- DataTable Container -->
+        <div class="datatable-container">
+            <h:dataTable value="#{passwordMB.passwords}" var="password" border="1" styleClass="custom-datatable">
+                <h:column>
+                    <f:facet name="header">Title</f:facet>
+                    <h:outputText id="passwordRow-#{password.id}-title" value="#{password.title}" style="width: 25%; height: 25%;"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">URL</f:facet>
+                    <h:outputText id="passwordRow-#{password.id}-url" value="#{password.url}" style="width: 25%;" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Username</f:facet>
+                    <h:outputText id="passwordRow-#{password.id}-username" value="#{password.username}" style="width: 15%;"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Password</f:facet>
+                    <h:outputText id="passwordRow-#{password.id}-password" value="#{password.password}" style="width: 15%;"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Notes</f:facet>
+                    <h:outputText id="passwordRow-#{password.id}-notes" value="#{password.notes}" style="width: 25%;"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:form>
+                        <h:commandButton value="Sil" styleClass="btn-delete" 
+                                         action="#{passwordMB.deletePassword(password.id)}" 
+                                         onclick="return confirm('Bu şifreyi silmek istediğinize emin misiniz?');"/>
+
+                        <h:commandButton value="Güncelle" class="btn-edit"  onclick="editPassword('#{password.id}')" />
+                    </h:form>
+                </h:column>
+
+            </h:dataTable>
+        </div>
+
+        <script>
+            function editPassword(id) {
+                console.log("Edit function called with ID: ", id);
+                window.location.href = "editPassword.xhtml?id=" + id;
+            }
+
+            function deletePassword(id) {
+                if (confirm("Bu şifreyi silmek istediğinize emin misiniz?")) {
+                    console.log("Delete function called with ID: ", id);
+                    var element = document.getElementById("passwordRow-" + id);
+                    if (element) {
+                        element.parentNode.parentNode.removeChild(element.parentNode);
+                    } else {
+                        alert("Şifre bulunamadı! ID: " + id);
+                    }
+                }
+            }
+        </script>
+    </h:body>
 </html>

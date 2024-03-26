@@ -10,22 +10,31 @@ import java.io.Serializable;
  *
  * @author hatice.kemence
  */
-public class PasswordEntry implements Serializable{
+public class PasswordEntry implements Serializable {
+
+    private Long id;
     private String title;
     private String url;
     private String username;
     private String password;
     private String notes;
-    
-    public PasswordEntry(String title, String url, String username, String password, String notes){
-        this.title=title;
-        this.url=url;
-        this.username=username;
-        this.password=password;
-        this.notes=notes;
+
+    public PasswordEntry(String title, String url, String username, String password, String notes) {
+        this.title = title;
+        this.url = url;
+        this.username = username;
+        this.password = password;
+        this.notes = notes;
     }
-    
+
     // Getter and setter methods
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -66,8 +75,5 @@ public class PasswordEntry implements Serializable{
     public void setNotes(String notes) {
         this.notes = notes;
     }
-    
-    
-   
-    
+
 }
