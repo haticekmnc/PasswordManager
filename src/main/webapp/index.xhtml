@@ -6,9 +6,12 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Password Manager</title>
-        <h:outputStylesheet name="css/index_style.css"/>
+
+
+
         <style>
             /* CSS ile navbar'ı sayfanın en üstüne yerleştirme */
+            /* Navbar */
             .navbar {
                 display: flex;
                 justify-content: space-between;
@@ -22,105 +25,356 @@
                 z-index: 1000;
             }
 
+            .navbar a {
+                display: block;
+                color: #f2f2f2; /* Navbar bağlantı rengi */
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 17px;
+
+            }
+
+            .navbar a:hover {
+                background-color: #ddd; /* Navbar üzerine gelindiğinde arka plan rengi */
+                color: black;
+            }
+
+            .navbar input[type=text] {
+                padding: 6px;
+                margin-top: 8px;
+                border: none;
+                font-size: 17px;
+            }
+
+            .navbar a.logout,
+            .navbar a.add-password {
+                margin-left: 20px;
+                margin-right: 20px;
+                background-color:  #bbb;
+            }
+
+            .navbar input[type="text"] {
+                margin-left: 10px;
+            }
+
+            .navbar a.nav-link {
+                margin: 0 5px;
+            }
+            /* Password List Stilleri */
+            .password-list {
+            background-color: #bbb; /* Gri arka plan rengi */
+            margin-left: 20px;
+            margin-right: 20px;
+            
+        }
+
             /* DataTable için container */
             .datatable-container {
                 padding-top: 60px;
                 overflow-y: auto;
                 margin-top: 60px;
+                width: 100%;
+                max-height: calc(100vh - 180px);
             }
 
             /* DataTable */
             .custom-datatable {
                 width: 100%;
+                table-layout: fixed;
+                padding: 10px;
             }
 
-            /* Logout ve Add Password düğmeleri */
-            .navbar a.logout,
-            .navbar a.add-password {
-                margin-left: 10px;
-            }
-
-            /* Search bar */
-            .navbar input[type="text"] {
-                margin-left: 10px;
-            }
-
-            /* Navbar linkleri */
-            .navbar a.nav-link {
-                margin: 0 5px;
+            .custom-datatable td {
+                word-wrap: break-word;
             }
 
             /* Butonlar */
-            .btn-delete {
-                background-color: red;
+            .btn-delete,
+            .btn-edit,
+            .add-password-button {
                 color: white;
                 border: none;
                 padding: 5px 10px;
                 cursor: pointer;
                 margin-left: 5px;
+                width: 100px;
+                height: 40px;
+            }
+
+            .btn-delete {
+                background-color: red;
             }
 
             .btn-edit {
                 background-color: green;
+            }
+
+            .add-password-button {
+                background-color: #800080;
+                
+            }
+
+            .add-password-button:hover {
+                background-color: #5c005c;
+            }
+            
+            .add-password-form {
+                width: 400px;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 10px;
+            }
+
+            .add-password-form h2 {
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            /* Genel Stiller */
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f4f7f6;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            .container {
+                display: flex;
+                justify-content: center;
+            }
+
+            
+
+            .form-field {
+                margin-bottom: 20px;
+            }
+
+            .form-field label {
+                display: block;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+
+            .form-field input,
+            .form-field textarea {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+
+            .save-button {
+                padding: 10px;
+                background-color: #800080;
                 color: white;
                 border: none;
-                padding: 5px 10px;
+                border-radius: 5px;
                 cursor: pointer;
-                margin-left: 5px;
+                transition: background-color 0.3s ease;
+                width: 100%;
             }
+
+            .save-button:hover {
+                background-color: #5c005c;
+            }
+
+            .back-button {
+                font-size: 20px;
+            }
+
+            /* Filtreleme alanı */
+            .filter-container {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .filter-container select,
+            .filter-container input {
+                margin-left: 10px;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                font-size: 17px;
+            }
+
+            /* Add Password Button */
+            .add-password-button-container {
+                position: fixed;
+                left: 25px;
+                top: 60px;
+                z-index: 1001;
+                margin-top: 20px; /* Aralarında 20px boşluk bırakmak için */
+                text-align: center;
+            }
+
+            /* DataTable Container */
+            .table-container {
+                margin-top: 300px; /* Navbar ve Add Password butonu arasında 40px boşluk bırakmak için */
+                margin-bottom: 20px;
+            }
+
+            .table-container table {
+                margin-top: 80px;
+            }
+
+            .form-field-group .form-field {
+                flex: 1;
+                margin-right: 20px;
+            }
+
+            .form-field-group .form-field:last-child,
+            .form-field.notes {
+                margin-right: 0;
+            }
+
+            .form-field.notes .ui-inputtextarea {
+                height: auto;
+                resize: none;
+            }
+
         </style>
     </h:head>
     <h:body>
         <!-- Navbar -->
         <div class="navbar">
-            <div>
-                <a href="#" class="nav-link">Anasayfa</a>
-                <a href="#" class="nav-link">Hakkımızda</a>
-                <a href="addPassword.xhtml" class="add-password">Add Password</a>
-                <a href="#" class="nav-link">İletişim</a>
+
+
+            <div class="password-list">
+                <a href="#" >Password List</a>
             </div>
             <div>
-                <input type="text" placeholder="Ara..." onkeyup="searchTable()" />
                 <a href="login.xhtml" class="logout">Logout</a>
             </div>
         </div>
 
+
+
+
+
         <!-- DataTable Container -->
-        <div class="datatable-container">
-            <h:dataTable value="#{passwordMB.passwords}" var="password" border="1" styleClass="custom-datatable">
-                <h:column>
-                    <f:facet name="header">Title</f:facet>
-                    <h:outputText id="passwordRow-#{password.id}-title" value="#{password.title}" style="width: 25%; height: 25%;"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">URL</f:facet>
-                    <h:outputText id="passwordRow-#{password.id}-url" value="#{password.url}" style="width: 25%;" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Username</f:facet>
-                    <h:outputText id="passwordRow-#{password.id}-username" value="#{password.username}" style="width: 15%;"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Password</f:facet>
-                    <h:outputText id="passwordRow-#{password.id}-password" value="#{password.password}" style="width: 15%;"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Notes</f:facet>
-                    <h:outputText id="passwordRow-#{password.id}-notes" value="#{password.notes}" style="width: 25%;"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Actions</f:facet>
-                    <h:form>
-                        <h:commandButton value="Sil" styleClass="btn-delete" 
-                                         action="#{passwordMB.deletePassword(password.id)}" 
-                                         onclick="return confirm('Bu şifreyi silmek istediğinize emin misiniz?');"/>
+        <h:form>
 
-                        <h:commandButton value="Güncelle" class="btn-edit"  onclick="editPassword('#{password.id}')" />
-                    </h:form>
-                </h:column>
 
-            </h:dataTable>
-        </div>
+            <!-- Add Password Button -->
+
+            <p:column>
+                <div class="add-password-button-container">
+                    <p:button value="Add Password" outcome="addPassword.xhtml" styleClass="add-password-button" onclick="scrollToBottom();" icon="pi pi-plus"/>
+                </div>
+
+
+            </p:column>
+
+            <!-- Search and Filter Controls -->
+            <div class="table-container">
+                <p:dataTable var="password" value="#{passwordMB.filteredPasswords}" styleClass="custom-datatable" id="passwordTable" widgetVar="passwordTableVar" >
+
+                    <p:column headerText="Title" filterBy="#{password.title}" filterMatchMode="contains"  >
+                        <h:outputText value="#{password.title}" />
+                    </p:column>
+
+                    <p:column headerText="URL" filterBy="#{password.url}" filterMatchMode="contains" >
+                        <h:outputText value="#{password.url}"/>
+                    </p:column>
+
+                    <p:column headerText="Username" filterBy="#{password.username}" filterMatchMode="contains" >
+                        <h:outputText value="#{password.username}"/>
+                    </p:column>
+
+                    <p:column headerText="Password" filterBy="#{password.password}">
+                        <h:outputText value="#{password.password}"/>
+                    </p:column>
+
+                    <p:column headerText="Notes" filterBy="#{password.notes}" filterMatchMode="contains">
+                        <h:outputText value="#{password.notes}"/>
+                    </p:column>
+
+                    <p:column headerText="Actions">
+                        <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="btn-edit"
+                                         action="#{passwordMB.prepareUpdate(password)}"
+                                         oncomplete="PF('editDialog').show();" />
+
+                        <p:commandButton value="Delete" icon="pi pi-trash" styleClass="btn-delete"
+                                         onclick="if (!confirm('Are you sure you want to delete this password?'))
+                                                     return false;"
+                                         action="#{passwordMB.deletePassword(password)}" />
+                    </p:column>
+
+
+
+                </p:dataTable>
+
+
+
+
+
+
+            </div>
+
+
+        </h:form>
+
+
+
+        <!-- edit dialog -->
+        <p:dialog header="Edit Password" widgetVar="editDialog" modal="true" resizable="false">
+            <h:form id="addPasswordForm">
+                <div class="container">
+                    <div class="add-password-form">
+                        <h2>Edit Password</h2>
+                        <div class="form-field-group">
+                            <div class="form-field">
+                                <label for="title">Title:</label>
+                                <h:inputText id="title" value="#{passwordMB.selectedPassword.title}" required="true" />
+                                <h:message for="title" style="color: red" />
+                            </div>
+                            <div class="form-field">
+                                <label for="url">URL:</label>
+                                <h:inputText id="url" value="#{passwordMB.selectedPassword.url}" />
+                            </div>
+                        </div>
+
+                        <div class="form-field-group">
+                            <div class="form-field">
+                                <label for="username">Username:</label>
+                                <h:inputText id="username" value="#{passwordMB.selectedPassword.username}" required="true" />
+                                <h:message for="username" style="color: red" />
+                            </div>
+                            <div class="form-field">
+                                <label for="password">Password:</label>
+                                <h:inputSecret id="password" value="#{passwordMB.selectedPassword.password}" required="true" />
+                                <h:message for="password" style="color: red" />
+                            </div>
+                        </div>
+
+                        <div class="form-field notes">
+                            <label for="notes">Notes:</label>
+                            <h:inputTextarea id="notes" value="#{passwordMB.selectedPassword.notes}" />
+                        </div>
+
+                        <div class="form-field">
+                            <h:commandButton value="Save" action="#{passwordMB.updatePassword}" styleClass="save-button" onclick="PF('addPasswordDlg').hide();" />
+                        </div>
+                    </div>
+                </div>
+
+
+            </h:form>
+            <div class="form-field" style="position: absolute; top: 20px; left: 20px;">
+                <p:button value="&#8592;" style="font-size: 20px;" outcome="index.xhtml" styleClass="back-button" />
+            </div>
+        </p:dialog>
+
+
+
+
 
         <script>
             function editPassword(id) {
@@ -139,6 +393,10 @@
                     }
                 }
             }
+            function scrollToBottom() {
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+
         </script>
     </h:body>
 </html>

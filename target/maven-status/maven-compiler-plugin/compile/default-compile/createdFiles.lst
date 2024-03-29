@@ -1,8 +1,9 @@
 com\company\secrets\vault\security\LoginMB.class
+PasswordEntry.class
 com\company\secrets\vault\security\RegisterMB.class
 PasswordMB.class
 com\mycompany\secrets\vault\JAXRSConfiguration.class
 com\mycompany\secrets\vault\resources\JavaEE8Resource.class
-com\company\secrest\vault\passwordmanager\PasswordEntry.class
+util\DBConnection.class
 com\company\secrets\vault\security\UserDAO.class
 com\company\secrets\vault\mydatabase\SQLiteConnectionTest.class

@@ -10,6 +10,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
        <!-- <h:outputScript  name="resources/js/myscript.js"/> -->
        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-***************************" crossorigin="anonymous" />
+       <script src="js\passwordToggle.js"></script>
+       
+
+      
+       <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     </h:head>
     <h:body>
         <div class="container">
@@ -23,14 +29,24 @@
                         </h:inputText>
                     </div>
                     <div class="form-field">
+                        <div class="password-container">
                         <h:inputSecret id="password" value="#{registerMB.password}" required="true" requiredMessage="Password is required!" styleClass="password-input">
                             <f:passThroughAttribute name="placeholder" value="Password" />
                         </h:inputSecret>
+                        <span class="password-toggle">
+                                <i id="eye-icon" class="fas fa-eye-slash" style="color: purple; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
+                            </span>
+                        </div>
                     </div>
                     <div class="form-field">
+                        <div class="password-container">
                         <h:inputSecret id="confirmPassword" value="#{registerMB.confirmPassword}" required="true" requiredMessage="Please confirm your password!" styleClass="password-input">
                             <f:passThroughAttribute name="placeholder" value="Confirm Password" />
                         </h:inputSecret>
+                            <span class="password-toggle">
+                                <i id="eye-icon" class="fas fa-eye-slash" style="color: purple; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
+                            </span>
+                    </div>
                     </div>
                     <!-- Hata mesajlarını göstermek için -->
                     <h:messages style="color: red;"  />
@@ -49,6 +65,8 @@
     </div>
             
         </div>
+        
+       
         
     </h:body>
 </html>

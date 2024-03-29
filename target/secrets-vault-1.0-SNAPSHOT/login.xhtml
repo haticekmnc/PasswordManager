@@ -3,23 +3,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Password Manager</title>
         <h:outputStylesheet name="css/login_style.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-***************************" crossorigin="anonymous" />
-        <script src="resources/js/passwordToggle.js"></script>
-       
-
-       <!-- <h:outputScript  name="resources/js/myscript.js"/> -->
-       <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     </h:head>
+
     <h:body>
         <div class="container">
             <div class="login-image"></div>
             <div class="login-form">
-                <h:form>
+                <h:form id="loginForm">
                     <h2>Login to Your Account</h2>
                     <div class="form-field">
                         <h:inputText id="username" value="#{loginMB.username}" required="true" requiredMessage="Username is required!">
@@ -28,16 +27,16 @@
                     </div>
                     <div class="form-field">
                         <div class="password-container">
-                            <h:inputSecret id="password" value="#{loginMB.password}" required="true" requiredMessage="Password is required!" styleClass="password-input">
+                            <h:inputSecret id="password" value="#{loginMB.password}" required="true" requiredMessage="Password is required!" styleClass="password-input" redisplay="true">
                                 <f:passThroughAttribute name="placeholder" value="Password" />
                             </h:inputSecret>
-                            <span class="password-toggle" onclick="togglePasswordVisibility('password')">
-                                <i id="eye-icon" class="fas fa-eye-slash" style="color: purple; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility('password')"></i>
+                            <span class="password-toggle" onclick="togglePasswordVisibility()">
+                                <i id="eye-icon" class="fas fa-eye-slash" style="color: purple; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
                             </span>
                         </div>
                     </div>
                     <div class="form-field">
-                        <h:commandButton value="Login" action="#{loginMB.login}" styleClass="login-button"/>
+                        <h:commandButton value="Login" action="#{loginMB.login}" styleClass="login-button"  onclick="PF('dlg3').show();"/>
                     </div>
                 </h:form>
                 <div>
@@ -46,8 +45,50 @@
                 </div>
             </div>
         </div>
-        
 
-        
+        <p:dialog header="Effects" widgetVar="dlg3" showEffect="explode" hideEffect="bounce" height="100">
+            <h:outputText value="This dialog has nice effects." />
+        </p:dialog>
+
+        <p:dialog header="Giriş Hatası" widgetVar="loginErrorDialog" modal="true" showEffect="explode" hideEffect="bounce" height="100">
+            <h:outputText value="Geçersiz kullanıcı adı veya şifre." />
+        </p:dialog>
+
+        <h:outputScript>
+            // PrimeFaces dialog'unu göstermek için JavaScript fonksiyonu
+            function showLoginErrorDialog() {
+            PF('loginErrorDialog').show();
+            }
+        </h:outputScript>
+
+        <script type="text/javascript">
+            // Hata varsa dialog'u göstermek için JavaScript fonksiyonunu çağır
+            document.addEventListener("DOMContentLoaded", function () {
+                let isError = "#{facesContext.maximumSeverity.ordinal eq 2}";
+                if (isError) {
+                    showLoginErrorDialog();
+                }
+            });
+
+            // loginMB.login metodunun başarısız olduğunda Effects dialog'unu göstermek için fonksiyon
+            function showEffectsDialog() {
+                PF('dlg3').show();
+            }
+
+            // loginMB.login metodunu kontrol eden JavaScript fonksiyonu
+            function checkLoginError() {
+                let loginError = "#{loginMB.loginError}";
+                if (loginError) {
+                    showEffectsDialog();
+                }
+            }
+
+            // Login butonuna tıklanınca JavaScript fonksiyonunu çağır
+            document.getElementById("loginForm:loginButton").addEventListener("click", function () {
+                checkLoginError();
+            });
+        </script>
+
+
     </h:body>
 </html>

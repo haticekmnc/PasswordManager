@@ -1,10 +1,14 @@
+
+import java.io.Serializable;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+ /*
 package com.company.secrest.vault.passwordmanager;
 
-import java.io.Serializable;
+
 
 /**
  *
@@ -18,6 +22,18 @@ public class PasswordEntry implements Serializable {
     private String username;
     private String password;
     private String notes;
+
+    @Override
+    public String toString() {
+        return "PasswordEntry{"
+                + "id=" + id
+                + ", title='" + title + '\''
+                + ", url='" + url + '\''
+                + ", username='" + username + '\''
+                + ", password='" + password + '\''
+                + ", notes='" + notes + '\''
+                + '}';
+    }
 
     public PasswordEntry(String title, String url, String username, String password, String notes) {
         this.title = title;

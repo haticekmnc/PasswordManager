@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.company.secrets.vault.security;
 
 import java.io.Serializable;
@@ -27,7 +23,7 @@ public class LoginMB implements Serializable {
     private String username;
     private String password;
     private static final String URL = "jdbc:sqlite:C:\\Users\\hatice.kemence\\Desktop\\mydatabase\\haticeDatabase.db";
-
+    private boolean loginError;
 
     public String getUsername() {
         return username;
@@ -44,11 +40,18 @@ public class LoginMB implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-   public String login() {
+
+    public boolean isLoginError() {
+        return loginError;
+    }
+
+    public void setLoginError(boolean loginError) {
+        this.loginError = loginError;
+    }
+
+    public String login() {
         String dbUsername = "";
         String dbPassword = "";
-        
         
         try (Connection connection = DriverManager.getConnection(URL)) {
             String query = "SELECT username, password FROM users WHERE username = ?";
@@ -68,15 +71,11 @@ public class LoginMB implements Serializable {
         if (username.equals(dbUsername) && password.equals(dbPassword)) {
             return "index.xhtml?faces-redirect=true";
         } else {
+            loginError = true;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Error", "Invalid username or password."));
             return null;
         }
     }
+    
+     
 }
-                
-                   
-        
-        
-    
-    
-

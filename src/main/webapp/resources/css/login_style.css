@@ -85,7 +85,14 @@ body {
     border-radius: 5px;
 }
 
-
+.input-box{
+    background: #fff;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 300px auto;
+}
 
 
 
