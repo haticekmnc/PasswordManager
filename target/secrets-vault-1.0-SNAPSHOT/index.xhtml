@@ -63,11 +63,11 @@
             }
             /* Password List Stilleri */
             .password-list {
-            background-color: #bbb; /* Gri arka plan rengi */
-            margin-left: 20px;
-            margin-right: 20px;
-            
-        }
+                background-color: #bbb; /* Gri arka plan rengi */
+                margin-left: 20px;
+                margin-right: 20px;
+
+            }
 
             /* DataTable için container */
             .datatable-container {
@@ -112,13 +112,13 @@
 
             .add-password-button {
                 background-color: #800080;
-                
+
             }
 
             .add-password-button:hover {
                 background-color: #5c005c;
             }
-            
+
             .add-password-form {
                 width: 400px;
                 padding: 20px;
@@ -148,7 +148,7 @@
                 justify-content: center;
             }
 
-            
+
 
             .form-field {
                 margin-bottom: 20px;
@@ -288,9 +288,16 @@
                         <h:outputText value="#{password.username}"/>
                     </p:column>
 
-                    <p:column headerText="Password" filterBy="#{password.password}">
+                    <p:column headerText="Password" filterBy="#{password.password}" filterMatchMode="contains" >
                         <h:outputText value="#{password.password}"/>
                     </p:column>
+
+
+
+
+
+
+
 
                     <p:column headerText="Notes" filterBy="#{password.notes}" filterMatchMode="contains">
                         <h:outputText value="#{password.notes}"/>

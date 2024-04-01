@@ -31,6 +31,7 @@ public class PasswordMB implements Serializable {
     private String selectedFilterColumn;
     private String filterText;
     private List<PasswordEntry> filteredPasswords;
+    private boolean isSuccess; //Başarılı kayıt kontrolü için boolean değişken
 
     public List<PasswordEntry> getFilteredPasswords() {
         return filteredPasswords;
@@ -133,6 +134,15 @@ public class PasswordMB implements Serializable {
         this.selectedPassword = selectedPassword;
     }
 
+    public boolean isIsSuccess() {
+        return isSuccess;
+    }
+
+    public void setIsSuccess(boolean isSuccess) {
+        this.isSuccess = isSuccess;
+    }
+    
+
     @PostConstruct
     public void init() {
         // Şifreleri veritabanından yükle
@@ -180,6 +190,8 @@ public class PasswordMB implements Serializable {
     }
 
     public String savePassword() {
+        
+        
         if (title == null || title.isEmpty() || password == null || password.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hata", "Başlık ve şifre alanları zorunludur."));
             return null;
@@ -202,12 +214,15 @@ public class PasswordMB implements Serializable {
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hata", "Şifre eklenemedi."));
                 }
+                
             }
         } catch (SQLException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hata", e.getMessage()));
         }
 
         return null;
+        
+        
     }
 
     public String deletePassword(PasswordEntry passwordEntry) {
@@ -284,5 +299,6 @@ public class PasswordMB implements Serializable {
         confirmPassword = null;
         notes = null;
         selectedPassword = null;
+        isSuccess = false; //flag' i sıfırla
     }
 }

@@ -35,8 +35,11 @@
                             </span>
                         </div>
                     </div>
+                    
+                    <!-- Hata mesajlarını göstermek için -->
+                    <h:messages style="color: red;"  />
                     <div class="form-field">
-                        <h:commandButton value="Login" action="#{loginMB.login}" styleClass="login-button"  onclick="PF('dlg3').show();"/>
+                        <h:commandButton id="loginButton" value="Login" action="#{loginMB.login}" styleClass="login-button"  onclick="showEffectsDialog();"/>
                     </div>
                 </h:form>
                 <div>
@@ -46,49 +49,7 @@
             </div>
         </div>
 
-        <p:dialog header="Effects" widgetVar="dlg3" showEffect="explode" hideEffect="bounce" height="100">
-            <h:outputText value="This dialog has nice effects." />
-        </p:dialog>
-
-        <p:dialog header="Giriş Hatası" widgetVar="loginErrorDialog" modal="true" showEffect="explode" hideEffect="bounce" height="100">
-            <h:outputText value="Geçersiz kullanıcı adı veya şifre." />
-        </p:dialog>
-
-        <h:outputScript>
-            // PrimeFaces dialog'unu göstermek için JavaScript fonksiyonu
-            function showLoginErrorDialog() {
-            PF('loginErrorDialog').show();
-            }
-        </h:outputScript>
-
-        <script type="text/javascript">
-            // Hata varsa dialog'u göstermek için JavaScript fonksiyonunu çağır
-            document.addEventListener("DOMContentLoaded", function () {
-                let isError = "#{facesContext.maximumSeverity.ordinal eq 2}";
-                if (isError) {
-                    showLoginErrorDialog();
-                }
-            });
-
-            // loginMB.login metodunun başarısız olduğunda Effects dialog'unu göstermek için fonksiyon
-            function showEffectsDialog() {
-                PF('dlg3').show();
-            }
-
-            // loginMB.login metodunu kontrol eden JavaScript fonksiyonu
-            function checkLoginError() {
-                let loginError = "#{loginMB.loginError}";
-                if (loginError) {
-                    showEffectsDialog();
-                }
-            }
-
-            // Login butonuna tıklanınca JavaScript fonksiyonunu çağır
-            document.getElementById("loginForm:loginButton").addEventListener("click", function () {
-                checkLoginError();
-            });
-        </script>
-
+        
 
     </h:body>
 </html>

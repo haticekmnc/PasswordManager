@@ -22,6 +22,8 @@ public class PasswordEntry implements Serializable {
     private String username;
     private String password;
     private String notes;
+    
+    
 
     @Override
     public String toString() {
@@ -91,5 +93,11 @@ public class PasswordEntry implements Serializable {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+   
+    
+    
+    
+    
 
 }
