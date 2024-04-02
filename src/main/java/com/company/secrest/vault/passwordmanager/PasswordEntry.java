@@ -1,51 +1,39 @@
-
 import java.io.Serializable;
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
- /*
-package com.company.secrest.vault.passwordmanager;
-
-
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
- *
- * @author hatice.kemence
+ * PasswordEntry sınıfı, şifre yönetimi için kullanılan bir modeldir.
+ * Bu sınıf, bir şifre girişinin özelliklerini ve metotlarını içerir.
  */
+@ManagedBean(name="passwordEntry")
+@SessionScoped
 public class PasswordEntry implements Serializable {
 
     private Long id;
     private String title;
     private String url;
     private String username;
-    private String password;
+    private String hashedPassword; // Şifrelenmiş şifre
     private String notes;
-    
-    
+    private String decryptedPassword; // Açık metin şifre, güvenlik nedeniyle dikkatli kullanılmalı
 
-    @Override
-    public String toString() {
-        return "PasswordEntry{"
-                + "id=" + id
-                + ", title='" + title + '\''
-                + ", url='" + url + '\''
-                + ", username='" + username + '\''
-                + ", password='" + password + '\''
-                + ", notes='" + notes + '\''
-                + '}';
+    private boolean showPassword; // Şifreyi UI'da gösterip göstermeme durumu
+
+    // Boş constructor
+    public PasswordEntry() {
     }
 
-    public PasswordEntry(String title, String url, String username, String password, String notes) {
+    // Parametreli constructor
+    public PasswordEntry(String title, String url, String username, String hashedPassword, String notes) {
         this.title = title;
         this.url = url;
         this.username = username;
-        this.password = password;
+        this.hashedPassword = hashedPassword; // Düzeltildi: hashedPassword yerine password parametresi atanmalıydı.
         this.notes = notes;
     }
 
-    // Getter and setter methods
+    // Getter ve Setter metotları
     public Long getId() {
         return id;
     }
@@ -79,11 +67,11 @@ public class PasswordEntry implements Serializable {
     }
 
     public String getPassword() {
-        return password;
+        return hashedPassword;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.hashedPassword = password;
     }
 
     public String getNotes() {
@@ -94,10 +82,32 @@ public class PasswordEntry implements Serializable {
         this.notes = notes;
     }
 
-   
-    
-    
-    
-    
+    public String getDecryptedPassword() {
+        return decryptedPassword;
+    }
 
+    public void setDecryptedPassword(String decryptedPassword) {
+        this.decryptedPassword = decryptedPassword;
+    }
+
+    public boolean isShowPassword() {
+        return showPassword;
+    }
+
+    public void setShowPassword(boolean showPassword) {
+        this.showPassword = showPassword;
+    }
+
+    // toString metodu üzerinden nesne bilgilerini string olarak döndürme
+    @Override
+    public String toString() {
+        return "PasswordEntry{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                ", username='" + username + '\'' +
+                ", hashedPassword='" + hashedPassword + '\'' +
+                ", notes='" + notes + '\'' +
+                '}';
+    }
 }

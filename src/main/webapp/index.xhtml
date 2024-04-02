@@ -6,246 +6,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Password Manager</title>
-
-    
-
-        <style>
-            /* CSS ile navbar'ı sayfanın en üstüne yerleştirme */
-            /* Navbar */
-            .navbar {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                position: fixed;
-                width: 100%;
-                top: 0;
-                left: 0;
-                background-color: #9932CC;
-                padding: 10px;
-                z-index: 1000;
-            }
-
-            .navbar a {
-                display: block;
-                color: #f2f2f2; /* Navbar bağlantı rengi */
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-                font-size: 17px;
-
-            }
-
-            .navbar a:hover {
-                background-color: #ddd; /* Navbar üzerine gelindiğinde arka plan rengi */
-                color: black;
-            }
-
-            .navbar input[type=text] {
-                padding: 6px;
-                margin-top: 8px;
-                border: none;
-                font-size: 17px;
-            }
-
-            .navbar a.logout,
-            .navbar a.add-password {
-                margin-left: 20px;
-                margin-right: 20px;
-                background-color:  #bbb;
-            }
-
-            .navbar input[type="text"] {
-                margin-left: 10px;
-            }
-
-            .navbar a.nav-link {
-                margin: 0 5px;
-            }
-            /* Password List Stilleri */
-            .password-list {
-                background-color: #bbb; /* Gri arka plan rengi */
-                margin-left: 20px;
-                margin-right: 20px;
-
-            }
-
-            /* DataTable için container */
-            .datatable-container {
-                padding-top: 60px;
-                overflow-y: auto;
-                margin-top: 60px;
-                width: 100%;
-                max-height: calc(100vh - 180px);
-            }
-
-            /* DataTable */
-            .custom-datatable {
-                width: 100%;
-                table-layout: fixed;
-                padding: 10px;
-            }
-
-            .custom-datatable td {
-                word-wrap: break-word;
-            }
-
-            /* Butonlar */
-            .btn-delete,
-            .btn-edit,
-            .add-password-button {
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                cursor: pointer;
-                margin-left: 5px;
-                width: 100px;
-                height: 40px;
-            }
-
-            .btn-delete {
-                background-color: red;
-            }
-
-            .btn-edit {
-                background-color: green;
-            }
-
-            .add-password-button {
-                background-color: #800080;
-
-            }
-
-            .add-password-button:hover {
-                background-color: #5c005c;
-            }
-
-            .add-password-form {
-                width: 400px;
-                padding: 20px;
-                background-color: #fff;
-                border-radius: 10px;
-            }
-
-            .add-password-form h2 {
-                margin-bottom: 20px;
-                text-align: center;
-            }
-
-            /* Genel Stiller */
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background-color: #f4f7f6;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-            }
-
-            .container {
-                display: flex;
-                justify-content: center;
-            }
-
-
-
-            .form-field {
-                margin-bottom: 20px;
-            }
-
-            .form-field label {
-                display: block;
-                font-weight: bold;
-                margin-bottom: 5px;
-            }
-
-            .form-field input,
-            .form-field textarea {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                box-sizing: border-box;
-            }
-
-            .save-button {
-                padding: 10px;
-                background-color: #800080;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-                width: 100%;
-            }
-
-            .save-button:hover {
-                background-color: #5c005c;
-            }
-
-            .back-button {
-                font-size: 20px;
-            }
-
-            /* Filtreleme alanı */
-            .filter-container {
-                display: flex;
-                align-items: center;
-                margin-bottom: 20px;
-            }
-
-            .filter-container select,
-            .filter-container input {
-                margin-left: 10px;
-                padding: 10px;
-                border: none;
-                border-radius: 5px;
-                font-size: 17px;
-            }
-
-            /* Add Password Button */
-            .add-password-button-container {
-                position: fixed;
-                left: 25px;
-                top: 60px;
-                z-index: 1001;
-                margin-top: 20px; /* Aralarında 20px boşluk bırakmak için */
-                text-align: center;
-            }
-
-            /* DataTable Container */
-            .table-container {
-                margin-top: 300px; /* Navbar ve Add Password butonu arasında 40px boşluk bırakmak için */
-                margin-bottom: 20px;
-            }
-
-            .table-container table {
-                margin-top: 80px;
-            }
-
-            .form-field-group .form-field {
-                flex: 1;
-                margin-right: 20px;
-            }
-
-            .form-field-group .form-field:last-child,
-            .form-field.notes {
-                margin-right: 0;
-            }
-
-            .form-field.notes .ui-inputtextarea {
-                height: auto;
-                resize: none;
-            }
-
-        </style>
+        <h:outputStylesheet name="css/index_style.css"/>
     </h:head>
     <h:body>
         <!-- Navbar -->
         <div class="navbar">
-
-
             <div class="password-list">
                 <a href="#" >Password List</a>
             </div>
@@ -253,28 +18,17 @@
                 <a href="login.xhtml" class="logout">Logout</a>
             </div>
         </div>
-
-
-
-
-
         <!-- DataTable Container -->
         <h:form>
-
-
             <!-- Add Password Button -->
-
             <p:column>
                 <div class="add-password-button-container">
                     <p:button value="Add Password" outcome="addPassword.xhtml" styleClass="add-password-button" onclick="scrollToBottom();" icon="pi pi-plus"/>
                 </div>
-
-
             </p:column>
-
             <!-- Search and Filter Controls -->
             <div class="table-container">
-                <p:dataTable var="password" value="#{passwordMB.filteredPasswords}" styleClass="custom-datatable" id="passwordTable" widgetVar="passwordTableVar" >
+                <p:dataTable id="dataTable"  var="password" value="#{passwordMB.filteredPasswords}" styleClass="custom-datatable"  widgetVar="passwordTableVar">
 
                     <p:column headerText="Title" filterBy="#{password.title}" filterMatchMode="contains"  >
                         <h:outputText value="#{password.title}" />
@@ -288,14 +42,21 @@
                         <h:outputText value="#{password.username}"/>
                     </p:column>
 
-                    <p:column headerText="Password" filterBy="#{password.password}" filterMatchMode="contains" >
-                        <h:outputText value="#{password.password}"/>
+                    <p:column headerText="Password">
+                        <!-- Sabit uzunlukta * karakterleri göster -->
+                        <h:outputText value="********" rendered="#{!password.showPassword}" />
+                        <!-- Gerçek şifreyi koşullu olarak göster -->
+                        <h:outputText value="#{password.decryptedPassword}" rendered="#{password.showPassword}" />
+                        <!-- Şifreyi göster/gizle için göz ikonu -->
+                        <p:commandLink actionListener="#{passwordMB.toggleShowPassword(passwordEntry)}"
+                                       update="@this" 
+                                       title="Şifreyi Göster/Gizle">
+                            <i class="#{password.showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'}" />
+                            <f:ajax execute="@this" render="@form" />
+                        </p:commandLink>
+
+
                     </p:column>
-
-
-
-
-
 
 
 
@@ -311,23 +72,12 @@
                         <p:commandButton value="Delete" icon="pi pi-trash" styleClass="btn-delete"
                                          onclick="if (!confirm('Are you sure you want to delete this password?'))
                                                      return false;"
-                                         action="#{passwordMB.deletePassword(password)}" />
+                                         action="#{passwordMB.deletePassword(password)}"
+                                         update="dataTable" />
                     </p:column>
-
-
-
                 </p:dataTable>
-
-
-
-
-
-
             </div>
-
-
         </h:form>
-
 
 
         <!-- edit dialog -->
@@ -367,7 +117,7 @@
                         </div>
 
                         <div class="form-field">
-                            <h:commandButton value="Save" action="#{passwordMB.updatePassword}" styleClass="save-button" onclick="PF('addPasswordDlg').hide();" />
+                            <p:commandButton value="Save" action="#{passwordMB.updatePassword}" styleClass="save-button" onclick="PF('addPasswordDlg').hide();" />
                         </div>
                     </div>
                 </div>
@@ -378,10 +128,6 @@
                 <p:button value="&#8592;" style="font-size: 20px;" outcome="index.xhtml" styleClass="back-button" />
             </div>
         </p:dialog>
-
-
-
-
 
         <script>
             function editPassword(id) {
@@ -403,6 +149,38 @@
             function scrollToBottom() {
                 window.scrollTo(0, document.body.scrollHeight);
             }
+            function showPassword(element) {
+                var hiddenPassword = element.parentElement.querySelector('.hidden-password');
+                var showPassword = element.parentElement.querySelector('.show-password');
+
+                if (hiddenPassword.style.display === "none") {
+                    hiddenPassword.style.display = "inline";
+                    showPassword.textContent = "*********";
+                } else {
+                    hiddenPassword.style.display = "none";
+                    showPassword.textContent = "*********";
+                }
+            }
+
+            type = "text/javascript" >
+                    // Şifreyi göster/gizle fonksiyonu
+                            function togglePasswordVisibility(entryId) {
+                                var passwordElement = document.getElementById('password_' + entryId);
+                                var isPasswordVisible = passwordElement.classList.contains('visible-password');
+
+                                // Şifre şu anda gösteriliyorsa, gizle
+                                if (isPasswordVisible) {
+                                    passwordElement.classList.remove('visible-password');
+                                    passwordElement.textContent = '********'; // Gizlenmiş şifreyi tekrar göster
+                                } else {
+                                    // Şifreyi göster
+                                    passwordElement.classList.add('visible-password');
+                                    passwordElement.textContent = passwordElement.dataset.password; // Gerçek şifreyi göster
+                                }
+                            }
+
+
+
 
         </script>
     </h:body>
