@@ -2,132 +2,81 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>Password Manager</title>
-        <h:outputStylesheet name="css/index_style.css"/>
-    </h:head>
-    <h:body>
-        <!-- Navbar -->
-        <div class="navbar">
-            <div class="password-list">
-                <a href="#" >Password List</a>
-            </div>
-            <div>
-                <a href="login.xhtml" class="logout">Logout</a>
-            </div>
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Password Manager</title>
+    <h:outputStylesheet name="css/index_style.css"/>
+</h:head>
+<h:body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="password-list">
+            <a href="#">Password List</a>
         </div>
-        <!-- DataTable Container -->
-        <h:form>
-            <!-- Add Password Button -->
-            <p:column>
-                <div class="add-password-button-container">
-                    <p:button value="Add Password" outcome="addPassword.xhtml" styleClass="add-password-button" onclick="scrollToBottom();" icon="pi pi-plus"/>
-                </div>
-            </p:column>
-            <!-- Search and Filter Controls -->
-            <div class="table-container">
-                <p:dataTable id="dataTable"  var="password" value="#{passwordMB.filteredPasswords}" styleClass="custom-datatable"  widgetVar="passwordTableVar">
-
-                    <p:column headerText="Title" filterBy="#{password.title}" filterMatchMode="contains"  >
-                        <h:outputText value="#{password.title}" />
-                    </p:column>
-
-                    <p:column headerText="URL" filterBy="#{password.url}" filterMatchMode="contains" >
-                        <h:outputText value="#{password.url}"/>
-                    </p:column>
-
-                    <p:column headerText="Username" filterBy="#{password.username}" filterMatchMode="contains" >
-                        <h:outputText value="#{password.username}"/>
-                    </p:column>
-
-                    <p:column headerText="Password">
-                        <!-- Sabit uzunlukta * karakterleri göster -->
-                        <h:outputText value="********" rendered="#{!password.showPassword}" />
-                        <!-- Gerçek şifreyi koşullu olarak göster -->
-                        <h:outputText value="#{password.decryptedPassword}" rendered="#{password.showPassword}" />
-                        <!-- Şifreyi göster/gizle için göz ikonu -->
-                        <p:commandLink actionListener="#{passwordMB.toggleShowPassword(passwordEntry)}"
-                                       update="@this" 
-                                       title="Şifreyi Göster/Gizle">
-                            <i class="#{password.showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'}" />
-                            <f:ajax execute="@this" render="@form" />
-                        </p:commandLink>
-
-
-                    </p:column>
-
-
-
-                    <p:column headerText="Notes" filterBy="#{password.notes}" filterMatchMode="contains">
-                        <h:outputText value="#{password.notes}"/>
-                    </p:column>
-
-                    <p:column headerText="Actions">
-                        <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="btn-edit"
-                                         action="#{passwordMB.prepareUpdate(password)}"
-                                         oncomplete="PF('editDialog').show();" />
-
-                        <p:commandButton value="Delete" icon="pi pi-trash" styleClass="btn-delete"
-                                         onclick="if (!confirm('Are you sure you want to delete this password?'))
-                                                     return false;"
-                                         action="#{passwordMB.deletePassword(password)}"
-                                         update="dataTable" />
-                    </p:column>
-                </p:dataTable>
-            </div>
+        <div>
+            <a href="login.xhtml" class="logout">Logout</a>
+        </div>
+    </div>
+    <!-- DataTable Container -->
+    <h:form id="passwordForm">
+        <!-- Add Password Button -->
+        <div class="add-password-button-container">
+            <p:button value="Add Password" outcome="addPassword.xhtml" styleClass="add-password-button" icon="pi pi-plus"/>
+        </div>
+        <!-- Search and Filter Controls -->
+        <div class="table-container">
+            <p:dataTable id="dataTable" var="password" value="#{passwordBean.passwords}" styleClass="custom-datatable" widgetVar="passwordTableVar">
+                <p:column headerText="Title" filterBy="#{password.title}" filterMatchMode="contains">
+                    <h:outputText value="#{password.title}" />
+                </p:column>
+                <p:column headerText="URL" filterBy="#{password.url}" filterMatchMode="contains">
+                    <h:outputText value="#{password.url}"/>
+                </p:column>
+                <p:column headerText="Username" filterBy="#{password.username}" filterMatchMode="contains">
+                    <h:outputText value="#{password.username}"/>
+                </p:column>
+                <p:column headerText="Password">
+                    <h:outputText value="********" rendered="#{!password.showPassword}" />
+                    <h:outputText value="#{password.decryptedPassword}" rendered="#{password.showPassword}" />
+                    <p:commandLink actionListener="#{passwordBean.toggleShowPassword(password)}"
+                                   update="dataTable" title="Şifreyi Göster/Gizle">
+                        <i class="#{password.showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'}" />
+                    </p:commandLink>
+                </p:column>
+                <p:column headerText="Notes" filterBy="#{password.notes}" filterMatchMode="contains">
+                    <h:outputText value="#{password.notes}"/>
+                </p:column>
+                <p:column headerText="Actions">
+                    <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="btn-edit"
+                                     actionListener="#{passwordMB.prepareUpdate(password)}"
+                                     update=":editDialogForm" oncomplete="PF('editDialog').show();" />
+                    <p:commandButton value="Delete" icon="pi pi-trash" styleClass="btn-delete"
+                                     actionListener="#{passwordMB.deletePassword(password)}"
+                                     update="dataTable" />
+                </p:column>
+            </p:dataTable>
+        </div>
+    </h:form>
+    <!-- Edit Dialog -->
+    <p:dialog header="Edit Password" widgetVar="editDialog" modal="true" resizable="false">
+        <h:form id="editDialogForm">
+            <p:panelGrid columns="2">
+                <p:outputLabel for="title" value="Title:" />
+                <p:inputText id="title" value="#{passwordBean.selectedPassword.title}" required="true" />
+                <p:outputLabel for="url" value="URL:" />
+                <p:inputText id="url" value="#{passwordBean.selectedPassword.url}" />
+                <p:outputLabel for="username" value="Username:" />
+                <p:inputText id="username" value="#{passwordBean.selectedPassword.username}" required="true" />
+                <p:outputLabel for="password" value="Password:" />
+                <p:password id="password" value="#{passwordBean.selectedPassword.password}" required="true" feedback="true" match="confirmPassword" />
+                <p:outputLabel for="notes" value="Notes:" />
+                <p:inputTextarea id="notes" value="#{passwordBean.selectedPassword.notes}" />
+            </p:panelGrid>
+            <p:commandButton value="Save" actionListener="#{passwordMB.updatePassword}" update=":passwordForm:dataTable" oncomplete="PF('editDialog').hide();" />
         </h:form>
+    </p:dialog>
 
 
-        <!-- edit dialog -->
-        <p:dialog header="Edit Password" widgetVar="editDialog" modal="true" resizable="false">
-            <h:form id="addPasswordForm">
-                <div class="container">
-                    <div class="add-password-form">
-                        <h2>Edit Password</h2>
-                        <div class="form-field-group">
-                            <div class="form-field">
-                                <label for="title">Title:</label>
-                                <h:inputText id="title" value="#{passwordMB.selectedPassword.title}" required="true" />
-                                <h:message for="title" style="color: red" />
-                            </div>
-                            <div class="form-field">
-                                <label for="url">URL:</label>
-                                <h:inputText id="url" value="#{passwordMB.selectedPassword.url}" />
-                            </div>
-                        </div>
-
-                        <div class="form-field-group">
-                            <div class="form-field">
-                                <label for="username">Username:</label>
-                                <h:inputText id="username" value="#{passwordMB.selectedPassword.username}" required="true" />
-                                <h:message for="username" style="color: red" />
-                            </div>
-                            <div class="form-field">
-                                <label for="password">Password:</label>
-                                <h:inputSecret id="password" value="#{passwordMB.selectedPassword.password}" required="true" />
-                                <h:message for="password" style="color: red" />
-                            </div>
-                        </div>
-
-                        <div class="form-field notes">
-                            <label for="notes">Notes:</label>
-                            <h:inputTextarea id="notes" value="#{passwordMB.selectedPassword.notes}" />
-                        </div>
-
-                        <div class="form-field">
-                            <p:commandButton value="Save" action="#{passwordMB.updatePassword}" styleClass="save-button" onclick="PF('addPasswordDlg').hide();" />
-                        </div>
-                    </div>
-                </div>
-
-
-            </h:form>
-            <div class="form-field" style="position: absolute; top: 20px; left: 20px;">
-                <p:button value="&#8592;" style="font-size: 20px;" outcome="index.xhtml" styleClass="back-button" />
-            </div>
-        </p:dialog>
 
         <script>
             function editPassword(id) {

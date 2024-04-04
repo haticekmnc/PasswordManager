@@ -1,10 +1,11 @@
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\PasswordMB.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\UserDAO.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\util\AES.java
+C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrest\vault\password\PasswordManager.java
+C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\authentication\LoginMB.java
+C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrest\vault\password\PasswordBean.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\RegisterMB.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrest\vault\passwordmanager\PasswordEntry.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\mycompany\secrets\vault\resources\JavaEE8Resource.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\LoginMB.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\util\DBConnection.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\mydatabase\SQLiteConnectionTest.java
+C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\authentication\service\AuthenticationService.java
+C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrest\vault\password\Passwords.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\mycompany\secrets\vault\JAXRSConfiguration.java
