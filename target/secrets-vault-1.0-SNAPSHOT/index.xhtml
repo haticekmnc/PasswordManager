@@ -10,8 +10,8 @@
 <h:body>
     <!-- Navbar -->
     <div class="navbar">
-        <div class="password-list">
-            <a href="#">Password List</a>
+        <div>
+            <a href="#" class="password-list">Password List</a>
         </div>
         <div>
             <a href="login.xhtml" class="logout">Logout</a>
@@ -25,7 +25,11 @@
         </div>
         <!-- Search and Filter Controls -->
         <div class="table-container">
-            <p:dataTable id="dataTable" var="password" value="#{passwordBean.passwords}" styleClass="custom-datatable" widgetVar="passwordTableVar">
+            <p:dataTable id="dataTable" var="password" value="#{passwordBean.passwords}" styleClass="custom-datatable" widgetVar="passwordTableVar"
+                         rows="10" paginator="true" paginatorPosition="both" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
+                         {PageLinks} {NextpageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}--{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
                 <p:column headerText="Title" filterBy="#{password.title}" filterMatchMode="contains">
                     <h:outputText value="#{password.title}" />
                 </p:column>

@@ -7,238 +7,252 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : hatice.kemence
 */
 
- /* CSS ile navbar'ı sayfanın en üstüne yerleştirme */
-            /* Navbar */
-            .navbar {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                position: fixed;
-                width: 100%;
-                top: 0;
-                left: 0;
-                background-color: #9932CC;
-                padding: 10px;
-                z-index: 1000;
-            }
+/* CSS ile navbar'ı sayfanın en üstüne yerleştirme */
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: #957DAD; /* Lavanta tonu */
+    padding: 10px;
+    z-index: 1000;
+    height: 50px; /* sabit bir yükseklik */
+}
 
-            .navbar a {
-                display: block;
-                color: #f2f2f2; /* Navbar bağlantı rengi */
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-                font-size: 17px;
+.navbar a.password-list,
+.navbar a.logout
+{
+    display: block;
+    color: #5C415D; /* Mor'un koyu bir tonu */
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    background-color:  #F2E8F4; /* Çok açık mor-beyaz karışımı */
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 10px; /* Kenarları yuvarlat */
 
-            }
+}
 
-            .navbar a:hover {
-                background-color: #ddd; /* Navbar üzerine gelindiğinde arka plan rengi */
-                color: black;
-            }
+/* Navbar üzerine gelindiğinde arka plan ve yazı stilleri*/
+.navbar a.password-list:hover,
+.navbar a.logout:hover
+{
+    background-color: #ddd; /* Navbar üzerine gelindiğinde arka plan rengi */
+    color: black;
+}
 
-            .navbar input[type=text] {
-                padding: 6px;
-                margin-top: 8px;
-                border: none;
-                font-size: 17px;
-            }
+.navbar input[type=text] {
+    padding: 6px;
+    margin-top: 8px;
+    border: none;
+    font-size: 17px;
+}
 
-            .navbar a.logout,
-            .navbar a.add-password {
-                margin-left: 20px;
-                margin-right: 20px;
-                background-color:  #bbb;
-            }
-
-            .navbar input[type="text"] {
-                margin-left: 10px;
-            }
-
-            .navbar a.nav-link {
-                margin: 0 5px;
-            }
-            /* Password List Stilleri */
-            .password-list {
-                background-color: #bbb; /* Gri arka plan rengi */
-                margin-left: 20px;
-                margin-right: 20px;
-
-            }
-
-            /* DataTable için container */
-            .datatable-container {
-                padding-top: 60px;
-                overflow-y: auto;
-                margin-top: 60px;
-                width: 100%;
-                max-height: calc(100vh - 180px);
-            }
-
-            /* DataTable */
-            .custom-datatable {
-                width: 100%;
-                table-layout: fixed;
-                padding: 10px;
-            }
-
-            .custom-datatable td {
-                word-wrap: break-word;
-            }
-
-            /* Butonlar */
-            .btn-delete,
-            .btn-edit,
-            .add-password-button {
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                cursor: pointer;
-                margin-left: 5px;
-                width: 100px;
-                height: 40px;
-            }
-
-            .btn-delete {
-                background-color: red;
-            }
-
-            .btn-edit {
-                background-color: green;
-            }
-
-            .add-password-button {
-                background-color: #800080;
-
-            }
-
-            .add-password-button:hover {
-                background-color: #5c005c;
-            }
-
-            .add-password-form {
-                width: 400px;
-                padding: 20px;
-                background-color: #fff;
-                border-radius: 10px;
-            }
-
-            .add-password-form h2 {
-                margin-bottom: 20px;
-                text-align: center;
-            }
-
-            /* Genel Stiller */
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background-color: #f4f7f6;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-            }
-
-            .container {
-                display: flex;
-                justify-content: center;
-            }
+.navbar a.logout,
+.navbar a.password-list
+{
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color:  #F2E8F4; /* Çok açık mor-beyaz karışımı */
+    color: #5C415D; /* Mor'un koyu bir tonu */
+}
 
 
 
-            .form-field {
-                margin-bottom: 20px;
-            }
+.navbar input[type="text"] {
+    margin-left: 10px;
+}
 
-            .form-field label {
-                display: block;
-                font-weight: bold;
-                margin-bottom: 5px;
-            }
+.navbar a.nav-link {
+    margin: 0 5px;
+}
+/* Password List Stilleri */
 
-            .form-field input,
-            .form-field textarea {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                box-sizing: border-box;
-            }
 
-            .save-button {
-                padding: 10px;
-                background-color: #800080;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-                width: 100%;
-            }
+/* DataTable için container */
+.datatable-container {
+    padding-top: 60px;
+    overflow-y: auto;
+    margin-top: 60px;
+    width: 100%;
+    max-height: calc(100vh - 180px);
+}
 
-            .save-button:hover {
-                background-color: #5c005c;
-            }
+/* DataTable */
+.custom-datatable {
+    width: 100%;
+    table-layout: fixed;
+    padding: 10px;
+}
 
-            .back-button {
-                font-size: 20px;
-            }
+.custom-datatable td {
+    word-wrap: break-word;
+}
 
-            /* Filtreleme alanı */
-            .filter-container {
-                display: flex;
-                align-items: center;
-                margin-bottom: 20px;
-            }
+/* Butonlar */
+.btn-delete,
+.btn-edit,
+.add-password-button {
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 5px;
+    width: 100px;
+    height: 40px;
+}
 
-            .filter-container select,
-            .filter-container input {
-                margin-left: 10px;
-                padding: 10px;
-                border: none;
-                border-radius: 5px;
-                font-size: 17px;
-            }
+.btn-delete {
+    background-color: red;
+}
 
-            /* Add Password Button */
-            .add-password-button-container {
-                position: fixed;
-                left: 25px;
-                top: 60px;
-                z-index: 1001;
-                margin-top: 20px; /* Aralarında 20px boşluk bırakmak için */
-                text-align: center;
-            }
+.btn-edit {
+    background-color: green;
+}
 
-            /* DataTable Container */
-            .table-container {
-                margin-top: 300px; /* Navbar ve Add Password butonu arasında 40px boşluk bırakmak için */
-                margin-bottom: 20px;
-            }
+.add-password-button {
+    background-color: #957DAD; /* Lavanta tonu */
+    border-radius: 5px; /* Kenarları yuvarlat */
 
-            .table-container table {
-                margin-top: 80px;
-            }
+}
 
-            .form-field-group .form-field {
-                flex: 1;
-                margin-right: 20px;
-            }
+.add-password-button:hover {
+    background-color: #7E689F;
+}
 
-            .form-field-group .form-field:last-child,
-            .form-field.notes {
-                margin-right: 0;
-            }
+.add-password-form {
+    width: 400px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+}
 
-            .form-field.notes .ui-inputtextarea {
-                height: auto;
-                resize: none;
-            }
-            .hidden-password {
-                display: none;
-            }
+.add-password-form h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
 
-            .show-password {
-                cursor: pointer;
-            }
+/* Genel Stiller */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.form-field {
+    margin-bottom: 20px;
+}
+
+.form-field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.save-button {
+    padding: 10px;
+    background-color: #800080;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.save-button:hover {
+    background-color: #5c005c;
+}
+
+.back-button {
+    font-size: 20px;
+}
+
+/* Filtreleme alanı */
+.filter-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-container select,
+.filter-container input {
+    margin-left: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 17px;
+}
+
+/* Add Password Button */
+.add-password-button-container {
+    position: fixed;
+    left: 25px;
+    top: 60px; /* Navbarın yüksekliği*/
+    z-index: 1001;
+    margin-top: 20px; /* Aralarında 20px boşluk bırakmak için */
+    text-align: center;
+}
+
+/* DataTable Container */
+.table-container {
+    margin-top: 0;
+    max-height: calc(100vh - 60px - 5cm);
+    overflow-y: auto; /* Kaydırmayı etkinleştir */
+    margin-bottom: 0;
+    background-color: #F5F3F4; /* Çok açık gri bir ton */
+
+}
+
+.table-container table {
+    margin-top: 80px;
+}
+
+.form-field-group .form-field {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.form-field-group .form-field:last-child,
+.form-field.notes {
+    margin-right: 0;
+}
+
+.form-field.notes .ui-inputtextarea {
+    height: auto;
+    resize: none;
+}
+.hidden-password {
+    display: none;
+}
+
+.show-password {
+    cursor: pointer;
+}
