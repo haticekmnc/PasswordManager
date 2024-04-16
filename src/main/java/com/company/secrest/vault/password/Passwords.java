@@ -1,9 +1,5 @@
 package com.company.secrest.vault.password;
 
-
-
-
-
 public class Passwords {
 
     private Long id;
@@ -25,9 +21,6 @@ public class Passwords {
 
     public Passwords() {
     }
-    
-    
-   
 
     public Long getId() {
         return id;
@@ -93,5 +86,4 @@ public class Passwords {
         this.showPassword = showPassword;
     }
 
-    
 }

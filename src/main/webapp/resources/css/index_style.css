@@ -224,7 +224,7 @@ body {
 /* DataTable Container */
 .table-container {
     margin-top: 0;
-    max-height: calc(100vh - 60px - 5cm);
+    max-height: calc(100vh - 0px - 0cm);
     overflow-y: auto; /* Kaydırmayı etkinleştir */
     margin-bottom: 0;
     background-color: #F5F3F4; /* Çok açık gri bir ton */

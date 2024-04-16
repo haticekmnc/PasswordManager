@@ -25,10 +25,10 @@ public class PasswordBean implements Serializable {
     }
 
     public void loadPasswordsFromDatabase() {
-        passwords = passwordManager.getPasswords();
+        passwords = passwordManager.loadPasswordsFromDatabase();
     }
 
-    // Diğer metodlar buraya eklenebilir...
+   
 
     public List<Passwords> getPasswords() {
         return passwords;
@@ -74,9 +74,9 @@ public class PasswordBean implements Serializable {
 
     private void filterPasswords() {
         if (filterText == null || filterText.isEmpty()) {
-            this.passwords = passwordManager.getPasswords();
+            this.passwords = passwordManager.loadPasswordsFromDatabase();
         } else {
-            this.passwords = passwordManager.getPasswords().stream()
+            this.passwords = passwordManager.loadPasswordsFromDatabase().stream()
                 .filter(p -> p.getTitle().contains(filterText)
                           || p.getUrl().contains(filterText)
                           || p.getUsername().contains(filterText)

@@ -26,7 +26,7 @@
         <!-- Search and Filter Controls -->
         <div class="table-container">
             <p:dataTable id="dataTable" var="password" value="#{passwordBean.passwords}" styleClass="custom-datatable" widgetVar="passwordTableVar"
-                         rows="10" paginator="true" paginatorPosition="both" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
+                         rows="10" paginator="true" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
                          {PageLinks} {NextpageLink} {LastPageLink} {RowsPerPageDropdown}"
                          currentPageReportTemplate="{startRecord}--{endRecord} of {totalRecords} records"
                          rowsPerPageTemplate="5,10,{ShowAll|'All'}">

@@ -1,29 +1,32 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
-/**
- *
- * @author hatice.kemence
- */
-public abstract class DBConnection {
-    private Connection connection;
-    
-    public Connection connect(){
+public class DBConnection {
+    private static Connection connection = null;
+
+    public static Connection getConnection() {
         try {
-            Class.forName("org.sqlite.JDBC");
-            this.connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\hatice.kemence\\Desktop\\mydatabase\\haticeDatabase.db");
-            
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            if (connection == null || connection.isClosed()) {
+                Class.forName("org.sqlite.JDBC");
+                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\hatice.kemence\\Desktop\\mydatabase\\haticeDatabase.db");
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println("Database connection error: " + e.getMessage());
+            e.printStackTrace();
         }
-        return this.connection;
+        return connection;
     }
-    
-    
+
+    public static void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing connection: " + e.getMessage());
+            }
+        }
+    }
 }
