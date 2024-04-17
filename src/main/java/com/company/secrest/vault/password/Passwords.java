@@ -85,5 +85,20 @@ public class Passwords {
     public void setShowPassword(boolean showPassword) {
         this.showPassword = showPassword;
     }
+    
+    // DECRYPT , ENCRYPT İŞLEMLERİ
+    public String getDecryptedPassword() {
+        try{
+            return AESUtil.decrypt(this.password);
+        } catch (Exception e) {
+            System.err.println("Şifre deşifreleme hatası: " + e.getMessage());
+            return null;
+        }
+        
+    }
+
+    public void encryptAndSetPassword(String password) {
+        this.password = AESUtil.encrypt(password);
+    }
 
 }

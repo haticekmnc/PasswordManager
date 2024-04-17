@@ -84,15 +84,54 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     max-height: calc(100vh - 180px);
 }
 
-/* DataTable */
-.custom-datatable {
-    width: 100%;
-    table-layout: fixed;
-    padding: 10px;
+/* DataTable Başlık ve Hücre Stilleri */
+.custom-datatable thead {
+    /*burası datatable header alanı*/
+    background-color: #D8BFD8;
+    color: white;
+    font-size: 16px;
+    text-align: left;
 }
 
-.custom-datatable td {
-    word-wrap: break-word;
+.custom-datatable th, .custom-datatable td {
+    padding: 12px 15px; /* Artırılan padding ile daha ferah bir görünüm */
+    border-bottom: 1px solid #ddd; /* Her hücreyi ayıran ince çizgi */
+}
+
+.custom-datatable tr:nth-child(even) {
+    background-color: #f2f2f2; /* Çizgili tablo efekti */
+}
+
+/* Sayfalandırma Kontrolleri Stili */
+.custom-datatable .ui-paginator {
+    padding: 10px;
+    /*burası paginator alanı*/
+    background-color: #F2E8F4; /* Çok açık mor-beyaz karışımı */
+    border-radius: 10px;
+    color: #5C415D; /* Mor'un koyu bir tonu */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.custom-datatable .ui-paginator .ui-paginator-page,
+.custom-datatable .ui-paginator .ui-paginator-prev,
+.custom-datatable .ui-paginator .ui-paginator-next {
+    padding: 5px 10px;
+    margin: 2px;
+    background-color: #957DAD; /* Lavanta tonu */
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.custom-datatable .ui-paginator .ui-paginator-page:hover,
+.custom-datatable .ui-paginator .ui-paginator-prev:hover,
+.custom-datatable .ui-paginator .ui-paginator-next:hover {
+    background-color: #D8BFD8;
+    color: white;
 }
 
 /* Butonlar */
@@ -141,7 +180,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 /* Genel Stiller */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7f6;
+    background-color: #F5F5F5;
     margin: 0;
     padding: 0;
     display: flex;
@@ -215,21 +254,20 @@ body {
 .add-password-button-container {
     position: fixed;
     left: 25px;
-    top: 60px; /* Navbarın yüksekliği*/
+    top: 100px; /* Navbar'ın hemen altı */
     z-index: 1001;
-    margin-top: 20px; /* Aralarında 20px boşluk bırakmak için */
     text-align: center;
 }
 
 /* DataTable Container */
 .table-container {
-    margin-top: 0;
-    max-height: calc(100vh - 0px - 0cm);
-    overflow-y: auto; /* Kaydırmayı etkinleştir */
-    margin-bottom: 0;
-    background-color: #F5F3F4; /* Çok açık gri bir ton */
-
+    margin-top: 70px; /* Butonun alt kenarından itibaren boşluk */
+    max-height: calc(100vh - 70px); /* Ekranın tam yüksekliğinden, üstte kalan toplam yüksekliği çıkarır */
+    overflow-y: auto;
+    background-color: #F5F5F5;
 }
+
+
 
 .table-container table {
     margin-top: 80px;
@@ -255,4 +293,8 @@ body {
 
 .show-password {
     cursor: pointer;
+}
+
+.ui-widget-overlay {
+    background: none !important; /* Arka plan transparanlığını kaldırır */
 }

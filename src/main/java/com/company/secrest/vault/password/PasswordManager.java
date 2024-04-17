@@ -64,7 +64,7 @@ public class PasswordManager implements Serializable {
             statement.setString(1, selectedPassword.getTitle());
             statement.setString(2, selectedPassword.getUrl());
             statement.setString(3, selectedPassword.getUsername());
-            statement.setString(4, selectedPassword.getPassword());
+            statement.setString(4, AESUtil.encrypt(selectedPassword.getPassword()));
             statement.setString(5, selectedPassword.getNotes());
 
             int rowsInserted = statement.executeUpdate();
@@ -102,7 +102,7 @@ public class PasswordManager implements Serializable {
             statement.setString(1, password.getTitle());
             statement.setString(2, password.getUrl());
             statement.setString(3, password.getUsername());
-            statement.setString(4, password.getPassword());
+            statement.setString(4, AESUtil.encrypt(password.getPassword()));
             statement.setString(5, password.getNotes());
             statement.setLong(6, password.getId());
             int rowsUpdated = statement.executeUpdate();

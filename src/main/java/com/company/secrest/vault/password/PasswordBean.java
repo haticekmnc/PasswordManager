@@ -85,6 +85,12 @@ public class PasswordBean implements Serializable {
         }
     }
     
+    public void toggleShowPassword(Passwords password) {
+        password.setShowPassword(!password.isShowPassword());
+        //log eklendi
+        System.out.println("toggleShowPassword called for: " + password.getTitle() + "with showPassword = " + password.isShowPassword());
+    }
+    
     
 
 

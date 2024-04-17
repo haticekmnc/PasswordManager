@@ -14,18 +14,21 @@
 
 console.log("JavaScript dosyası yüklendi.");
 
-function togglePasswordVisibility() {
-    var passwordInput = document.getElementById('password');
-    var eyeIcon = document.getElementById('eye-icon');
+function togglePasswordVisibility(passwordFieldId, toggleButtonId) {
+    var passwordField = document.getElementById(passwordFieldId);
+    var toggleButton = document.getElementById(toggleButtonId);
 
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        eyeIcon.className = 'fas fa-eye';
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleButton.classList.remove('pi-eye-slash');
+        toggleButton.classList.add('pi-eye');
     } else {
-        passwordInput.type = 'password';
-        eyeIcon.className = 'fas fa-eye-slash';
+        passwordField.type = 'password';
+        toggleButton.classList.remove('pi-eye');
+        toggleButton.classList.add('pi-eye-slash');
     }
 }
+
 
 
 
