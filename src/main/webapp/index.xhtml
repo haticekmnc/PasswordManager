@@ -48,7 +48,7 @@
                         <i class="#{password.showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'}" />
                     </p:commandLink>
                 </p:column>
-                <p:column headerText="Notes" filterBy="#{password.notes}" filterMatchMode="contains">
+                <p:column headerText="Notes" filterBy="#{password.notes}" filterMatchMode="contains" styleClass="notes-cell">
                     <h:outputText value="#{password.notes}"/>
                 </p:column>
                 <p:column headerText="Actions">
@@ -63,7 +63,7 @@
         </div>
     </h:form>
     <!-- Edit Dialog -->
-    <p:dialog header="Edit Password" widgetVar="editDialog" 
+    <p:dialog  widgetVar="editDialog" 
               modal="true" appendTo="@(body)" styleClass="ui-widget-overlay" resizable="false"
               height="auto" width="auto"  >
         <h:form id="editDialogForm" styleClass="add-password-form">
@@ -99,7 +99,7 @@
 
                     <div class="form-field notes">
                         <label for="notes">Notes:</label>
-                        <h:inputTextarea id="notes" value="#{passwordMB.selectedPassword.notes}" />
+                        <h:inputTextarea id="notes" value="#{passwordMB.selectedPassword.notes}" styleClass="auto-expand" />
                     </div>
 
                     <div class="form-field">
@@ -113,6 +113,11 @@
                 </div>
             </div>
         </h:form>
+        
+         <div class="form-field" style="position: absolute; top: 20px; left: 20px;">
+            <h:button value="&#8592;" style="font-size: 20px;" outcome="index.xhtml" styleClass="back-button">
+            </h:button>
+        </div>
     </p:dialog>
 
 
@@ -149,6 +154,17 @@
                     showPassword.textContent = "*********";
                 }
             }
+            
+            //notes alanına yazdıkça aşağı doğru uzamasını sağlayan fonk.
+            function autoExpandField(field) {
+            field.style.height = 'auto';
+            field.style.height = field.scrollHeight + 'px';
+            }
+
+            document.querySelectorAll('.auto-expand').forEach(field => {
+            field.addEventListener('input', function() { autoExpandField(this); });
+            autoExpandField(field); // Başlangıçta da boyutlandır
+            });
 
             type = "text/javascript" >
                     // Şifreyi göster/gizle fonksiyonu

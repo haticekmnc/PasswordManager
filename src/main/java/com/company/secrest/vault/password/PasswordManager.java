@@ -97,6 +97,11 @@ public class PasswordManager implements Serializable {
     }
 
     public void updatePassword(Passwords password) {
+        LOGGER.log(Level.INFO, "updatePassword methodu çağırıldı.");
+        
+        if(selectedPassword != null){
+            LOGGER.log(Level.INFO, "Şifre {0} güncelleniyor." , selectedPassword.getTitle());
+        }
         String sql = "UPDATE passwords SET title=?, url=?, username=?, password=?, notes=? WHERE id=?";
         try ( Connection connection = DBConnection.getConnection();  PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, password.getTitle());
@@ -106,15 +111,24 @@ public class PasswordManager implements Serializable {
             statement.setString(5, password.getNotes());
             statement.setLong(6, password.getId());
             int rowsUpdated = statement.executeUpdate();
+            
+            
             if (rowsUpdated > 0) {
                 LOGGER.log(Level.INFO, "Parola veritabanında başarıyla güncellendi.");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Password successfully updated."));
-                loadPasswordsFromDatabase();
+                loadPasswordsFromDatabase(); // DataTable' ı güncelle
+            } else{
+                LOGGER.log(Level.WARNING, "veritabanında güncellenen satır yok!");
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Veritabanındaki parola güncellenemedi.", e);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
-        }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Şifre güncellenemedi: " + e.getMessage()));
+        } 
+    }
+    
+    public void prepareUpdate(Passwords password){
+        this.selectedPassword = password;
+        
     }
 
     public void resetForm() {
