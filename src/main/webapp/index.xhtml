@@ -3,134 +3,164 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-<h:head>
-    <title>Password Manager</title>
-    <h:outputStylesheet name="css/index_style.css"/>
-    <h:outputStylesheet name="css/add_password_style.css"/>
-</h:head>
-<h:body>
-    <!-- Navbar -->
-    <div class="navbar">
-        <div>
-            <a href="#" class="password-list">Password List</a>
+    <h:head>
+        <title>Password Manager</title>
+        <h:outputStylesheet name="css/index_style.css"/>
+        <h:outputStylesheet name="css/add_password_style.css"/>
+    </h:head>
+    <h:body>
+        <!-- Navbar -->
+        <div class="navbar">
+            <div>
+                <a href="#" class="password-list">Password List</a>
+            </div>
+             <div>
+                 <a href="logPage.xhtml" class="logout">Log Page</a>
+            </div>
+            <div>
+                <a href="login.xhtml" class="logout">Logout</a>
+            </div>
         </div>
-        <div>
-            <a href="login.xhtml" class="logout">Logout</a>
-        </div>
-    </div>
-    <!-- DataTable Container -->
-    <h:form id="passwordForm" class="table-container">
-        <!-- Add Password Button -->
-        <div class="add-password-button-container">
-            <p:button value="Add Password" outcome="addPassword.xhtml" styleClass="add-password-button" icon="pi pi-plus"/>
-        </div>
-        <!-- Search and Filter Controls -->
-        <div class="table-container">
-            <p:dataTable id="dataTable" var="password" value="#{passwordBean.passwords}" styleClass="custom-datatable" widgetVar="passwordTableVar"
-                         rows="10" paginator="true" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
-                         {PageLinks} {NextpageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         currentPageReportTemplate="{startRecord}--{endRecord} of {totalRecords} records"
-                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
-                <p:column headerText="Title" filterBy="#{password.title}" filterMatchMode="contains">
-                    <h:outputText value="#{password.title}" />
-                </p:column>
-                <p:column headerText="URL" filterBy="#{password.url}" filterMatchMode="contains">
-                    <h:outputText value="#{password.url}"/>
-                </p:column>
-                <p:column headerText="Username" filterBy="#{password.username}" filterMatchMode="contains">
-                    <h:outputText value="#{password.username}"/>
-                </p:column>
-                <p:column headerText="Password">
-                    <h:outputText value="********" rendered="#{!password.showPassword}" />
-                    <h:outputText value="#{password.decryptedPassword}" rendered="#{password.showPassword}" />
-                    <p:commandLink actionListener="#{passwordBean.toggleShowPassword(password)}"
-                                   update="dataTable" title="Şifreyi Göster/Gizle">
-                        <i class="#{password.showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'}" />
-                    </p:commandLink>
-                </p:column>
-                <p:column headerText="Notes" filterBy="#{password.notes}" filterMatchMode="contains" styleClass="notes-cell">
-                    <h:outputText value="#{password.notes}"/>
-                </p:column>
-                <p:column headerText="Actions">
-                    <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="btn-edit"
-                                     actionListener="#{passwordMB.prepareUpdate(password)}"
-                                     update=":editDialogForm" oncomplete="PF('editDialog').show();" />
-                    <p:commandButton value="Delete" icon="pi pi-trash" styleClass="btn-delete"
-                                     actionListener="#{passwordMB.deletePassword(password)}"
-                                     update="dataTable" />
-                </p:column>
-            </p:dataTable>
-        </div>
-    </h:form>
-    <!-- Edit Dialog -->
-    <p:dialog  widgetVar="editDialog" 
-              modal="true" appendTo="@(body)" styleClass="ui-widget-overlay" resizable="false"
-              height="auto" width="auto"  >
-        <h:form id="editDialogForm" styleClass="add-password-form">
-            <div class="container">
-                <div class="add-password-form">
-                    <h2>Edit Password</h2>
+        <!-- DataTable Container -->
+        <h:form id="passwordForm" class="table-container">
+            <!-- Add Password Button -->
+            <div class="add-password-button-container">
+                <p:button value="Add Password" outcome="addPassword.xhtml" styleClass="add-password-button" icon="pi pi-plus"/>
+            </div>
+            <!-- Search and Filter Controls -->
+            <div class="table-container">
+                <p:dataTable id="dataTable" var="password" value="#{passwordBean.passwords}" styleClass="custom-datatable" widgetVar="passwordTableVar"
+                             rows="10" paginator="true" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
+                             {PageLinks} {NextpageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}--{endRecord} of {totalRecords} records"
+                             rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+                    <p:column headerText="Title" filterBy="#{password.title}" filterMatchMode="contains">
+                        <h:outputText value="#{password.title}" />
+                    </p:column>
+                    <p:column headerText="URL" filterBy="#{password.url}" filterMatchMode="contains">
+                        <h:outputText value="#{password.url}"/>
+                    </p:column>
+                    <p:column headerText="Username" filterBy="#{password.username}" filterMatchMode="contains">
+                        <h:outputText value="#{password.username}"/>
+                    </p:column>
+                    <p:column headerText="Password">
+                        <h:outputText value="********" styleClass="password-hidden" rendered="#{!password.showPassword}" />
+                        <h:outputText value="#{password.decryptedPassword}" styleClass="password-visible" rendered="#{password.showPassword}" />
+                        <p:commandLink title="Verify to Show/Hide Password" 
+                                       actionListener="#{passwordBean.prepareForVerification(password)}"
+                                       oncomplete="PF('loginDialog').show();" update=":loginDialogForm">
+                            <i class="#{password.showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'}" />
+                        </p:commandLink>
 
-                    <div class="form-field-group">
-                        <div class="form-field">
-                            <label for="title">Title:</label>
-                            <h:inputText id="title" value="#{passwordMB.selectedPassword.title}" required="true" requiredMessage="Title is required." />
-                            <h:message for="title" style="color: red" />
+                    </p:column>
 
-                        </div>
-                        <div class="form-field">
-                            <label for="url">URL:</label>
-                            <h:inputText id="url" value="#{passwordMB.selectedPassword.url}" />
-                        </div>
-                    </div>
 
-                    <div class="form-field-group">
-                        <div class="form-field">
-                            <label for="username">Username:</label>
-                            <h:inputText id="username" value="#{passwordMB.selectedPassword.username}" required="true" />
-                            <h:message for="username" style="color: red" />
-                        </div>
-                        <div class="form-field">
-                            <label for="password">Password:</label>
-                            <h:inputSecret id="password" value="#{passwordMB.selectedPassword.password}" required="true" />
-                            <h:message for="password" style="color: red" />
-                        </div>
-                    </div>
 
-                    <div class="form-field notes">
-                        <label for="notes">Notes:</label>
-                        <h:inputTextarea id="notes" value="#{passwordMB.selectedPassword.notes}" styleClass="auto-expand" />
-                    </div>
-
-                    <div class="form-field">
-                         <p:commandButton value="Save" actionListener="#{passwordMB.updatePassword}" 
-                             update=":passwordForm:dataTable" oncomplete="PF('editDialog').hide();" 
-                             styleClass="save-button" />
-
-                    </div>
-
-                   
-                </div>
+                    <p:column headerText="Notes" filterBy="#{password.notes}" filterMatchMode="contains" styleClass="notes-cell">
+                        <h:outputText value="#{password.notes}"/>
+                    </p:column>
+                    <p:column headerText="Actions">
+                        <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="btn-edit"
+                                         actionListener="#{passwordMB.prepareUpdate(password)}"
+                                         update=":editDialogForm" oncomplete="PF('editDialog').show();" />
+                        <p:commandButton value="Delete" icon="pi pi-trash" styleClass="btn-delete"
+                                         actionListener="#{passwordMB.deletePassword(password)}"
+                                         update="dataTable" />
+                    </p:column>
+                </p:dataTable>
             </div>
         </h:form>
-        
-         <div class="form-field" style="position: absolute; top: 20px; left: 20px;">
-            <h:button value="&#8592;" style="font-size: 20px;" outcome="index.xhtml" styleClass="back-button">
-            </h:button>
-        </div>
-    </p:dialog>
+
+        <!-- Login Dialog -->
+        <!-- Login Dialog -->
+        <p:dialog header="Login Verification" widgetVar="loginDialog" modal="true" resizable="false">
+            <h:form id="loginDialogForm" styleClass="add-password-form">
+                <div class="container">
+                    <h:panelGrid columns="3">
+                        <h:outputLabel for="verifyUsername" value="Username:" />
+                        <p:inputText id="verifyUsername" value="#{passwordBean.verifyUsername}" required="true"/>
+                        <p:message for="verifyUsername"/>
+
+                        <h:outputLabel for="verifyPassword" value="Password:" />
+                        <p:password id="verifyPassword" value="#{passwordBean.verifyPassword}" required="true"/>
+                        <p:message for="verifyPassword"/>
+
+                        <p:commandButton value="Verify" styleClass="save-button" 
+                                         actionListener="#{passwordBean.verifyAndToggleShowPassword}"
+                                         update=":passwordForm:dataTable" oncomplete="PF('loginDialog').hide();"/>
+                    </h:panelGrid>
+
+                </div>
+                <!-- geri git tuşu -->
+
+                <h:button value="&#8592;" style="font-size: 20px;" outcome="index.xhtml" styleClass="back-button"/>
 
 
+            </h:form>
+        </p:dialog>
+        <!-- Edit Dialog -->
+        <p:dialog  widgetVar="editDialog" 
+                   modal="true" appendTo="@(body)" styleClass="ui-widget-overlay" resizable="false"
+                   height="auto" width="auto"  >
+            <h:form id="editDialogForm" styleClass="add-password-form">
+                <div class="container">
+                    <div class="add-password-form">
+                        <h2>Edit Password</h2>
+
+                        <div class="form-field-group">
+                            <div class="form-field">
+                                <label for="title">Title:</label>
+                                <h:inputText id="title" value="#{passwordMB.selectedPassword.title}" required="true" requiredMessage="Title is required." />
+                                <h:message for="title" style="color: red" />
+
+                            </div>
+                            <div class="form-field">
+                                <label for="url">URL:</label>
+                                <h:inputText id="url" value="#{passwordMB.selectedPassword.url}" />
+                            </div>
+                        </div>
+
+                        <div class="form-field-group">
+                            <div class="form-field">
+                                <label for="username">Username:</label>
+                                <h:inputText id="username" value="#{passwordMB.selectedPassword.username}" required="true" />
+                                <h:message for="username" style="color: red" />
+                            </div>
+                            <div class="form-field">
+                                <label for="password">Password:</label>
+                                <h:inputSecret id="password" value="#{passwordMB.selectedPassword.password}" required="true" />
+                                <h:message for="password" style="color: red" />
+                            </div>
+                        </div>
+
+                        <div class="form-field notes">
+                            <label for="notes">Notes:</label>
+                            <h:inputTextarea id="notes" value="#{passwordMB.selectedPassword.notes}" styleClass="auto-expand" />
+                        </div>
+                        <div class="form-field">
+                            <p:commandButton value="Save" actionListener="#{passwordMB.updatePassword(passwordMB.selectedPassword)}" 
+                                             update=":passwordForm:dataTable" oncomplete="PF('editDialog').hide();" 
+                                             styleClass="save-button" />
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+            <!-- geri git tuşu -->
+            <div class="form-field" style="position: absolute; top: 20px; left: 20px;">
+                <h:button value="&#8592;" style="font-size: 20px;" outcome="index.xhtml" styleClass="back-button">
+                </h:button>
+            </div>
+        </p:dialog>
 
         <script>
             function editPassword(id) {
-                console.log("Edit function called with ID: ", id);
+                console.log("ID ile çağrılan düzenleme işlevi: ", id);
                 window.location.href = "editPassword.xhtml?id=" + id;
             }
 
             function deletePassword(id) {
                 if (confirm("Bu şifreyi silmek istediğinize emin misiniz?")) {
-                    console.log("Delete function called with ID: ", id);
+                    console.log("ID ile çağrılan silme işlevi: ", id);
                     var element = document.getElementById("passwordRow-" + id);
                     if (element) {
                         element.parentNode.parentNode.removeChild(element.parentNode);
@@ -154,38 +184,59 @@
                     showPassword.textContent = "*********";
                 }
             }
-            
+
             //notes alanına yazdıkça aşağı doğru uzamasını sağlayan fonk.
             function autoExpandField(field) {
-            field.style.height = 'auto';
-            field.style.height = field.scrollHeight + 'px';
+                field.style.height = 'auto';
+                field.style.height = field.scrollHeight + 'px';
             }
 
+            function togglePasswordVisibility(passwordId) {
+                console.log("Parola kimliği için görünürlüğü değiştirme:", passwordId);
+                var passwordElement = document.getElementById('password_' + passwordId);
+                var isPasswordVisible = passwordElement.classList.contains('visible-password');
+                if (isPasswordVisible) {
+                    console.log("Şifre şu anda görünür durumda. GİZLE.");
+                    passwordElement.classList.remove('visible-password');
+                    passwordElement.textContent = '********';
+                } else {
+                    console.log("Şifre şu anda gizli. GÖSTER!.");
+                    passwordElement.classList.add('visible-password');
+                    passwordElement.textContent = passwordElement.dataset.password;
+                    hidePasswordAutomatically(3);
+                }
+            }
+
+            function hidePasswordAutomatically(timeout) {
+                console.log("Otomatik şifre gizleme zamanlaması", timeout, "seconds.");
+                setTimeout(function () {
+                    var passwordFields = document.querySelectorAll('.password-visible');
+                    console.log("Parola gizleme. Etkilenen alan sayısı:", passwordFields.length);
+                    passwordFields.forEach(function (field) {
+                        field.textContent = '********';
+                        field.classList.remove('password-visible');
+                        field.classList.add('password-hidden');
+                    });
+                    var eyeIcons = document.querySelectorAll('.pi-eye');
+                    eyeIcons.forEach(function (icon) {
+                        icon.classList.remove('pi-eye');
+                        icon.classList.add('pi-eye-slash');
+                    });
+                }, timeout * 1000);
+            }
+
+            // Bu fonksiyon her 1 saniyede bir çalışacak ve şifre alanlarının durumunu loglayacak
+            setInterval(checkVisibility, 1000);
+
+
+
+
             document.querySelectorAll('.auto-expand').forEach(field => {
-            field.addEventListener('input', function() { autoExpandField(this); });
-            autoExpandField(field); // Başlangıçta da boyutlandır
+                field.addEventListener('input', function () {
+                    autoExpandField(this);
+                });
+                autoExpandField(field); // Başlangıçta da boyutlandır
             });
-
-            type = "text/javascript" >
-                    // Şifreyi göster/gizle fonksiyonu
-                            function togglePasswordVisibility(entryId) {
-                                var passwordElement = document.getElementById('password_' + entryId);
-                                var isPasswordVisible = passwordElement.classList.contains('visible-password');
-
-                                // Şifre şu anda gösteriliyorsa, gizle
-                                if (isPasswordVisible) {
-                                    passwordElement.classList.remove('visible-password');
-                                    passwordElement.textContent = '********'; // Gizlenmiş şifreyi tekrar göster
-                                } else {
-                                    // Şifreyi göster
-                                    passwordElement.classList.add('visible-password');
-                                    passwordElement.textContent = passwordElement.dataset.password; // Gerçek şifreyi göster
-                                }
-                            }
-
-
-
-
         </script>
     </h:body>
 </html>

@@ -10,7 +10,7 @@
 
 
 
-'use strict';
+/*'use strict';
 
 console.log("JavaScript dosyası yüklendi.");
 
@@ -30,5 +30,5 @@ function togglePasswordVisibility(passwordFieldId, toggleButtonId) {
 }
 
 
-
+*/
 

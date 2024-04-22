@@ -1,11 +1,15 @@
 package com.company.secrest.vault.password;
 
+
+import entity.AuditInfo;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import util.DBConnection;
 
@@ -29,6 +34,11 @@ public class PasswordManager implements Serializable {
         LOGGER.log(Level.INFO, "Parolaların veritabanından başlatılması ve yüklenmesi.");
         loadPasswordsFromDatabase();
     }
+
+    @Inject
+    private UserSession userSession;
+    
+    
 
     public List<Passwords> loadPasswordsFromDatabase() {
         List<Passwords> passwords = new ArrayList<>();
@@ -59,13 +69,27 @@ public class PasswordManager implements Serializable {
             return null;
         }
 
-        String sql = "INSERT INTO passwords (title, url, username, password, notes) VALUES (?, ?, ?, ?, ?)";
+        // Audit bilgilerini oluştur
+        AuditInfo auditInfo = new AuditInfo();
+        auditInfo.setAddUser(userSession.getUsername()); // UserSession'dan kullanıcı adını al
+        auditInfo.setAddDate(new Date()); // Şu anki tarih
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        String formattedDate = dateFormat.format(auditInfo.getAddDate()); // Tarihi "dd.MM.yyyy" formatına dönüştür
+        auditInfo.setAddDate(auditInfo.getAddDate());
+
+        // Password nesnesine AuditInfo'yu set et
+        selectedPassword.setAuditInfo(auditInfo);
+
+        String sql = "INSERT INTO passwords (title, url, username, password, notes, addUser, addDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try ( Connection connection = DBConnection.getConnection();  PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, selectedPassword.getTitle());
             statement.setString(2, selectedPassword.getUrl());
             statement.setString(3, selectedPassword.getUsername());
             statement.setString(4, AESUtil.encrypt(selectedPassword.getPassword()));
             statement.setString(5, selectedPassword.getNotes());
+
+            statement.setString(6, selectedPassword.getAuditInfo().getAddUser());
+            statement.setString(7, formattedDate); // Tarihi string olarak kaydet
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
@@ -98,37 +122,62 @@ public class PasswordManager implements Serializable {
 
     public void updatePassword(Passwords password) {
         LOGGER.log(Level.INFO, "updatePassword methodu çağırıldı.");
-        
-        if(selectedPassword != null){
-            LOGGER.log(Level.INFO, "Şifre {0} güncelleniyor." , selectedPassword.getTitle());
+        if (password == null) {
+            LOGGER.log(Level.WARNING, "Güncelleme için şifre verilmedi.");
+            return;
         }
-        String sql = "UPDATE passwords SET title=?, url=?, username=?, password=?, notes=? WHERE id=?";
+
+        if (selectedPassword != null) {
+            LOGGER.log(Level.INFO, "Şifre {0} güncelleniyor.", selectedPassword.getTitle());
+        }
+
+        AuditInfo auditInfo = password.getAuditInfo();
+        if (auditInfo == null) {
+            auditInfo = new AuditInfo();
+            password.setAuditInfo(auditInfo);
+            LOGGER.log(Level.INFO, "Mevcut denetim bilgisi bulunamadı. Yeni AuditInfo oluşturuldu.");
+        }
+
+        // Kullanıcı adı ve tarih bilgilerini güncelle
+        auditInfo.setUpdUser(userSession.getUsername());
+        auditInfo.setUpdDate(new Date());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        String formattedDate = dateFormat.format(auditInfo.getUpdDate()); // Tarihi "dd.MM.yyyy" formatına dönüştür
+        auditInfo.setUpdDate(auditInfo.getUpdDate());
+        LOGGER.log(Level.INFO, "Güncelleme kullanıcısı {0} olarak ayarlandı ve güncelleme tarihi {1}", new Object[]{auditInfo.getUpdUser(), formattedDate});
+
+        String sql = "UPDATE passwords SET title=?, url=?, username=?, password=?, notes=?, updUser=?, updDate=? WHERE id=?";
+
         try ( Connection connection = DBConnection.getConnection();  PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, password.getTitle());
             statement.setString(2, password.getUrl());
             statement.setString(3, password.getUsername());
             statement.setString(4, AESUtil.encrypt(password.getPassword()));
             statement.setString(5, password.getNotes());
-            statement.setLong(6, password.getId());
+            statement.setString(6, auditInfo.getUpdUser());
+            statement.setString(7, formattedDate); // Tarihi string olarak kaydet
+            statement.setLong(8, password.getId());
+
             int rowsUpdated = statement.executeUpdate();
-            
-            
+            LOGGER.log(Level.INFO, "Parola güncellenmeye çalışıldı, SQL güncelleme sayısı: {0}", rowsUpdated);
+
             if (rowsUpdated > 0) {
                 LOGGER.log(Level.INFO, "Parola veritabanında başarıyla güncellendi.");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Password successfully updated."));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "BAŞARILI!", "Password BAŞARIYLA GÜNCELLENDİ."));
                 loadPasswordsFromDatabase(); // DataTable' ı güncelle
-            } else{
+            } else {
                 LOGGER.log(Level.WARNING, "veritabanında güncellenen satır yok!");
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Veritabanındaki parola güncellenemedi.", e);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Şifre güncellenemedi: " + e.getMessage()));
-        } 
+        }
     }
-    
-    public void prepareUpdate(Passwords password){
+
+    public void prepareUpdate(Passwords password) {
         this.selectedPassword = password;
-        
+
     }
 
     public void resetForm() {
