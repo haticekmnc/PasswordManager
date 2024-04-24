@@ -66,6 +66,34 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     color: #5C415D; /* Mor'un koyu bir tonu */
 }
 
+/* CSS ile commandButton'ı bağlantı gibi görünmesi için stil verme */
+.logout {
+    background-color: #F2E8F4; /* Çok açık mor-beyaz karışımı */
+    border: none;
+    color: #5C415D; /* Mor'un koyu bir tonu */
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    border-radius: 10px; /* Kenarları yuvarlat */
+    cursor: pointer; /* İmleç pointer olsun */
+    display: inline-block; /* Bağlantı gibi görünsün */
+    margin-left: 20px;
+    margin-right: 20px;
+    transition: background-color 0.3s, color 0.3s; /* Renk geçiş animasyonu */
+}
+
+.logout:hover {
+    background-color: #ddd; /* Navbar üzerine gelindiğinde arka plan rengi */
+    color: black;
+}
+
+/* Butonun içindeki metin yatay olarak ortalanmış olmalı */
+.logout .ui-button-text {
+    display: block;
+    text-align: center;
+}
+
+
 
 
 .navbar input[type="text"] {

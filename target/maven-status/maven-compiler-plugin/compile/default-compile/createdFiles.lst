@@ -1,5 +1,6 @@
 com\company\secrets\vault\security\authentication\service\AuthenticationService.class
 com\company\secrest\vault\password\UserSession.class
+log\ApplicationStartup.class
 com\company\secrest\vault\password\AESUtil.class
 com\company\secrets\vault\security\RegisterMB.class
 com\mycompany\secrets\vault\resources\JavaEE8Resource.class
