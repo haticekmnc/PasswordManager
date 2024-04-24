@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Log Page</title>
+        <!-- PrimeFaces teması ve stil dosyalarını içe aktar -->
+        <h:outputStylesheet library="primefaces" name="themes/bootstrap/theme.css" />
+        <h:outputStylesheet name="css/log_page_style.css"/>
+    </h:head>
+
+    <h:body>
+        <!-- DataTable Container -->
+        <h:form id="logForm" class="table-container">
+            <!-- Search and Filter Controls -->
+            <div class="table-container">
+
+                <!-- DataTable -->
+                <p:dataTable id="dataTable" var="log" value="#{logMB.logEntries}" styleClass="custom-datatable"
+                             widgetVar="logTableVar" rows="10" paginator="true" paginatorPosition="bottom"
+                             currentPageReportTemplate="{startRecord}--{endRecord} of {totalRecords} records"
+                             rowsPerPageTemplate="5,10,{ShowAll|'All'}" emptyMessage="No records found">
+                    <p:column headerText="ID" filterBy="#{log.id}" filterMatchMode="contains">
+                        <h:outputText value="#{log.id}" />
+                    </p:column>
+                    <p:column headerText="Username" filterBy="#{log.username}" filterMatchMode="contains">
+                        <h:outputText value="#{log.username}" />
+                    </p:column>
+                    <p:column headerText="Description" filterBy="#{log.description}" filterMatchMode="contains">
+                        <h:outputText value="#{log.description}" />
+                    </p:column>
+                    <p:column headerText="Timestamp" filterBy="#{log.timestamp}" filterMatchMode="contains">
+                        <h:outputText value="#{log.timestamp}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </h:body>
+
+</html>

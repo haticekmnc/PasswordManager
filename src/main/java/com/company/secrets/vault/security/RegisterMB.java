@@ -9,6 +9,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import log.LogMB;
 
 /**
  *
@@ -20,6 +22,9 @@ public class RegisterMB {
     private String username;
     private String password;
     private String confirmPassword;
+    
+    @Inject
+    private LogMB logMB;
 
     public String getUsername() {
         return username;
@@ -56,6 +61,9 @@ public void setConfirmPassword(String confirmPassword) {
     // Parolalar eşleşiyorsa
     UserDAO userDAO = new UserDAO();
     userDAO.registerUser(username, password);
+     // Başarılı kayıt için log girişi ekle
+        logMB.addLogEntry("system", "New user registered: " + username);
+        
     return "login.xhtml?faces-redirect=true"; // Kayıt başarılı olduğu için giriş sayfasına yönlendir
 }
 

@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import log.LogMB;
 
 @Named
 @SessionScoped
@@ -17,20 +18,20 @@ public class LoginMB implements Serializable {
     private String username;
     private String password;
     private boolean loginError;
-    
-     
-
 
     @Inject
     private AuthenticationService authService;
 
     @Inject
     private UserSession userSession;
+    
+    @Inject LogMB logMB;
 
     // Login method
     public String login() {
         if (authService.authenticate(username, password)) {
             userSession.loginUser(username, password); // Kullanıcı bilgilerini session'a kaydet
+            logMB.addLogEntry(username, "sisteme giriş yaptı."); // Log girişi ekleyin
             return "index.xhtml?faces-redirect=true";
         } else {
             loginError = true;
@@ -42,6 +43,7 @@ public class LoginMB implements Serializable {
 
     // Logout method
     public String logout() {
+        logMB.addLogEntry(userSession.getUsername(), "sistemden çıkış yaptı.");
         userSession.logoutUser(); // Kullanıcı oturumunu sonlandır
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession(); // Oturum verilerini temizle
         username = null; // Username alanını temizle

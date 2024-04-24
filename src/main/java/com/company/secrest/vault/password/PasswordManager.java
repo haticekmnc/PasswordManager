@@ -1,6 +1,5 @@
 package com.company.secrest.vault.password;
 
-
 import entity.AuditInfo;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -19,6 +18,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import log.LogMB;
 import util.DBConnection;
 
 @Named("passwordMB")
@@ -37,10 +37,12 @@ public class PasswordManager implements Serializable {
 
     @Inject
     private UserSession userSession;
-    
-    
+
+    @Inject
+    private LogMB logMB;
 
     public List<Passwords> loadPasswordsFromDatabase() {
+
         List<Passwords> passwords = new ArrayList<>();
         String sql = "SELECT * FROM passwords";
         try ( Connection connection = DBConnection.getConnection();  PreparedStatement statement = connection.prepareStatement(sql);  ResultSet resultSet = statement.executeQuery()) {
@@ -54,18 +56,22 @@ public class PasswordManager implements Serializable {
                 password.setNotes(resultSet.getString("notes"));
                 passwords.add(password);
             }
-            LOGGER.log(Level.INFO, "Veritabanından {0} parola yüklendi.", passwords.size());
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", passwords.size() + " passwords loaded."));
+            //LOGGER.log(Level.INFO, "Veritabanından {0} parola yüklendi.", passwords.size());
+           // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", passwords.size() + " passwords loaded."));
+            // Parola yükleme işlemi başarılı olduğunda log girişi ekle
+            logMB.addLogEntry(userSession.getUsername(),  " Sisteme veritabanından yüklenen toplam veri sayısı: " +passwords.size() );
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Veritabanından parolalar yüklenemedi.", e);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Database Error", e.getMessage()));
+            // Parola yükleme işlemi sırasında hata oluştuğunda log girişi ekle
+            logMB.addLogEntry(userSession.getUsername(),"Sisteme veritabanından parolalar yüklenirken hata oluştu: " + e.getMessage());
         }
         return passwords;
     }
 
     public String savePassword() {
         if (selectedPassword == null || selectedPassword.getTitle().trim().isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Title cannot be empty."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Başlık boş olamaz."));
             return null;
         }
 
@@ -93,14 +99,19 @@ public class PasswordManager implements Serializable {
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
+
                 LOGGER.log(Level.INFO, "Şifre veritabanına başarıyla kaydedildi.");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Password saved successfully."));
+                // Yeni şifre kaydedildiğinde log girişi ekleyin
+                logMB.addLogEntry(userSession.getUsername(), "yeni şifre eklendi: " + selectedPassword.getTitle());
                 loadPasswordsFromDatabase();
                 return "index?faces-redirect=true";
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Parola veritabanına kaydedilemedi.", e);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+            // Hata durumunda log girişi ekleyin
+            logMB.addLogEntry("Sisteme", "şifre kaydedilirken hata oluştu: " + e.getMessage());
         }
         return null;
     }
@@ -113,10 +124,14 @@ public class PasswordManager implements Serializable {
             if (rowsDeleted > 0) {
                 LOGGER.log(Level.INFO, "Parola veritabanından başarıyla silindi.");
                 loadPasswordsFromDatabase();
+
+                // Silinen şifre için log girişi ekle
+                logMB.addLogEntry(userSession.getUsername(), "Şifre silindi: " + password.getTitle());
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Veritabanından parola silinemedi.", e);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+            logMB.addLogEntry("Sistemden", "şifre silinemedi: " + e.getMessage());
         }
     }
 
@@ -166,12 +181,16 @@ public class PasswordManager implements Serializable {
                 LOGGER.log(Level.INFO, "Parola veritabanında başarıyla güncellendi.");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "BAŞARILI!", "Password BAŞARIYLA GÜNCELLENDİ."));
                 loadPasswordsFromDatabase(); // DataTable' ı güncelle
+
+                // Güncellenen şifre için log girişi ekle
+                logMB.addLogEntry(userSession.getUsername(), "Şifre güncellendi: " + password.getTitle());
             } else {
                 LOGGER.log(Level.WARNING, "veritabanında güncellenen satır yok!");
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Veritabanındaki parola güncellenemedi.", e);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Şifre güncellenemedi: " + e.getMessage()));
+            logMB.addLogEntry("Sistemden", "şifre güncellenemedi: " + e.getMessage());
         }
     }
 

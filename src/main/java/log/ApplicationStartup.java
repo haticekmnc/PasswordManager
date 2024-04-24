@@ -20,7 +20,7 @@ public class ApplicationStartup {
         LOGGER.fine("Logging is configured.");
     }
 
-   public static void setupLogging() {
+    public static void setupLogging() {
         StreamHandler sh = new StreamHandler(System.out, new SimpleFormatter());
         sh.setLevel(Level.FINE);
 

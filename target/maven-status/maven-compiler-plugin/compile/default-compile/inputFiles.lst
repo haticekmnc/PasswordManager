@@ -4,8 +4,12 @@ C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\c
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrest\vault\password\PasswordBean.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\RegisterMB.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\log\ApplicationStartup.java
+C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\log\LogMB.java
+C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\log\Logs.java
+C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\log\LogBean.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\util\DBConnection.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrest\vault\password\Passwords.java
+C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\dao\LogDAO.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\entity\AuditInfo.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\authentication\LoginMB.java
 C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\authentication\service\TimerService.java
