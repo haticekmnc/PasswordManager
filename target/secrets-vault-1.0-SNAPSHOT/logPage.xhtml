@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      >
 
     <h:head>
         <title>Log Page</title>
@@ -22,9 +22,9 @@
                              widgetVar="logTableVar" rows="10" paginator="true" paginatorPosition="bottom"
                              currentPageReportTemplate="{startRecord}--{endRecord} of {totalRecords} records"
                              rowsPerPageTemplate="5,10,{ShowAll|'All'}" emptyMessage="No records found">
-                    <p:column headerText="ID" filterBy="#{log.id}" filterMatchMode="contains">
-                        <h:outputText value="#{log.id}" />
-                    </p:column>
+                    <!-- <p:column headerText="ID" filterBy="" filterMatchMode="contains">
+                        <h:outputText value="" />
+                    </p:column> -->
                     <p:column headerText="Username" filterBy="#{log.username}" filterMatchMode="contains">
                         <h:outputText value="#{log.username}" />
                     </p:column>

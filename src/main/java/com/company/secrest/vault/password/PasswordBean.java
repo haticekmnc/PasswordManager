@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.primefaces.PrimeFaces;
 
 @Named("passwordBean")
 @ViewScoped
@@ -38,7 +39,7 @@ public class PasswordBean implements Serializable {
         timerService = new TimerService(); // timer başlatma
         // Test the timer service with a simple scheduled task
     timerService.schedule(() -> {
-        System.out.println("Timer service test: This should appear in logs after 5 seconds.");
+        System.out.println("Zamanlayıcı servis testi: Bu, 5 saniye sonra günlüklerde görünmelidir.");
     }, 5000);
     }
     
@@ -118,24 +119,28 @@ public class PasswordBean implements Serializable {
         }
     }
 
-    public void toggleShowPassword(Passwords password, boolean manuallyTriggered) {
-        System.out.println("toggleShowPassword called. Manually triggered: " + manuallyTriggered + ", Current show password state: " + password.isShowPassword());
-        if (manuallyTriggered || password.isShowPassword()) {
-            password.setShowPassword(!password.isShowPassword());
-            System.out.println("Password show state changed to: " + password.isShowPassword());
-            if (password.isShowPassword()) {
-                System.out.println("Scheduling password hide in 3 seconds.");
-                schedulePasswordHide(password, 3); // 3 saniye sonra şifreyi otomatik olarak gizle
-            }
+   public void toggleShowPassword(Passwords password, boolean manuallyTriggered) {
+    System.out.println("toggleShowPassword çağrıldı. Manuel olarak tetiklenen: " + manuallyTriggered + ", Geçerli parolayı göster durumu: " + password.isShowPassword());
+    if (manuallyTriggered || password.isShowPassword()) {
+        password.setShowPassword(!password.isShowPassword());
+        System.out.println("Parola gösterme durumu şu şekilde değişti: " + password.isShowPassword());
+        if (password.isShowPassword()) {
+            System.out.println("Zamanlama şifresi 3 saniye içinde gizlenir.");
+            schedulePasswordHide(password, 3); // 3 saniye sonra şifreyi otomatik olarak gizle
+            PrimeFaces.current().executeScript("hidePasswordAutomatically(3);"); // JavaScript fonksiyonunu çağırarak parolanın otomatik olarak gizlenmesini sağla
         }
     }
+}
+
+
+
 // schedulePasswordHide metodu süre parametresi alacak şekilde güncelleniyor
 
   private void schedulePasswordHide(final Passwords password, int delaySeconds) {
     timerService.schedule(() -> {
         password.setShowPassword(false);
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("passwordForm:dataTable");
-        System.out.println("Password visibility now hidden for: " + password.getTitle());
+        System.out.println("Şifre görünürlüğü artık şunlar için gizli: " + password.getTitle());
     }, delaySeconds * 1000);
 }
 
@@ -143,20 +148,24 @@ public class PasswordBean implements Serializable {
 
     public void prepareForVerification(Passwords password) {
         this.selectedPassword = password;
-        System.out.println("Preparing for verification: " + password.getTitle());
+        System.out.println("Doğrulama için hazırlanıyor: " + password.getTitle());
     }
 
    public void verifyAndToggleShowPassword() {
-    System.out.println("Verifying user credentials. Username: " + verifyUsername);
+    System.out.println("Kullanıcı kimlik bilgileri doğrulanıyor. Kullanıcı adı: " + verifyUsername);
     if (verifyUsername.equals(userSession.getUsername()) && verifyPassword.equals(userSession.getPassword())) {
-        System.out.println("Verification successful.");
-        toggleShowPassword(selectedPassword, true); // Şifre göster ve otomatik gizleme için timer başlat
+        System.out.println("Doğrulama başarılı.");
+        // Seçili şifreyi göstermek ve otomatik olarak gizlemek için toggleShowPassword metodunu çağırın
+        toggleShowPassword(selectedPassword, true);
+        // Şifrenin otomatik olarak gizlenmesi için zamanlayıcıyı başlatın
+        schedulePasswordHide(selectedPassword, 3);
     } else {
-        System.out.println("Verification failed. Incorrect username or password.");
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure", "Authentication failed!"));
+        System.out.println("Doğrulama başarısız oldu. Yanlış kullanıcı adı veya şifre.");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "BAŞARISIZ", "Kimlik doğrulama başarısız!"));
     }
 }
-   
+
+
 
 
 }

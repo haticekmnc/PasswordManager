@@ -3,8 +3,6 @@ import com.company.secrest.vault.password.UserSession;
 import com.company.secrets.vault.security.authentication.service.AuthenticationService;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,19 +22,23 @@ public class LoginMB implements Serializable {
 
     @Inject
     private UserSession userSession;
-    
-    @Inject LogMB logMB;
+
+    @Inject
+    private LogMB logMB;
+
+    @Inject
+    private MessageView messageView;
 
     // Login method
     public String login() {
         if (authService.authenticate(username, password)) {
             userSession.loginUser(username, password); // Kullanıcı bilgilerini session'a kaydet
             logMB.addLogEntry(username, "sisteme giriş yaptı."); // Log girişi ekleyin
+            messageView.showSuccess("Başarılı Giriş", "Hoşgeldiniz, " + username + "!");
             return "index.xhtml?faces-redirect=true";
         } else {
             loginError = true;
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Error", "Invalid username or password."));
+            messageView.showFailure("Giriş hatası", "Geçersiz kullanıcı adı ve şifre!");
             return null;
         }
     }
@@ -48,6 +50,7 @@ public class LoginMB implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession(); // Oturum verilerini temizle
         username = null; // Username alanını temizle
         password = null; // Password alanını temizle
+        messageView.showInfo("Başarılı Çıkış", "Başarıyla çıkış yaptınız.");
         return "/login.xhtml?faces-redirect=true"; // Login sayfasına yönlendir
     }
 

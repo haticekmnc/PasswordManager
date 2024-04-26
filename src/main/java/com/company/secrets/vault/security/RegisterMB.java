@@ -54,21 +54,27 @@ public void setConfirmPassword(String confirmPassword) {
     if (!password.equals(confirmPassword)) {
         // Parolalar eşleşmiyorsa
         // Hata mesajı göster
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Passwords do not match!"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Şifreler eşleşmiyor!"));
         return null; // Kayıt başarısız olduğu için null döndür
     }
     
-    // Parolalar eşleşiyorsa
+   // Parolalar eşleşiyorsa kullanıcıyı kaydet
     UserDAO userDAO = new UserDAO();
-    userDAO.registerUser(username, password);
-     // Başarılı kayıt için log girişi ekle
-        logMB.addLogEntry("system", "New user registered: " + username);
-        
-    return "login.xhtml?faces-redirect=true"; // Kayıt başarılı olduğu için giriş sayfasına yönlendir
-}
+    boolean registerSuccess = userDAO.registerUser(username, password);
+
+    if (registerSuccess) {
+        // Başarılı kayıt için log girişi ekle ve başarı mesajı göster
+        logMB.addLogEntry(username, "Yeni kullanıcı kaydı: " + username);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Registration successful!"));
+        return "login.xhtml?faces-redirect=true"; // Kayıt başarılı olduğu için giriş sayfasına yönlendir
+    } else {
+        // Kayıt işlemi başarısız olduysa hata mesajı göster
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Registration failed!"));
+        return null;
+    }
 
    
-}
+    }}
 
     
     

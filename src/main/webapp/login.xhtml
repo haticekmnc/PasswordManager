@@ -44,7 +44,7 @@
                     </div>
                     
                     <!-- Hata mesajlarını göstermek için -->
-                    <h:messages style="color: red;"  />
+                    <p:growl id="meassages" life="3000"/>
                     <div class="form-field">
                         <h:commandButton id="loginButton" value="Login" action="#{loginMB.login}" styleClass="login-button"  onclick="showEffectsDialog();"/>
                     </div>

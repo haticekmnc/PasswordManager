@@ -59,6 +59,7 @@ public class PasswordManager implements Serializable {
             //LOGGER.log(Level.INFO, "Veritabanından {0} parola yüklendi.", passwords.size());
            // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", passwords.size() + " passwords loaded."));
             // Parola yükleme işlemi başarılı olduğunda log girişi ekle
+            
             logMB.addLogEntry(userSession.getUsername(),  " Sisteme veritabanından yüklenen toplam veri sayısı: " +passwords.size() );
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Veritabanından parolalar yüklenemedi.", e);

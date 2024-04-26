@@ -21,9 +21,11 @@ public class TimerService {
         scheduler = Executors.newScheduledThreadPool(1);
     }
 
-    public void schedule(Runnable task, long delay) {
-        scheduler.schedule(task, delay, TimeUnit.SECONDS);
-    }
+   public void schedule(Runnable task, long delay) {
+    scheduler.schedule(task, delay, TimeUnit.SECONDS);
+    System.out.println("Zamanlayıcı tetiklendi.");
+}
+
 
     public void shutdown() {
         if (scheduler != null) {

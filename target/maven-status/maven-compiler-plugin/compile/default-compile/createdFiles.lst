@@ -14,6 +14,7 @@ com\company\secrets\vault\security\authentication\service\TimerService.class
 entity\AuditInfo.class
 com\company\secrest\vault\password\Passwords.class
 com\mycompany\secrets\vault\JAXRSConfiguration.class
+MessageView.class
 LoginMB.class
 com\company\secrest\vault\password\PasswordManager.class
 dao\LogDAO.class
