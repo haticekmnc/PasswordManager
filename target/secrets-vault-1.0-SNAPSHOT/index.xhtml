@@ -35,11 +35,11 @@
                              {PageLinks} {NextpageLink} {LastPageLink} {RowsPerPageDropdown}"
                              currentPageReportTemplate="{startRecord}--{endRecord} of {totalRecords} records"
                              rowsPerPageTemplate="5,10,{ShowAll|'All'}">
-                    <p:column headerText="Title" filterBy="#{password.title}" filterMatchMode="contains">
-                        <h:outputText value="#{password.title}" />
+                    <p:column headerText="System Information" filterBy="#{password.systemInformation}" filterMatchMode="contains">
+                        <h:outputText value="#{password.systemInformation}" />
                     </p:column>
-                    <p:column headerText="URL" filterBy="#{password.url}" filterMatchMode="contains">
-                        <h:outputText value="#{password.url}"/>
+                    <p:column headerText="Access Information" filterBy="#{password.accessInformation}" filterMatchMode="contains">
+                        <h:outputText value="#{password.accessInformation}"/>
                     </p:column>
                     <p:column headerText="Username" filterBy="#{password.username}" filterMatchMode="contains">
                         <h:outputText value="#{password.username}"/>
@@ -52,11 +52,7 @@
                                        oncomplete="PF('loginDialog').show();" update=":loginDialogForm">
                             <i class="#{password.showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'}" />
                         </p:commandLink>
-
                     </p:column>
-
-
-
                     <p:column headerText="Notes" filterBy="#{password.notes}" filterMatchMode="contains" styleClass="notes-cell">
                         <h:outputText value="#{password.notes}"/>
                     </p:column>
@@ -66,15 +62,21 @@
                                          update=":editDialogForm" oncomplete="PF('editDialog').show();" />
                         <p:commandButton value="Delete" icon="pi pi-trash" styleClass="btn-delete"
                                          actionListener="#{passwordMB.deletePassword(password)}"
+                                         onclick="PF('confirmation').show(); return false;"
                                          update="dataTable" />
+                        <p:confirmDialog global="true" widgetVar="confirmation" header="Silme Onayı" message="Bu şifreyi silmek istediğinize emin misiniz?" severity="alert" styleClass="add-password-form">
+                            <p:commandButton value="Evet" styleClass="ui-confirmdialog-yes" style="color:green;" icon="pi pi-check" actionListener="#{passwordMB.deletePassword(password)}" update="dataTable"/>
+                            <p:commandButton value="Hayır" styleClass="ui-confirmdialog-no" style="color:red;" icon="pi pi-times" onclick="PF('confirmation').hide(); return false;"/>
+                        </p:confirmDialog>
                     </p:column>
+
                 </p:dataTable>
             </div>
         </h:form>
 
         <!-- Login Dialog -->
         <!-- Login Dialog -->
-        <p:dialog header="Login Verification" widgetVar="loginDialog" modal="true" resizable="false">
+        <p:dialog header="Login Verification" widgetVar="loginDialog" modal="true" resizable="false" style="color:black;" >
             <h:form id="loginDialogForm" styleClass="add-password-form">
                 <div class="container">
                     <h:panelGrid columns="3">
@@ -85,18 +87,16 @@
                         <h:outputLabel for="verifyPassword" value="Password:" />
                         <p:password id="verifyPassword" value="#{passwordBean.verifyPassword}" required="true"/>
                         <p:message for="verifyPassword"/>
-
+                        <p:growl id="verifyMessage" life="3000"/>
                         <p:commandButton value="Verify" styleClass="save-button" 
                                          actionListener="#{passwordBean.verifyAndToggleShowPassword}"
-                                         update=":passwordForm:dataTable" oncomplete="PF('loginDialog').hide();"/>
+                                         update="verifyMessage"  onclick="showEffectsDialog();" oncomplete="PF('loginDialog').hide();"/>
+
                     </h:panelGrid>
-
                 </div>
+
                 <!-- geri git tuşu -->
-
                 <h:button value="&#8592;" style="font-size: 20px;" outcome="index.xhtml" styleClass="back-button"/>
-
-
             </h:form>
         </p:dialog>
         <!-- Edit Dialog -->
@@ -110,14 +110,14 @@
 
                         <div class="form-field-group">
                             <div class="form-field">
-                                <label for="title">Title:</label>
-                                <h:inputText id="title" value="#{passwordMB.selectedPassword.title}" required="true" requiredMessage="Title is required." />
+                                <label for="title">Sistem Bilgileri:</label>
+                                <h:inputText id="title" value="#{passwordMB.selectedPassword.systemInformation}" required="true" requiredMessage="System Information is required." />
                                 <h:message for="title" style="color: red" />
 
                             </div>
                             <div class="form-field">
-                                <label for="url">URL:</label>
-                                <h:inputText id="url" value="#{passwordMB.selectedPassword.url}" />
+                                <label for="url">Erişim Bilgileri:</label>
+                                <h:inputText id="url" value="#{passwordMB.selectedPassword.accessInformation}" />
                             </div>
                         </div>
 
@@ -151,7 +151,16 @@
                 <h:button value="&#8592;" style="font-size: 20px;" outcome="index.xhtml" styleClass="back-button">
                 </h:button>
             </div>
+
         </p:dialog>
+        <h:form>
+            <p:confirmDialog widgetVar="sessionTimeoutDialog" header="Oturum Zaman Aşımı Uyarısı"
+                             message="Oturumunuz 1 dakika içinde sona erecek. Oturumu yenilemek ister misiniz?" severity="warn">
+                <p:commandButton value="Evet" oncomplete="resetTimer()" />
+                <p:commandButton value="Hayır" onclick="PF('sessionTimeoutDialog').hide(); window.location.href = 'logout.xhtml';" />
+            </p:confirmDialog>
+        </h:form>
+
 
         <!-- Logout için form (Gizli bir form olarak yerleştirilebilir) -->
         <h:form id="logoutForm" style="display:none">
@@ -159,48 +168,12 @@
         </h:form>
 
         <script>
-            function editPassword(id) {
-                console.log("ID ile çağrılan düzenleme işlevi: ", id);
-                window.location.href = "editPassword.xhtml?id=" + id;
-            }
-
-            function deletePassword(id) {
-                if (confirm("Bu şifreyi silmek istediğinize emin misiniz?")) {
-                    console.log("ID ile çağrılan silme işlevi: ", id);
-                    var element = document.getElementById("passwordRow-" + id);
-                    if (element) {
-                        element.parentNode.parentNode.removeChild(element.parentNode);
-                    } else {
-                        alert("Şifre bulunamadı! ID: " + id);
-                    }
-                }
-            }
-            function scrollToBottom() {
-                window.scrollTo(0, document.body.scrollHeight);
-            }
-            function showPassword(element) {
-                var hiddenPassword = element.parentElement.querySelector('.hidden-password');
-                var showPassword = element.parentElement.querySelector('.show-password');
-
-                if (hiddenPassword.style.display === "none") {
-                    hiddenPassword.style.display = "inline";
-                    showPassword.textContent = "*********";
-                } else {
-                    hiddenPassword.style.display = "none";
-                    showPassword.textContent = "*********";
-                }
-            }
-
-            //notes alanına yazdıkça aşağı doğru uzamasını sağlayan fonk.
-            function autoExpandField(field) {
-                field.style.height = 'auto';
-                field.style.height = field.scrollHeight + 'px';
-            }
-
+            // Parola gösterme/gizleme ve şifre işlevlerini yöneten fonksiyonlar
             function togglePasswordVisibility(passwordId) {
-                console.log("Parola kimliği için görünürlüğü değiştirme:", passwordId);
                 var passwordElement = document.getElementById('password_' + passwordId);
                 var isPasswordVisible = passwordElement.classList.contains('visible-password');
+                console.log("Parola kimliği için görünürlüğü değiştirme:", passwordId);
+
                 if (isPasswordVisible) {
                     console.log("Şifre şu anda görünür durumda. GİZLE.");
                     passwordElement.classList.remove('visible-password');
@@ -215,37 +188,41 @@
 
             function hidePasswordAutomatically(timeout) {
                 console.log("Otomatik şifre gizleme zamanlaması", timeout, "seconds.");
-                setTimeout(function () {
+                setTimeout(() => {
                     var passwordFields = document.querySelectorAll('.password-visible');
-                    console.log("Parola gizleme. Etkilenen alan sayısı:", passwordFields.length);
-                    passwordFields.forEach(function (field) {
+                    passwordFields.forEach(field => {
                         field.textContent = '********';
                         field.classList.remove('password-visible');
                         field.classList.add('password-hidden');
                     });
-                    var eyeIcons = document.querySelectorAll('.pi-eye');
-                    eyeIcons.forEach(function (icon) {
+                    document.querySelectorAll('.pi-eye').forEach(icon => {
                         icon.classList.remove('pi-eye');
                         icon.classList.add('pi-eye-slash');
                     });
                 }, timeout * 1000);
             }
 
+            // Oturum zaman aşımı uyarıları ve yönlendirmeler
+            var timeoutWarning = 900000; // 15 dakika sonra uyarı
+            var timeoutLogout = 960000;  // 16 dakika sonra logout
 
+            function handleSessionTimeout() {
+                setTimeout(() => {
+                    alert('Oturumunuz 1 dakika içinde sona erecek. Oturumu yenilemek için herhangi bir sayfayı yenileyin.');
+                }, timeoutWarning);
 
-            var timeout;
-
-            // Kullanıcı etkinliğini izleyerek zamanlayıcıyı sıfırlayan fonksiyon
-            function resetTimer() {
-                clearTimeout(timeout);
-                timeout = setTimeout(function () {
-                    window.location.href = "login.xhtml"; // Otomatik yönlendirme
-                }, 60000); // 1 dakika = 60.000 milisaniye
-                console.log("Zamanlayıcı sıfırlandı.");
+                setTimeout(() => {
+                    window.location.href = "login.xhtml"; // Oturum sonlandırma ve logout sayfasına yönlendirme
+                }, timeoutLogout);
             }
 
+            // Kullanıcı etkinliğini izleyerek oturum zamanlayıcılarını sıfırlama
+            function resetTimer() {
+                clearTimeout(timeoutWarning);
+                clearTimeout(timeoutLogout);
+                handleSessionTimeout(); // Zamanlayıcıları yeniden başlat
+            }
 
-            // Kullanıcı etkinliklerini izleyecek event listener'lar
             window.onload = resetTimer;
             document.onmousemove = resetTimer;
             document.onmousedown = resetTimer;
@@ -254,16 +231,34 @@
             document.onkeypress = resetTimer;
             window.addEventListener('scroll', resetTimer, true);
 
+            // Oturum zaman aşımı logunu server'a gönderme
+            function logSessionTimeout() {
+                fetch('LogSessionTimeout', {
+                    method: 'POST'
+                })
+                        .then(response => {
+                            if (response.ok) {
+                                console.log("Session timeout logged successfully");
+                            }
+                        })
+                        .catch(error => console.error('Error logging session timeout:', error));
+            }
+            
+            window.onload = function() {
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+};
 
 
-
-
+            // Auto-expand textareas as they are typed in
             document.querySelectorAll('.auto-expand').forEach(field => {
                 field.addEventListener('input', function () {
-                    autoExpandField(this);
+                    this.style.height = 'auto';
+                    this.style.height = this.scrollHeight + 'px';
                 });
                 autoExpandField(field); // Başlangıçta da boyutlandır
             });
         </script>
+
     </h:body>
 </html>

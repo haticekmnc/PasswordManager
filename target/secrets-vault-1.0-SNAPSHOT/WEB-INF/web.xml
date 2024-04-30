@@ -23,7 +23,7 @@
     
     <session-config>
         <session-timeout>
-           1
+           25
         </session-timeout>
     </session-config>
     <welcome-file-list>

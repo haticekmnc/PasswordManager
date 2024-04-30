@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import log.LogMB;
 import org.primefaces.PrimeFaces;
 
 @Named("passwordBean")
@@ -26,12 +27,16 @@ public class PasswordBean implements Serializable {
     private String verifyPassword;
 
     private TimerService timerService; // zamanlayıcı için
+     
 
     @Inject
     private PasswordManager passwordManager;
 
     @Inject
     private UserSession userSession; // Kullanıcı oturum bilgileri için
+    
+    @Inject
+    private LogMB logMB;
 
     @PostConstruct
     public void init() {
@@ -111,8 +116,8 @@ public class PasswordBean implements Serializable {
             this.passwords = passwordManager.loadPasswordsFromDatabase();
         } else {
             this.passwords = passwordManager.loadPasswordsFromDatabase().stream()
-                    .filter(p -> p.getTitle().contains(filterText)
-                    || p.getUrl().contains(filterText)
+                    .filter(p -> p.getSystemInformation().contains(filterText)
+                    || p.getAccessInformation().contains(filterText)
                     || p.getUsername().contains(filterText)
                     || p.getNotes().contains(filterText))
                     .collect(Collectors.toList());
@@ -135,12 +140,13 @@ public class PasswordBean implements Serializable {
 
 
 // schedulePasswordHide metodu süre parametresi alacak şekilde güncelleniyor
+   // schedulePassword func ile belli bi süre sonra şifre gizlenir
 
   private void schedulePasswordHide(final Passwords password, int delaySeconds) {
     timerService.schedule(() -> {
         password.setShowPassword(false);
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("passwordForm:dataTable");
-        System.out.println("Şifre görünürlüğü artık şunlar için gizli: " + password.getTitle());
+        System.out.println("Şifre görünürlüğü artık şunlar için gizli: " + password.getSystemInformation());
     }, delaySeconds * 1000);
 }
 
@@ -148,13 +154,16 @@ public class PasswordBean implements Serializable {
 
     public void prepareForVerification(Passwords password) {
         this.selectedPassword = password;
-        System.out.println("Doğrulama için hazırlanıyor: " + password.getTitle());
+        System.out.println("Doğrulama için hazırlanıyor: " + password.getSystemInformation());
     }
 
    public void verifyAndToggleShowPassword() {
     System.out.println("Kullanıcı kimlik bilgileri doğrulanıyor. Kullanıcı adı: " + verifyUsername);
     if (verifyUsername.equals(userSession.getUsername()) && verifyPassword.equals(userSession.getPassword())) {
         System.out.println("Doğrulama başarılı.");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Şifre başarıyla açıldı"));
+                // Yeni şifre kaydedildiğinde log girişi ekleyin
+                logMB.addLogEntry(userSession.getUsername(), "Şifreyi başarıyla açtı!");
         // Seçili şifreyi göstermek ve otomatik olarak gizlemek için toggleShowPassword metodunu çağırın
         toggleShowPassword(selectedPassword, true);
         // Şifrenin otomatik olarak gizlenmesi için zamanlayıcıyı başlatın
@@ -162,6 +171,8 @@ public class PasswordBean implements Serializable {
     } else {
         System.out.println("Doğrulama başarısız oldu. Yanlış kullanıcı adı veya şifre.");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "BAŞARISIZ", "Kimlik doğrulama başarısız!"));
+        logMB.addLogEntry(userSession.getUsername(), "şifreyi açamadı!"+ " "+"Yanlış kullanıcı adı veya şifre!" );
+        
     }
 }
 

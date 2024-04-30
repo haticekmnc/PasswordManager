@@ -94,6 +94,18 @@ body {
     margin: 300px auto;
 }
 
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 10; /* Bu z-index'i yüksek bir değer yaparak, tıklanabilirliğini artırabilirsiniz. */
+    width: 30px; /* Bu, ikonun etrafına tıklanabilir alan ekler. */
+    height: 30px; /* Bu, ikonun etrafına tıklanabilir alan ekler. */
+}
+
+
 
 
 

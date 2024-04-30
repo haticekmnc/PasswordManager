@@ -2,25 +2,17 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Password Manager</title>
         <h:outputStylesheet name="css/login_style.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-***************************" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" /> 
         <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-        
-        <script>
-    window.onload = function() {
-        document.getElementById('loginForm').reset(); // loginForm, formunuzun ID'si olmalıdır.
-    }
-</script>
+        <h:outputScript name="js/togglePassword.js"  target="head"/>
 
     </h:head>
-
     <h:body>
         <div class="container">
             <div class="login-image"></div>
@@ -28,35 +20,30 @@
                 <h:form id="loginForm">
                     <h2>Login to Your Account</h2>
                     <div class="form-field">
-                        <h:inputText id="username" value="#{loginMB.username}" required="true" requiredMessage="Username is required!">
+                        <h:inputText id="username" value="#{loginMB.username}" required="true" requiredMessage="Username is required!"  >
                             <f:passThroughAttribute name="placeholder" value="Username"/>
                         </h:inputText>
                     </div>
                     <div class="form-field">
                         <div class="password-container">
-                            <h:inputSecret id="password" value="#{loginMB.password}" required="true" requiredMessage="Password is required!" styleClass="password-input" redisplay="true">
+                            <h:inputSecret id="password" value="#{loginMB.password}" required="true" requiredMessage="Password is required!" styleClass="password-input" redisplay="true" >
                                 <f:passThroughAttribute name="placeholder" value="Password" />
                             </h:inputSecret>
-                            <span class="password-toggle" onclick="togglePasswordVisibility()">
+                            <span class="password-toggle" onclick="togglePasswordVisibilityLogin()">
                                 <i id="eye-icon" class="fas fa-eye-slash" style="color: purple; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
                             </span>
                         </div>
                     </div>
-                    
-                    <!-- Hata mesajlarını göstermek için -->
                     <p:growl id="meassages" life="3000"/>
                     <div class="form-field">
                         <h:commandButton id="loginButton" value="Login" action="#{loginMB.login}" styleClass="login-button"  onclick="showEffectsDialog();"/>
                     </div>
                 </h:form>
                 <div>
-                    <h:outputText  styleClass="register-link"/>
+                    <h:outputText styleClass="register-link"/>
                     <h:link outcome="register.xhtml" styleClass="register-link">Create a new account</h:link>
                 </div>
             </div>
         </div>
-
-        
-
     </h:body>
 </html>

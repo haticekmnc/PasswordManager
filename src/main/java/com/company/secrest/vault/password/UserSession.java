@@ -4,6 +4,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.logging.Logger;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 
 @Named
@@ -12,6 +14,8 @@ public class UserSession implements Serializable {
     private static final Logger LOGGER = Logger.getLogger(UserSession.class.getName());
     private String username;
     private String password;
+    
+    
 
     public String getUsername() {
         return username;
@@ -38,13 +42,13 @@ public class UserSession implements Serializable {
 
     public void logoutUser() {
     try {
-        if (username != null || password != null) {
-            LOGGER.info("Kullanıcı çıkış yaptı: " + username);  // Seviyeyi INFO yapın
-            this.username = null;
-            this.password = null;
-        } else {
-            LOGGER.info("Çıkış yapacak kullanıcı yok.");
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        if (session != null) {
+            session.invalidate(); // JSF oturumunu sonlandır
+            LOGGER.info("Kullanıcı çıkış yaptı: " + username);
         }
+        this.username = null;
+        this.password = null;
     } catch (Exception e) {
         LOGGER.severe("Çıkış sırasında hata: " + e.getMessage());
     }

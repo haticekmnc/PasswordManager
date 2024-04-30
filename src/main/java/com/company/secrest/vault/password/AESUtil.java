@@ -8,7 +8,6 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.xml.bind.DatatypeConverter;
-import java.security.Key;
 import java.util.Base64;
 
 /**

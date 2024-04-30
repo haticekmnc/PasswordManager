@@ -5,19 +5,21 @@ import entity.AuditInfo;
 public class Passwords {
 
     private Long id;
-    private String title;
-    private String url;
+    private String systemInformation;
+    private String accessInformation;
     private String username;
     private String password; // Bu alan, kullanıcı tarafından girilen ham şifreyi temsil ediyor olmalı
     private String confirmPassword; // Bu alanın kullanımı genellikle UI tarafında şifre tekrarını doğrulamak içindir ve veritabanına kaydedilmemeli
     private String notes;
     private boolean showPassword; // UI'da şifrenin gösterilip gösterilmeyeceğini kontrol eder
-    
+    private String email;
     private AuditInfo auditInfo;
     
-    public Passwords(String title, String url, String username, String password, String notes) {
-        this.title = title;
-        this.url = url;
+    
+    
+    public Passwords(String systemInformation, String accessInformation, String username, String password, String notes) {
+        this.systemInformation = systemInformation;
+        this.accessInformation = accessInformation;
         this.username = username;
         this.password = password; // Kullanıcı tarafından girilen ham şifre
         this.notes = notes;
@@ -34,20 +36,20 @@ public class Passwords {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getSystemInformation() {
+        return systemInformation;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSystemInformation(String systemInformation) {
+        this.systemInformation = systemInformation;
     }
 
-    public String getUrl() {
-        return url;
+    public String getAccessInformation() {
+        return accessInformation;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setAccessInformation(String accessInformation) {
+        this.accessInformation = accessInformation;
     }
 
     public String getUsername() {
@@ -97,6 +99,15 @@ public class Passwords {
     public void setAuditInfo(AuditInfo auditInfo) {
         this.auditInfo = auditInfo;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
     
     
     

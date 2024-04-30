@@ -8,20 +8,18 @@
         <title>Register - Password Manager</title>
         <h:outputStylesheet name="css/login_style.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-       <!-- <h:outputScript  name="resources/js/myscript.js"/> -->
-       <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-***************************" crossorigin="anonymous" />
-       <script src="js\passwordToggle.js"></script>
-       
+        <!-- <h:outputScript  name="resources/js/myscript.js"/> -->
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-***************************" crossorigin="anonymous" />
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+        <h:outputScript name="js/togglePassword.js" target="head"/>   
 
-      
-       <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     </h:head>
     <h:body>
         <div class="container">
             <div class="login-image"></div>
             <div class="login-form">
-                <h:form>
+                <h:form id="registerForm">
                     <h2>Register an Account</h2>
                     <div class="form-field">
                         <h:inputText id="username" value="#{registerMB.username}" required="true" requiredMessage="Username is required!">
@@ -29,44 +27,49 @@
                         </h:inputText>
                     </div>
                     <div class="form-field">
+                        <h:inputText id="email" value="#{registerMB.email}" required="true" requiredMessage="Email is required!">
+                            <f:passThroughAttribute name="placeholder" value="Email"/>
+                        </h:inputText>
+                    </div>
+                    <div class="form-field">
                         <div class="password-container">
-                        <h:inputSecret id="password" value="#{registerMB.password}" required="true" requiredMessage="Password is required!" styleClass="password-input">
-                            <f:passThroughAttribute name="placeholder" value="Password" />
-                        </h:inputSecret>
-                        <span class="password-toggle">
-                                <i id="eye-icon" class="fas fa-eye-slash" style="color: purple; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
+                            <h:inputSecret id="password" value="#{registerMB.password}" required="true" requiredMessage="Password is required!" styleClass="password-input">
+                                <f:passThroughAttribute name="placeholder" value="Password" />
+                            </h:inputSecret>
+                            <span class="password-toggle">
+                                <i id="eye-icon" class="fas fa-eye-slash" style="color: purple; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibilityRegister()"></i>
                             </span>
                         </div>
                     </div>
                     <div class="form-field">
                         <div class="password-container">
-                        <h:inputSecret id="confirmPassword" value="#{registerMB.confirmPassword}" required="true" requiredMessage="Please confirm your password!" styleClass="password-input">
-                            <f:passThroughAttribute name="placeholder" value="Confirm Password" />
-                        </h:inputSecret>
+                            <h:inputSecret id="confirmPassword" value="#{registerMB.confirmPassword}" required="true" requiredMessage="Please confirm your password!" styleClass="password-input">
+                                <f:passThroughAttribute name="placeholder" value="Confirm Password" />
+                            </h:inputSecret>
                             <span class="password-toggle">
-                                <i id="eye-icon" class="fas fa-eye-slash" style="color: purple; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
+                                <i id="eye-icon" class="fas fa-eye-slash" style="color: purple; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibilityRegister()"></i>
                             </span>
-                    </div>
+                        </div>
                     </div>
                     <!-- Hata mesajlarını göstermek için -->
-                     <p:growl id="messages" life="3000"/>
-                    
+                    <p:growl id="messages" life="3000"/>
+
                     <div class="form-field">
                         <h:commandButton value="Register" action="#{registerMB.register}" styleClass="login-button"/>
                     </div>
-                    
+
 
                 </h:form>
             </div>
             <div class="form-field" style="position: absolute; top: 20px; left: 20px;">
-        <h:button value="&#8592;" style= "font-size: 20px;" outcome="login.xhtml" styleClass="back-button">
-           
-        </h:button>
-    </div>
-            
+                <h:button value="&#8592;" style= "font-size: 20px;" outcome="login.xhtml" styleClass="back-button">
+
+                </h:button>
+            </div>
+
         </div>
-        
-       
-        
+
+
+
     </h:body>
 </html>
