@@ -22,6 +22,9 @@
                 <a href="logPage.xhtml?faces-redirect=true" class="logout">Log Page</a>
 
             </div> 
+            <div>
+                <a href="register.xhtml?faces-redirect=true" class="logout" >Add Record</a>
+            </div>
             <h:form>
                 <div>
                     <h:commandButton value="Logout" action="#{loginMB.logout}" class="logout" />
@@ -96,7 +99,7 @@
           <!-- Log Dialog -->
          <!-- Log Dialog -->
 <p:dialog header="Log Details" widgetVar="logDialog" modal="true" resizable="false" 
-          height="400" width="850" dynamic="true"> <!-- Dialog boyutları sabitlendi -->
+          height="400" width="850" dynamic="true" styleClass="add-password-form" > <!-- Dialog boyutları sabitlendi -->
 
     <!-- Geri Git Tuşu -->
     <div class="form-field back-button-container">

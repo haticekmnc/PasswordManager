@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import util.DBConnection;
@@ -22,7 +23,9 @@ public class LogBean implements Serializable {
         statement = connection.prepareStatement(sql);
         statement.setString(1, log.getUsername());
         statement.setString(2, log.getDescription());
-        statement.setString(3, log.getTimestamp());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+statement.setString(3, dateFormat.format(log.getTimestamp()));
+
         if (passwordId == null) {
             statement.setNull(4, java.sql.Types.BIGINT); // Password ID için NULL değerini ayarlayın
         } else {
@@ -44,6 +47,7 @@ public class LogBean implements Serializable {
         }
     }
 }
+
 
 
 

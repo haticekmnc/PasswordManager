@@ -4,6 +4,8 @@
  */
 package log;
 
+import java.util.Date;
+
 /**
  *
  * @author hatice.kemence
@@ -13,7 +15,7 @@ public class Logs {
     private Long id;
     private String username;
     private String description;
-    private String timestamp;
+    private Date timestamp;
     private Long passwordId;
 
     public static void info(String message) {
@@ -49,11 +51,11 @@ public class Logs {
         this.description = description;
     }
 
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -64,7 +66,4 @@ public class Logs {
     public void setPasswordId(Long passwordId) {
         this.passwordId = passwordId;
     }
-    
-    
-
 }

@@ -60,7 +60,7 @@ public class PasswordManager implements Serializable {
 
             // Parola yükleme işlemi başarılı olduğunda log girişi ekle
             // Veri yükleme işlemi...
-            logMB.addLogEntry(userSession.getUsername(), "Veritabanından şifreler yüklendi.", null);
+            //logMB.addLogEntry(userSession.getUsername(), "Veritabanından şifreler yüklendi.", null);
          
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Veritabanından parolalar yüklenemedi.", e);

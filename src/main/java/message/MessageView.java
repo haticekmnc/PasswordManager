@@ -1,11 +1,13 @@
+package message;
+
 import java.io.Serializable;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 @Named("messageView")
-@ViewScoped
+@SessionScoped
 
 public class MessageView implements Serializable {
 

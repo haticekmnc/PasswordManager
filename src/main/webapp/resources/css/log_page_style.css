@@ -72,3 +72,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     background-color: white;
     z-index: 9999;
 }
+
+.calendar-style {
+    margin-left: 5px;
+    width: auto; /* Or set a specific width */
+}
+
+.filter-button {
+    margin-left: 10px;
+}
+

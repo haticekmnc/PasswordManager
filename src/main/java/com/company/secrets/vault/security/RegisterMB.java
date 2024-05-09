@@ -4,7 +4,7 @@
  */
 package com.company.secrets.vault.security;
 
-
+import com.company.secrest.vault.password.UserSession;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -24,8 +24,16 @@ public class RegisterMB {
     private String password;
     private String confirmPassword;
     
+    
+    @Inject
+    private LoginMB loginMB; // LoginMB sınıfına erişim için
+    
     @Inject
     private LogMB logMB;
+    
+    @Inject
+    private UserSession userSession;
+      
 
     public String getUsername() {
         return username;
@@ -61,32 +69,37 @@ public void setConfirmPassword(String confirmPassword) {
 
 
     
-    public String register() {
-    if (!password.equals(confirmPassword)) {
-        // Parolalar eşleşmiyorsa
-        // Hata mesajı göster
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Şifreler eşleşmiyor!"));
-        return null; // Kayıt başarısız olduğu için null döndür
-    }
-    
-   // Parolalar eşleşiyorsa kullanıcıyı kaydet
-    UserDAO userDAO = new UserDAO();
-    boolean registerSuccess = userDAO.registerUser(username, password, email);
+   public String register() {
+        // Yalnızca admin kullanıcılar kayıt yapabilsin
+        if (!loginMB.getIsAdmin()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Uyarı", "Yalnızca admin kayıt ekleyebilir!"));
+            return null; // Erişim reddedildi
+        }
 
-    if (registerSuccess) {
-        // Başarılı kayıt için log girişi ekle ve başarı mesajı göster
-        //logMB.addLog(username, "Yeni kullanıcı kaydı: " + username,Long.MAX_VALUE);
+        if (!password.equals(confirmPassword)) {
+            // Parolalar eşleşmiyorsa
+            // Hata mesajı göster
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Şifreler eşleşmiyor!"));
+            return null; // Kayıt başarısız olduğu için null döndür
+        }
         
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Kayıt başarılı!"));
-        return "login.xhtml?faces-redirect=true"; // Kayıt başarılı olduğu için giriş sayfasına yönlendir
-    } else {
-        // Kayıt işlemi başarısız olduysa hata mesajı göster
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Kayıt başarısız oldu!"));
-        return null;
-    }
+        // Parolalar eşleşiyorsa kullanıcıyı kaydet
+        UserDAO userDAO = new UserDAO();
+        boolean registerSuccess = userDAO.registerUser(username, password, email);
 
-   
-    }}
+        if (registerSuccess) {
+            // Başarılı kayıt için log girişi ekle ve başarı mesajı göster
+            //logMB.addLog(username, "Yeni kullanıcı kaydı: " + username,Long.MAX_VALUE);
+            logMB.addLogEntry(userSession.getUsername(), "Yeni kullanıcı kaydı ekledi.", Long.MAX_VALUE);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Kayıt başarılı!"));
+            return "index.xhtml?faces-redirect=true"; // Kayıt başarılı olduğu için giriş sayfasına yönlendir
+        } else {
+            // Kayıt işlemi başarısız olduysa hata mesajı göster
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Kayıt başarısız oldu!"));
+            return null;
+        }
+    }
+}
 
     
     

@@ -135,6 +135,7 @@ public void toggleShowPassword(Passwords password, boolean manuallyTriggered) {
             /// Log the message
             String logMessage = String.format("%s şifresini görüntüledi: %s", userSession.getUsername(), password.getSystemInformation());
             logMB.addLogEntry(userSession.getUsername(), logMessage, password.getId());
+            //logMB.addLogEntry(userSession.getUsername(), "şifreyi görüntüledi.", password.getId());
             schedulePasswordHide(password, 3); // 3 saniye sonra şifreyi otomatik olarak gizle
         } else if (isAnyPasswordShowing && password.isShowPassword()) {
             password.setShowPassword(false);

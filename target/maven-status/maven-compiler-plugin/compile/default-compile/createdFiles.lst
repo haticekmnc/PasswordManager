@@ -1,4 +1,5 @@
 com\company\secrets\vault\security\authentication\service\AuthenticationService.class
+com\company\secrets\vault\security\LoginMB.class
 log\LogMB.class
 com\company\secrest\vault\password\UserSession.class
 com\company\secrest\vault\password\AESUtil.class
@@ -9,12 +10,11 @@ com\company\secrets\vault\security\UserDAO.class
 PasswordBean.class
 com\company\secrets\vault\mydatabase\SQLiteConnectionTest.class
 log\LogBean.class
+message\MessageView.class
 com\company\secrets\vault\security\authentication\service\TimerService.class
 entity\AuditInfo.class
 com\company\secrest\vault\password\Passwords.class
 com\mycompany\secrets\vault\JAXRSConfiguration.class
-MessageView.class
-LoginMB.class
 com\company\secrest\vault\password\PasswordManager.class
 dao\LogDAO.class
 log\Logs.class
