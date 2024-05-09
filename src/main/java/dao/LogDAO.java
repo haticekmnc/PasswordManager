@@ -12,7 +12,7 @@ import java.sql.*;
 
 public class LogDAO {
     // Veritabanı bağlantısı için gerekli bilgiler
-    private static final String URL = "jdbc:sqlite:C:\\Users\\hatice.kemence\\Desktop\\mydatabase\\haticeDatabase.db";
+    private static final String URL = "jdbc:sqlite:C:\\Users\\Hatice Kemençe\\Desktop\\mydatabase\\haticeDatabase.db";
    
     public void saveLog(String username, String description) {
         try (Connection connection = DriverManager.getConnection(URL)) {

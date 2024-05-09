@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      >
     <h:head>
         <title>Password Manager</title>
         <h:outputStylesheet name="css/index_style.css"/>
         <h:outputStylesheet name="css/add_password_style.css"/>
+        <!-- <h:outputStylesheet library="primefaces-bootstrap" name="theme.css" /> -->
+        <h:outputStylesheet name="primefaces.css" />
+
+
     </h:head>
     <h:body>
         <!-- Navbar -->
@@ -14,7 +19,8 @@
                 <a href="#" class="password-list">Password List</a>
             </div>
             <div>
-                <a href="logPage.xhtml" class="logout">Log Page</a>
+                <a href="logPage.xhtml?faces-redirect=true" class="logout">Log Page</a>
+
             </div> 
             <h:form>
                 <div>
@@ -26,7 +32,8 @@
         <h:form id="passwordForm" class="table-container">
             <!-- Add Password Button -->
             <div class="add-password-button-container">
-                <p:button value="Add Password" outcome="addPassword.xhtml" styleClass="add-password-button" icon="pi pi-plus"/>
+                <p:button value="Add Password" outcome="addPassword.xhtml?faces-redirect=true" styleClass="add-password-button" icon="pi pi-plus"/>
+
             </div>
             <!-- Search and Filter Controls -->
             <div class="table-container">
@@ -47,12 +54,13 @@
                     <p:column headerText="Password">
                         <h:outputText value="********" styleClass="password-hidden" rendered="#{!password.showPassword}" />
                         <h:outputText value="#{password.decryptedPassword}" styleClass="password-visible" rendered="#{password.showPassword}" />
-                        <p:commandLink title="Verify to Show/Hide Password" 
-                                       actionListener="#{passwordBean.prepareForVerification(password)}"
-                                       oncomplete="PF('loginDialog').show();" update=":loginDialogForm">
-                            <i class="#{password.showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'}" />
+                        <p:commandLink title="Toggle Show/Hide Password" 
+                                       actionListener="#{passwordBean.toggleShowPassword(password, true)}"
+                                       update="dataTable">
+                            <i class="#{password.showPassword ? 'pi pi-eye ' : 'pi pi-eye-slash'}" />
                         </p:commandLink>
                     </p:column>
+
                     <p:column headerText="Notes" filterBy="#{password.notes}" filterMatchMode="contains" styleClass="notes-cell">
                         <h:outputText value="#{password.notes}"/>
                     </p:column>
@@ -61,9 +69,18 @@
                                          actionListener="#{passwordMB.prepareUpdate(password)}"
                                          update=":editDialogForm" oncomplete="PF('editDialog').show();" />
                         <p:commandButton value="Delete" icon="pi pi-trash" styleClass="btn-delete"
-                                         actionListener="#{passwordMB.deletePassword(password)}"
+
                                          onclick="PF('confirmation').show(); return false;"
                                          update="dataTable" />
+                         <p:commandButton value="Log" icon="pi pi-info-circle" styleClass="btn-log"
+                 actionListener="#{logMB.loadLogsForPassword(password.id)}"
+                 update=":logDialogForm" oncomplete="PF('logDialog').show();" />
+
+
+                         
+                         
+                        
+
                         <p:confirmDialog global="true" widgetVar="confirmation" header="Silme Onayı" message="Bu şifreyi silmek istediğinize emin misiniz?" severity="alert" styleClass="add-password-form">
                             <p:commandButton value="Evet" styleClass="ui-confirmdialog-yes" style="color:green;" icon="pi pi-check" actionListener="#{passwordMB.deletePassword(password)}" update="dataTable"/>
                             <p:commandButton value="Hayır" styleClass="ui-confirmdialog-no" style="color:red;" icon="pi pi-times" onclick="PF('confirmation').hide(); return false;"/>
@@ -71,34 +88,38 @@
                     </p:column>
 
                 </p:dataTable>
+
             </div>
         </h:form>
+        
+        
+          <!-- Log Dialog -->
+         <!-- Log Dialog -->
+<p:dialog header="Log Details" widgetVar="logDialog" modal="true" resizable="false" 
+          height="400" width="850" dynamic="true"> <!-- Dialog boyutları sabitlendi -->
 
-        <!-- Login Dialog -->
-        <!-- Login Dialog -->
-        <p:dialog header="Login Verification" widgetVar="loginDialog" modal="true" resizable="false" style="color:black;" >
-            <h:form id="loginDialogForm" styleClass="add-password-form">
-                <div class="container">
-                    <h:panelGrid columns="3">
-                        <h:outputLabel for="verifyUsername" value="Username:" />
-                        <p:inputText id="verifyUsername" value="#{passwordBean.verifyUsername}" required="true"/>
-                        <p:message for="verifyUsername"/>
+    <!-- Geri Git Tuşu -->
+    <div class="form-field back-button-container">
+        <p:button value="&#8592; Back" outcome="index.xhtml" icon="pi pi-arrow-left" />
+    </div>
+    
+    <p:dataTable id="logDialogForm" var="log" value="#{logMB.logEntries}" styleClass="log-table">
+    <p:column headerText="Username">
+        <h:outputText value="#{log.username}" />
+    </p:column>
+    <p:column headerText="Description">
+        <h:outputText value="#{log.description}" />
+    </p:column>
+    <p:column headerText="Timestamp">
+        <h:outputText value="#{log.timestamp}" />
+    </p:column>
+</p:dataTable>
 
-                        <h:outputLabel for="verifyPassword" value="Password:" />
-                        <p:password id="verifyPassword" value="#{passwordBean.verifyPassword}" required="true"/>
-                        <p:message for="verifyPassword"/>
-                        <p:growl id="verifyMessage" life="3000"/>
-                        <p:commandButton value="Verify" styleClass="save-button" 
-                                         actionListener="#{passwordBean.verifyAndToggleShowPassword}"
-                                         update="verifyMessage"  onclick="showEffectsDialog();" oncomplete="PF('loginDialog').hide();"/>
 
-                    </h:panelGrid>
-                </div>
+</p:dialog>
 
-                <!-- geri git tuşu -->
-                <h:button value="&#8592;" style="font-size: 20px;" outcome="index.xhtml" styleClass="back-button"/>
-            </h:form>
-        </p:dialog>
+
+               
         <!-- Edit Dialog -->
         <p:dialog  widgetVar="editDialog" 
                    modal="true" appendTo="@(body)" styleClass="ui-widget-overlay" resizable="false"
@@ -186,9 +207,16 @@
                 }
             }
 
+            // Sayfa değişikliği algılandığında, otomatik olarak gizlenen şifreyi durdur
+            window.addEventListener('beforeunload', function () {
+                clearTimeout(timeoutHidePassword);
+            });
+
+            // Şifrenin otomatik olarak gizlenmesini sağlayan zamanlayıcı
+            var timeoutHidePassword;
             function hidePasswordAutomatically(timeout) {
-                console.log("Otomatik şifre gizleme zamanlaması", timeout, "seconds.");
-                setTimeout(() => {
+                console.log("Otomatik şifre gizleme zamanlaması", timeout, "saniye.");
+                timeoutHidePassword = setTimeout(() => {
                     var passwordFields = document.querySelectorAll('.password-visible');
                     passwordFields.forEach(field => {
                         field.textContent = '********';
@@ -203,17 +231,43 @@
             }
 
             // Oturum zaman aşımı uyarıları ve yönlendirmeler
-            var timeoutWarning = 900000; // 15 dakika sonra uyarı
-            var timeoutLogout = 960000;  // 16 dakika sonra logout
+            var timeoutWarning = 3600000; // 1 saat sonra uyarı
+            var timeoutLogout = 3660000;  // 1 saat 1 dakika sonra logout
 
+            window.onload = function () {
+                resetTimer();
+                // Önceki oturum zaman aşımı logunu engelle
+                clearTimeout(logSessionTimeout);
+                // Önceki oturum zaman aşımı uyarılarını ve oturum sonlandırma işlemlerini durdur
+                clearTimeout(timeoutWarning);
+                clearTimeout(timeoutLogout);
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            };
+
+            document.addEventListener("DOMContentLoaded", function () {
+                resetTimer();
+                // Önceki oturum zaman aşımı logunu engelle
+                clearTimeout(logSessionTimeout);
+                // Önceki oturum zaman aşımı uyarılarını ve oturum sonlandırma işlemlerini durdur
+                clearTimeout(timeoutWarning);
+                clearTimeout(timeoutLogout);
+            });
+
+            // Sayfa değişikliği algılandığında, otomatik olarak gizlenen şifreyi durdur
+            window.onbeforeunload = function () {
+                clearTimeout(timeoutWarning);
+                clearTimeout(timeoutLogout);
+            };
+
+            // Oturum zaman aşımı uyarıları ve oturumu sonlandırma işlemlerini durdur
             function handleSessionTimeout() {
-                setTimeout(() => {
-                    alert('Oturumunuz 1 dakika içinde sona erecek. Oturumu yenilemek için herhangi bir sayfayı yenileyin.');
-                }, timeoutWarning);
-
-                setTimeout(() => {
+                timeoutWarning = setTimeout(() => {
+                    alert('Oturumunuz 1 saat içinde sona erecek. Oturumu yenilemek için herhangi bir sayfayı yenileyin.');
+                }, 3600000); // 1 saat sonra uyarı
+                timeoutLogout = setTimeout(() => {
                     window.location.href = "login.xhtml"; // Oturum sonlandırma ve logout sayfasına yönlendirme
-                }, timeoutLogout);
+                }, 3660000); // 1 saat 1 dakika sonra logout
             }
 
             // Kullanıcı etkinliğini izleyerek oturum zamanlayıcılarını sıfırlama
@@ -223,34 +277,6 @@
                 handleSessionTimeout(); // Zamanlayıcıları yeniden başlat
             }
 
-            window.onload = resetTimer;
-            document.onmousemove = resetTimer;
-            document.onmousedown = resetTimer;
-            document.ontouchstart = resetTimer;
-            document.onclick = resetTimer;
-            document.onkeypress = resetTimer;
-            window.addEventListener('scroll', resetTimer, true);
-
-            // Oturum zaman aşımı logunu server'a gönderme
-            function logSessionTimeout() {
-                fetch('LogSessionTimeout', {
-                    method: 'POST'
-                })
-                        .then(response => {
-                            if (response.ok) {
-                                console.log("Session timeout logged successfully");
-                            }
-                        })
-                        .catch(error => console.error('Error logging session timeout:', error));
-            }
-            
-            window.onload = function() {
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-};
-
-
-            // Auto-expand textareas as they are typed in
             document.querySelectorAll('.auto-expand').forEach(field => {
                 field.addEventListener('input', function () {
                     this.style.height = 'auto';
@@ -259,6 +285,5 @@
                 autoExpandField(field); // Başlangıçta da boyutlandır
             });
         </script>
-
     </h:body>
 </html>

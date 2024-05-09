@@ -64,3 +64,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     background-color: #D8BFD8;
     color: white;
 }
+
+.ui-paginator {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 9999;
+}

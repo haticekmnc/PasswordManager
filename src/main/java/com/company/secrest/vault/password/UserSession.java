@@ -14,6 +14,17 @@ public class UserSession implements Serializable {
     private static final Logger LOGGER = Logger.getLogger(UserSession.class.getName());
     private String username;
     private String password;
+    private Integer userId; // Kullanıcıya özgü benzersiz ID
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+   
     
     
 
@@ -33,9 +44,10 @@ public class UserSession implements Serializable {
         this.password = password;
     }
 
-    public void loginUser(String username, String password) {
+    public void loginUser(String username, String password ,Integer userId) {
         setUsername(username);
         setPassword(password);
+        setUserId(userId); // User ID' yi de sessiona kaydet
          LOGGER.info("User logged in: " + username);
          //LOGGER.fine("Kullanıcı giriş yaptı: " + username);
     }
@@ -49,6 +61,7 @@ public class UserSession implements Serializable {
         }
         this.username = null;
         this.password = null;
+        this.userId = null;  // Oturumu sonlandırırken User ID'yi de temizle
     } catch (Exception e) {
         LOGGER.severe("Çıkış sırasında hata: " + e.getMessage());
     }

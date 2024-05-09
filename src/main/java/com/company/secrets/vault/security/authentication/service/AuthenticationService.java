@@ -19,7 +19,7 @@ import javax.inject.Named;
 @Named
 @Stateless
 public class AuthenticationService {
-    private static final String URL = "jdbc:sqlite:C:\\Users\\hatice.kemence\\Desktop\\mydatabase\\haticeDatabase.db";
+    private static final String URL = "jdbc:sqlite:C:\\Users\\Hatice Kemençe\\Desktop\\mydatabase\\haticeDatabase.db";
 
     public boolean authenticate(String username, String password) {
         String dbUsername = "";

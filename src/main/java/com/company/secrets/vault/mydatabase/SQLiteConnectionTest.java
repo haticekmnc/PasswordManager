@@ -20,7 +20,7 @@ public class SQLiteConnectionTest {
         try {
             Class.forName("org.sqlite.JDBC");
             
-            connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\hatice.kemence\\Desktop\\mydatabase\\haticeDatabase.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Hatice Kemençe\\Desktop\\mydatabase\\haticeDatabase.db");
             
             System.out.println("Veritabanına başarılı bir şekilde bağlanıldı.");
             

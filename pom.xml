@@ -52,6 +52,18 @@
             <version>13.0.1</version>
         </dependency>
         
+        <!-- JAXB API ve Implementasyonu -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        
 
 
         
@@ -64,7 +76,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -76,7 +88,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
+                <version>3.3.1</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
@@ -108,13 +120,13 @@
             </plugin>
             <!--buraya ekledim -->
             <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.22.2</version> <!-- Kullandığınız versiyona göre güncelleyin -->
-            <configuration>
-                <argLine>-Djava.util.logging.config.file=${project.basedir}/src/main/resources/logging.properties</argLine>
-            </configuration>
-        </plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version> <!-- Kullandığınız versiyona göre güncelleyin -->
+                <configuration>
+                    <argLine>-Djava.util.logging.config.file=${project.basedir}/src/main/resources/logging.properties</argLine>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

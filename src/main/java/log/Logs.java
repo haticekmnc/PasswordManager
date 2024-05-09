@@ -14,6 +14,7 @@ public class Logs {
     private String username;
     private String description;
     private String timestamp;
+    private Long passwordId;
 
     public static void info(String message) {
         // Loglama işlemi
@@ -55,5 +56,15 @@ public class Logs {
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
+
+    public Long getPasswordId() {
+        return passwordId;
+    }
+
+    public void setPasswordId(Long passwordId) {
+        this.passwordId = passwordId;
+    }
+    
+    
 
 }

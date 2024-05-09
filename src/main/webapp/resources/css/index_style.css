@@ -172,6 +172,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     background-color: #D8BFD8;
     color: white;
 }
+/*bu paginator' ı en aşağı alıyo ama verilerden birisi altında kalıyor ve görünmüyoo'*/
+/*.ui-paginator {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 9999;
+}*/
 
 /* Butonlar */
 .btn-delete,
@@ -342,4 +350,19 @@ body {
 .ui-dialog {
     z-index: 1001 !important; /* Diğer elementlerden daha yüksek z-index */
     background-color: #FFF; /* İstediğiniz arkaplan rengi */
+}
+/* LOG DİALOG */
+.back-button-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.log-table {
+    margin-top: 50px; /* Geri git butonu için yer aç */
+}
+
+/* Dialog genel stilleri */
+.ui-dialog-content {
+    overflow: hidden; /* İçeriğin dışına taşmasını önle */
 }

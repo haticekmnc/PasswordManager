@@ -7,8 +7,10 @@
     <h:head>
         <title>Log Page</title>
         <!-- PrimeFaces teması ve stil dosyalarını içe aktar -->
-        <h:outputStylesheet library="primefaces" name="themes/bootstrap/theme.css" />
+        <!-- <h:outputStylesheet library="primefaces" name="themes/bootstrap/theme.css" /> -->
         <h:outputStylesheet name="css/log_page_style.css"/>
+        <h:outputStylesheet name="primefaces.css" />
+
     </h:head>
 
     <h:body>
@@ -34,6 +36,7 @@
                     <p:column headerText="Timestamp" filterBy="#{log.timestamp}" filterMatchMode="contains">
                         <h:outputText value="#{log.timestamp}" />
                     </p:column>
+                    
                 </p:dataTable>
             </div>
         </h:form>

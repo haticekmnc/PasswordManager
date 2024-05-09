@@ -12,30 +12,39 @@ import util.DBConnection;
 @ViewScoped
 public class LogBean implements Serializable {
 
-    public void createLogEntry(Logs log) {
-        Connection connection = null;
-        PreparedStatement statement = null;
+   public void createLogEntry(Logs log, Long passwordId) {
+    Connection connection = null;
+    PreparedStatement statement = null;
 
+    try {
+        connection = DBConnection.getConnection();
+        String sql = "INSERT INTO log (username, description, timestamp, password_id) VALUES (?, ?, ?, ?)";
+        statement = connection.prepareStatement(sql);
+        statement.setString(1, log.getUsername());
+        statement.setString(2, log.getDescription());
+        statement.setString(3, log.getTimestamp());
+        if (passwordId == null) {
+            statement.setNull(4, java.sql.Types.BIGINT); // Password ID için NULL değerini ayarlayın
+        } else {
+            statement.setLong(4, passwordId);  // Şimdi password_id'yi Long olarak ekliyoruz.
+        }
+        statement.executeUpdate();
+    } catch (SQLException e) {
+        System.err.println("Error creating log entry: " + e.getMessage());
+    } finally {
         try {
-            connection = DBConnection.getConnection();
-            statement = connection.prepareStatement("INSERT INTO log (username, description, timestamp) VALUES (?, ?, ?)");
-            statement.setString(1, log.getUsername());
-            statement.setString(2, log.getDescription());
-            statement.setString(3, log.getTimestamp());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error creating log entry: " + e.getMessage());
-        } finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                System.err.println("Error closing resources: " + e.getMessage());
+            if (statement != null) {
+                statement.close();
             }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error closing resources: " + e.getMessage());
         }
     }
+}
+
+
+
 }

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class UserDAO {
     
-    private static final String URL = "jdbc:sqlite:C:\\Users\\hatice.kemence\\Desktop\\mydatabase\\haticeDatabase.db";
+    private static final String URL = "jdbc:sqlite:C:\\Users\\Hatice Kemençe\\Desktop\\mydatabase\\haticeDatabase.db";
 
     public boolean registerUser(String username, String password, String email) {
         try (Connection connection = DriverManager.getConnection(URL)) {

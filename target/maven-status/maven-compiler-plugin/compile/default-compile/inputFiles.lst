@@ -1,21 +1,20 @@
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrest\vault\password\AESUtil.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\UserDAO.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrest\vault\password\PasswordManager.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrest\vault\password\PasswordBean.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\RegisterMB.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\log\ApplicationStartup.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\log\LogMB.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\log\Logs.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\log\LogBean.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\util\DBConnection.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrest\vault\password\Passwords.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\dao\LogDAO.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\entity\AuditInfo.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\authentication\LoginMB.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\authentication\service\TimerService.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\message\MessageView.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrest\vault\password\UserSession.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\mycompany\secrets\vault\resources\JavaEE8Resource.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\mydatabase\SQLiteConnectionTest.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\company\secrets\vault\security\authentication\service\AuthenticationService.java
-C:\Users\hatice.kemence\Documents\NetBeansProjects\secrets-vault\src\main\java\com\mycompany\secrets\vault\JAXRSConfiguration.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\mycompany\secrets\vault\resources\JavaEE8Resource.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\log\Logs.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\company\secrest\vault\password\UserSession.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\entity\AuditInfo.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\util\DBConnection.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\company\secrets\vault\security\RegisterMB.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\company\secrest\vault\password\PasswordBean.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\message\MessageView.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\log\LogBean.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\company\secrets\vault\security\authentication\service\TimerService.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\log\LogMB.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\company\secrets\vault\security\authentication\LoginMB.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\company\secrets\vault\security\UserDAO.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\company\secrest\vault\password\AESUtil.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\company\secrest\vault\password\PasswordManager.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\company\secrest\vault\password\Passwords.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\mycompany\secrets\vault\JAXRSConfiguration.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\company\secrets\vault\mydatabase\SQLiteConnectionTest.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\dao\LogDAO.java
+C:\Users\Hatice Kemençe\Documents\NetBeansProjects\PasswordManager\src\main\java\com\company\secrets\vault\security\authentication\service\AuthenticationService.java

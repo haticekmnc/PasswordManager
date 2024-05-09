@@ -75,7 +75,8 @@ public void setConfirmPassword(String confirmPassword) {
 
     if (registerSuccess) {
         // Başarılı kayıt için log girişi ekle ve başarı mesajı göster
-        logMB.addLogEntry(username, "Yeni kullanıcı kaydı: " + username);
+        //logMB.addLog(username, "Yeni kullanıcı kaydı: " + username,Long.MAX_VALUE);
+        
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Kayıt başarılı!"));
         return "login.xhtml?faces-redirect=true"; // Kayıt başarılı olduğu için giriş sayfasına yönlendir
     } else {

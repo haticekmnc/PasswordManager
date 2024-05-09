@@ -11,7 +11,8 @@ public class DBConnection {
     try {
         if (connection == null || connection.isClosed()) {
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\hatice.kemence\\Desktop\\mydatabase\\haticeDatabase.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Hatice Kemençe\\Desktop\\mydatabase\\haticeDatabase.db");
+            
         }
     } catch (ClassNotFoundException | SQLException e) {
         System.err.println("Database connection error: " + e.getMessage());

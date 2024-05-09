@@ -3,7 +3,6 @@ package com.company.secrest.vault.password;
 import entity.AuditInfo;
 
 public class Passwords {
-
     private Long id;
     private String systemInformation;
     private String accessInformation;
@@ -14,6 +13,8 @@ public class Passwords {
     private boolean showPassword; // UI'da şifrenin gösterilip gösterilmeyeceğini kontrol eder
     private String email;
     private AuditInfo auditInfo;
+   
+    
     
     
     
@@ -25,8 +26,11 @@ public class Passwords {
         this.notes = notes;
     }
 
+    
     public Passwords() {
-    }
+    // Boş constructor
+}
+
 
     public Long getId() {
         return id;
@@ -107,6 +111,13 @@ public class Passwords {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    
+    
+
+    
+    
+    
     
     
     

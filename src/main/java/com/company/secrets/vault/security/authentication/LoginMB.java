@@ -15,6 +15,7 @@ public class LoginMB implements Serializable {
     private static final long serialVersionUID = 1L;
     private String username;
     private String password;
+    private Integer userId;
     private boolean loginError;
 
     @Inject
@@ -32,8 +33,9 @@ public class LoginMB implements Serializable {
     // Login method
     public String login() {
         if (authService.authenticate(username, password)) {
-            userSession.loginUser(username, password); // Kullanıcı bilgilerini session'a kaydet
-            logMB.addLogEntry(username, "sisteme giriş yaptı."); // Log girişi ekleyin
+            userSession.loginUser(username, password, userId); // Kullanıcı bilgilerini session'a kaydet
+             //logMB.addLogEntry(userSession.getUsername(), "sisteme giriş yaptı.");
+            //logMB.addLog(userSession.getUsername(), "sisteme giriş yaptı!!",Long.MAX_VALUE);
             messageView.showSuccess("Başarılı Giriş", "Hoşgeldiniz, " + username + "!");
             return "index.xhtml?faces-redirect=true";
         } else {
@@ -45,7 +47,8 @@ public class LoginMB implements Serializable {
 
     // Logout method
     public String logout() {
-        logMB.addLogEntry(userSession.getUsername(), "sistemden çıkış yaptı.");
+        //logMB.addLogEntry(userSession.getUsername(), "sistemden çıkış yaptı.");
+       //logMB.addLog(userSession.getUsername(), "sistemden çıkış yaptı.",Long.MAX_VALUE);
         userSession.logoutUser(); // Kullanıcı oturumunu sonlandır
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession(); // Oturum verilerini temizle
         username = null; // Username alanını temizle
@@ -78,4 +81,13 @@ public class LoginMB implements Serializable {
     public void setLoginError(boolean loginError) {
         this.loginError = loginError;
     }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+    
 }
