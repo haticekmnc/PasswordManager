@@ -1,6 +1,5 @@
 package com.company.secrets.vault.security;
 
-
 import message.MessageView;
 import com.company.secrest.vault.password.UserSession;
 import com.company.secrets.vault.security.authentication.service.AuthenticationService;
@@ -10,7 +9,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import log.LogMB;
-
 
 @Named("loginMB")
 @SessionScoped
@@ -22,11 +20,10 @@ public class LoginMB implements Serializable {
     private Integer userId;
     private boolean loginError;
     private boolean isAdmin; //Admin kontrolü için
-    
+
     // Sabit admin bilgileri
     private static final String ADMIN_USERNAME = "admin";
     private static final String ADMIN_PASSWORD = "admin123";
-
 
     @Inject
     private AuthenticationService authService;
@@ -65,15 +62,15 @@ public class LoginMB implements Serializable {
 
     // Logout method
     public String logout() {
+        String currentUsername = userSession.getUsername(); // Mevcut kullanıcı adını geçici bir değişkene kaydet
         userSession.logoutUser(); // Kullanıcı oturumunu sonlandır
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession(); // Oturum verilerini temizle
+        logMB.addLogEntry(currentUsername, "kullanıcısı sistemden başarıyla çıkış yaptı!", serialVersionUID); // Loglama işlemi oturum temizlenmeden önce yapılıyor
+        messageView.showInfo("Başarılı Çıkış", "Başarıyla çıkış yaptınız.");
         username = null; // Username alanını temizle
         password = null; // Password alanını temizle
-        messageView.showInfo("Başarılı Çıkış", "Başarıyla çıkış yaptınız.");
-        logMB.addLogEntry(userSession.getUsername(), "kullanıcısı sistemden başarıyla çıkış yaptı!", serialVersionUID);
         return "/login.xhtml?faces-redirect=true"; // Login sayfasına yönlendir
     }
-
 
     // Getters and Setters
     public String getUsername() {
@@ -115,6 +112,5 @@ public class LoginMB implements Serializable {
     public void setIsAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
-    
-    
+
 }

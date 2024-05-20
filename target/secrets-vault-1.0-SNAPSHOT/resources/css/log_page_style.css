@@ -7,6 +7,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : hatice.kemence
 */
 
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5px; /* Navbar yüksekliğine göre ayarlayın */
+    height: calc(100vh - 5px); /* Navbar yüksekliğini düşerek ayarlayın */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
 /* DataTable Başlık ve Hücre Stilleri */
 .custom-datatable thead {
     /*burası datatable header alanı*/
@@ -26,6 +38,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .custom-datatable th, .custom-datatable td {
     padding: 12px 15px; /* Artırılan padding ile daha ferah bir görünüm */
     border-bottom: 1px solid #EDF2FB; /* Her hücreyi ayıran ince çizgi */
+    
     /*buradaki renk de açık gri ve tablonun1,3,5.. satırların rengini veriyor*/
 }
 

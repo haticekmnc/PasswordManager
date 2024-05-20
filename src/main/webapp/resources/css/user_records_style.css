@@ -1,0 +1,90 @@
+.content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px; /* Navbar yüksekliğine göre ayarlayın */
+    height: calc(100vh - 60px); /* Navbar yüksekliğini düşerek ayarlayın */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.add-record-button {
+    background-color: #957DAD; /* lavanta tonu*/
+    border-radius: 5px; 
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 5px;
+    width: 100px;
+    height: 40px;
+}
+
+.add-record-button:hover {
+    background-color: #7E689F;
+}
+.add-record-button-container {
+    position: fixed;
+    left: 25px;
+    top: 100px; /* Navbar'ın hemen altı */
+    z-index: 1000;
+    text-align: center;
+}
+
+
+.table-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Datatable'ı sayfanın geri kalan kısmını kaplayacak şekilde yapar */
+    justify-content: flex-start;
+}
+
+.custom-datatable {
+    width: 100%;
+    flex-grow: 1; /* Datatable'ın tam yüksekliğini kaplamasını sağlar */
+}
+
+.custom-datatable tr:nth-child(even) {
+    background-color: #d6d8d9; /* mor beyaz karışımı bir renk ve 2,4.. satırların rengini veriyo */
+}
+
+/* Sayfalandırma Kontrolleri Stili */
+.custom-datatable .ui-paginator {
+    padding: 10px;
+    /*burası paginator alanı*/
+    background-color: #F2E8F4; /* Çok açık mor-beyaz karışımı */
+    border-radius: 10px;
+    color: #5C415D; /* Mor'un koyu bir tonu */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.custom-datatable .ui-paginator .ui-paginator-page,
+.custom-datatable .ui-paginator .ui-paginator-prev,
+.custom-datatable .ui-paginator .ui-paginator-next {
+    padding: 5px 10px;
+    margin: 2px;
+    background-color: #957DAD; /* Lavanta tonu */
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.custom-datatable .ui-paginator .ui-paginator-page:hover,
+.custom-datatable .ui-paginator .ui-paginator-prev:hover,
+.custom-datatable .ui-paginator .ui-paginator-next:hover {
+    background-color: #D8BFD8;
+    color: white;
+}
+
+.ui-paginator {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 9999;
+}

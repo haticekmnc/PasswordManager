@@ -61,7 +61,6 @@ public class PasswordManager implements Serializable {
             // Parola yükleme işlemi başarılı olduğunda log girişi ekle
             // Veri yükleme işlemi...
             //logMB.addLogEntry(userSession.getUsername(), "Veritabanından şifreler yüklendi.", null);
-         
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Veritabanından parolalar yüklenemedi.", e);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Database Error", e.getMessage()));
@@ -113,10 +112,9 @@ public class PasswordManager implements Serializable {
                 if (selectedPassword != null) {
                     logMB.addLogEntry(userSession.getUsername(), "İçin yeni şifre eklendi: " + selectedPassword.getSystemInformation(), selectedPassword.getId());
                 }
-               
 
                 loadPasswordsFromDatabase();
-                return "index?faces-redirect=true";
+                return "index.xhtml?faces-redirect=true";
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Parola veritabanına kaydedilemedi.", e);
@@ -125,26 +123,32 @@ public class PasswordManager implements Serializable {
         }
         return null;
     }
+    
 
-    public void deletePassword(Passwords password) {
-        String sql = "DELETE FROM passwords WHERE id = ?";
-        try ( Connection connection = DBConnection.getConnection();  PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setLong(1, password.getId());
-            int rowsDeleted = statement.executeUpdate();
-            if (rowsDeleted > 0) {
-                LOGGER.log(Level.INFO, "Parola veritabanından başarıyla silindi.");
-                loadPasswordsFromDatabase();
-
-                // Silinen şifre için log girişi ekle
-                
-                logMB.addLogEntry(userSession.getUsername(), "Şifre silindi: " + password.getSystemInformation(), password.getId());
-            }
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Veritabanından parola silinemedi.", e);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
-            //logMB.addLog("Sistemden", "kayıt silinemedi: " + e.getMessage(),Long.MAX_VALUE);
-        }
+public void deletePassword(Passwords password) {
+    if (password == null) {
+        LOGGER.severe("Attempt to delete a null password object");
+        return;
     }
+    LOGGER.info("Deleting password with ID: " + password.getId());
+    String sql = "DELETE FROM passwords WHERE id = ?";
+    try (Connection connection = DBConnection.getConnection();
+         PreparedStatement statement = connection.prepareStatement(sql)) {
+        statement.setLong(1, password.getId());
+        int rowsDeleted = statement.executeUpdate();
+        if (rowsDeleted > 0) {
+            LOGGER.info("Successfully deleted password with ID: " + password.getId());
+            loadPasswordsFromDatabase(); // Silme işlemi sonrası veritabanını yeniden yükle
+        }
+    } catch (SQLException e) {
+        LOGGER.log(Level.SEVERE, "Failed to delete password.", e);
+    }
+}
+
+
+
+
+
 
     public void updatePassword(Passwords password) {
         LOGGER.log(Level.INFO, "updatePassword methodu çağırıldı.");
@@ -197,7 +201,7 @@ public class PasswordManager implements Serializable {
                 if (password != null) {
                     logMB.addLogEntry(userSession.getUsername(), "Şifre güncellendi: " + password.getSystemInformation(), password.getId());
                 }
-               
+
             } else {
                 LOGGER.log(Level.WARNING, "veritabanında güncellenen satır yok!");
             }
@@ -207,6 +211,7 @@ public class PasswordManager implements Serializable {
             //logMB.addLog("Sistemden", "kayıt güncellenemedi: " + e.getMessage(),Long.MAX_VALUE);
         }
     }
+    // edit butonu için selectedPassword
 
     public void prepareUpdate(Passwords password) {
         this.selectedPassword = password;

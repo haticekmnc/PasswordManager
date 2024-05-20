@@ -5,12 +5,14 @@
 package com.company.secrets.vault.security;
 
 import com.company.secrest.vault.password.UserSession;
+import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import log.LogMB;
+import user.UserBean;
 
 /**
  *
@@ -18,7 +20,8 @@ import log.LogMB;
  */
 @ManagedBean
 @SessionScoped
-public class RegisterMB {
+public class RegisterMB implements Serializable {
+    private static final long serialVersionUID = 1L;  //serileştirme sırasında uyumluluğu korumak için
     private String username;
     private String email;
     private String password;
@@ -33,6 +36,11 @@ public class RegisterMB {
     
     @Inject
     private UserSession userSession;
+    
+    @Inject
+    private UserBean userBean;
+    
+    
       
 
     public String getUsername() {
@@ -88,10 +96,13 @@ public void setConfirmPassword(String confirmPassword) {
         boolean registerSuccess = userDAO.registerUser(username, password, email);
 
         if (registerSuccess) {
+           
+
             // Başarılı kayıt için log girişi ekle ve başarı mesajı göster
             //logMB.addLog(username, "Yeni kullanıcı kaydı: " + username,Long.MAX_VALUE);
             logMB.addLogEntry(userSession.getUsername(), "Yeni kullanıcı kaydı ekledi.", Long.MAX_VALUE);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Kayıt başarılı!"));
+            userBean.reloadUsers(); //kullanıcı kaydını yenile
             return "index.xhtml?faces-redirect=true"; // Kayıt başarılı olduğu için giriş sayfasına yönlendir
         } else {
             // Kayıt işlemi başarısız olduysa hata mesajı göster

@@ -7,11 +7,13 @@
     <h:head>
         <title>Log Page</title>
         <h:outputStylesheet name="css/log_page_style.css"/>
+        <h:outputStylesheet name="css/user_records_style.css"/>
         <h:outputStylesheet name="primefaces.css" />
     </h:head>
 
     <h:body>
-        <h:form id="logForm" class="table-container">
+        <div class="table-container">
+        <h:form id="logForm" class="form-container">
             <p:dataTable id="dataTable" var="log" value="#{logMB.filteredLogEntries}" styleClass="custom-datatable"
                          widgetVar="logTableVar" rows="10" paginator="true" paginatorPosition="bottom"
                          currentPageReportTemplate="{startRecord}--{endRecord} of {totalRecords} records"
@@ -24,20 +26,18 @@
                     <h:outputText value="#{log.description}" />
                 </p:column>
                 <p:column headerText="Timestamp" sortBy="#{log.timestamp}" filterBy="#{log.timestamp}">
-                    
-                        <f:facet name="header">
-    <p:outputPanel style="display:flex; align-items:center; justify-content:space-between;">
-        <h:outputText value="Timestamp" />
-        <p:calendar id="fromTimestamp" value="#{logMB.filterStartDate}" pattern="dd.MM.yyyy HH:mm:ss" styleClass="calendar-style" navigator="true" />
-        <p:calendar id="toTimestamp" value="#{logMB.filterEndDate}" pattern="dd.MM.yyyy HH:mm:ss" styleClass="calendar-style" navigator="true" />
-        <p:commandButton value="Filter" action="#{logMB.filterByDate}" update="dataTable" icon="pi pi-filter" styleClass="filter-button" />
-    </p:outputPanel>
-</f:facet>
-
-                    
+                    <f:facet name="header">
+                        <p:outputPanel style="display:flex; align-items:center; justify-content:space-between;">
+                            <h:outputText value="Timestamp" />
+                            <p:calendar id="fromTimestamp" value="#{logMB.filterStartDate}" pattern="dd.MM.yyyy HH:mm:ss" styleClass="calendar-style" navigator="true" widgetVar="fromTimestampWidget" />
+                            <p:calendar id="toTimestamp" value="#{logMB.filterEndDate}" pattern="dd.MM.yyyy HH:mm:ss" styleClass="calendar-style" navigator="true" widgetVar="toTimestampWidget" />
+                            <p:commandButton value="Filter" action="#{logMB.filterByDate}" update="dataTable" icon="pi pi-filter" styleClass="filter-button" />
+                        </p:outputPanel>
+                    </f:facet>
                     <h:outputText value="#{log.timestamp}" />
                 </p:column>
             </p:dataTable>
         </h:form>
+            </div>
     </h:body>
 </html>

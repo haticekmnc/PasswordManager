@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.faces.context.FacesContext;
 import log.LogMB;
+import org.primefaces.model.LazyDataModel;
 
 
 
@@ -29,6 +30,8 @@ public class PasswordBean implements Serializable {
     private String verifyPassword;
 
     private TimerService timerService; // zamanlayıcı için
+    
+    private LazyDataModel <Passwords> lazyModel;
 
     @Inject
     private PasswordManager passwordManager;
@@ -42,12 +45,17 @@ public class PasswordBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        
         loadPasswordsFromDatabase();
         timerService = new TimerService(); // timer başlatma
         // Test the timer service with a simple scheduled task
         timerService.schedule(() -> {
             System.out.println("Zamanlayıcı servis testi: Bu, 5 saniye sonra günlüklerde görünmelidir.");
         }, 5000);
+    }
+    
+     public LazyDataModel<Passwords> getLazyModel() {
+        return lazyModel;
     }
 
     public void loadPasswordsFromDatabase() {

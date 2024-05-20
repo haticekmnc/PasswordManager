@@ -64,7 +64,6 @@ public class LogMB implements Serializable {
     }
 
     public void filterByDate() {
-
         if (filterStartDate == null || filterEndDate == null) {
             filteredLogEntries = new ArrayList<>(logEntries);
             return;

@@ -15,6 +15,7 @@ public class UserSession implements Serializable {
     private String username;
     private String password;
     private Integer userId; // Kullanıcıya özgü benzersiz ID
+    private boolean isAdmin; // Kullanıcı admin mi?
 
     public Integer getUserId() {
         return userId;
@@ -43,6 +44,16 @@ public class UserSession implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public boolean isIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+    
+    
 
     public void loginUser(String username, String password ,Integer userId) {
         setUsername(username);
