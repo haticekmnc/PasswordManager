@@ -4,7 +4,7 @@ package com.company.secrets.vault.security;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import util.DBConnection;
+import com.company.secrest.vault.util.DBConnection;
 
 public class UserDAO {
 

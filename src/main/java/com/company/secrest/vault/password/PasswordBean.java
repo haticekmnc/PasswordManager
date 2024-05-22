@@ -2,7 +2,7 @@
 import com.company.secrest.vault.password.UserSession;
 import com.company.secrest.vault.password.PasswordManager;
 import com.company.secrest.vault.password.Passwords;
-import com.company.secrets.vault.security.authentication.service.TimerService;
+import com.company.secrest.vault.user.TimerService;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.faces.context.FacesContext;
-import log.LogMB;
+import com.company.secrest.vault.log.LogMB;
 import org.primefaces.model.LazyDataModel;
 
 

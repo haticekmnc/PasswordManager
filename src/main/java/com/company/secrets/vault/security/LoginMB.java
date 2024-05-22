@@ -1,6 +1,6 @@
 package com.company.secrets.vault.security;
 
-import message.MessageView;
+import com.company.secrest.vault.message.MessageView;
 import com.company.secrest.vault.password.UserSession;
 import com.company.secrets.vault.security.authentication.service.AuthenticationService;
 import javax.enterprise.context.SessionScoped;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import log.LogMB;
+import com.company.secrest.vault.log.LogMB;
 
 @Named("loginMB")
 @SessionScoped

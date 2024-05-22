@@ -1,3 +1,5 @@
+package com.company.secrest.vault.tabView;
+
 import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;

@@ -1,4 +1,4 @@
-package log;
+package com.company.secrest.vault.log;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.text.SimpleDateFormat;
-import util.DBConnection;
+import com.company.secrest.vault.util.DBConnection;
 
 @Named("logMB")
 @SessionScoped

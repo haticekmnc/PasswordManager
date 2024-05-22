@@ -1,4 +1,4 @@
-package user;
+package com.company.secrest.vault.user;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -10,7 +10,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import util.DBConnection;
+import com.company.secrest.vault.util.DBConnection;
 
 @Named("userMB")
 @SessionScoped

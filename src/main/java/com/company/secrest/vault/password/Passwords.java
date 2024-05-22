@@ -1,6 +1,6 @@
 package com.company.secrest.vault.password;
 
-import entity.AuditInfo;
+import com.company.secrest.vault.entity.AuditInfo;
 
 public class Passwords {
     private Long id;

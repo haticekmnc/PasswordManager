@@ -1,4 +1,4 @@
-package message;
+package com.company.secrest.vault.message;
 
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;

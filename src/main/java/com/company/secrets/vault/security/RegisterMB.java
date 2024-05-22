@@ -11,8 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import log.LogMB;
-import user.UserBean;
+import com.company.secrest.vault.log.LogMB;
+import com.company.secrest.vault.user.UserBean;
 
 /**
  *

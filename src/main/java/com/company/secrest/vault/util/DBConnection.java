@@ -1,4 +1,4 @@
-package util;
+package com.company.secrest.vault.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

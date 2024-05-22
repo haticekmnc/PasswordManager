@@ -1,6 +1,6 @@
 package com.company.secrest.vault.password;
 
-import entity.AuditInfo;
+import com.company.secrest.vault.entity.AuditInfo;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,9 +18,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import log.LogMB;
+import com.company.secrest.vault.log.LogMB;
 
-import util.DBConnection;
+import com.company.secrest.vault.util.DBConnection;
 
 @Named("passwordMB")
 @SessionScoped
@@ -221,6 +221,11 @@ public void deletePassword(Passwords password) {
     public void resetForm() {
         selectedPassword = new Passwords();
     }
+    
+    public boolean isUrl(String value) {
+    return value != null && (value.startsWith("http://") || value.startsWith("https://"));
+}
+
 
     public Passwords getSelectedPassword() {
         return selectedPassword;

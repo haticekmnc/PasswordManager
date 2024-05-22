@@ -1,4 +1,4 @@
-package log;
+package com.company.secrest.vault.log;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import util.DBConnection;
+import com.company.secrest.vault.util.DBConnection;
 
 @Named("logBean")
 @ViewScoped

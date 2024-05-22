@@ -65,6 +65,9 @@ function togglePasswordVisibilityRegister() {
     }
 }
 
+
+
+
 window.addEventListener('load', function () {
     document.getElementById('registerForm').reset(); // Form ID'nizi doğru şekilde güncelleyin
     var toggleIcons = document.querySelectorAll('.password-toggle i');

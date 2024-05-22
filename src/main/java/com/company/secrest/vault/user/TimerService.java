@@ -2,17 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.company.secrets.vault.security.authentication.service;
+package com.company.secrest.vault.user;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.faces.bean.ApplicationScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author hatice.kemence
  */
+@Named("timerService")
 @ApplicationScoped
 public class TimerService {
      private final ScheduledExecutorService scheduler;
