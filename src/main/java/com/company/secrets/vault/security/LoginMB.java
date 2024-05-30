@@ -18,7 +18,7 @@ public class LoginMB implements Serializable {
     private String password;
     private Integer userId;
     private boolean loginError;
-    private boolean isAdmin; //Admin kontrolü için
+    private boolean isAdmin; // Admin kontrolü için
 
     // Sabit admin bilgileri
     private static final String ADMIN_USERNAME = "admin";
@@ -38,24 +38,36 @@ public class LoginMB implements Serializable {
 
     // Login method
     public String login() {
-        // Önce admin kontrolü yapılıyor
+        System.out.println("Giriş denemesi: " + username);
+
+        // Önce sabit admin kontrolü yapılıyor
         if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
             isAdmin = true; // Kullanıcı admin
             userSession.loginUser(username, password, userId); // Admin bilgileri session'a kaydet
             return "index.xhtml?faces-redirect=true"; // Admin anasayfasına yönlendir
         }
 
-        // Normal kullanıcılar için kimlik doğrulama
+        // Veritabanı üzerinden normal ve admin kullanıcılar için kimlik doğrulama
         if (authService.authenticate(username, password)) {
-            isAdmin = false; // Kullanıcı admin değil
+            System.out.println("Kullanıcı doğrulandı: " + username);
+            isAdmin = authService.checkAdmin(username); // authService içindeki checkAdmin metodu ile isAdmin bilgisi çekilir
             userSession.loginUser(username, password, userId); // Kullanıcı bilgilerini session'a kaydet
-            messageView.showSuccess("Başarılı Giriş", "Hoşgeldiniz, " + username + "!");
-            logMB.addLogEntry(userSession.getUsername(), "kullanıcısı sisteme başarıyla giriş yaptı!", serialVersionUID);
-            return "index.xhtml?faces-redirect=true"; // Başarılı giriş
+            if(isAdmin) {
+                // Admin kullanıcı için
+                messageView.showSuccess("Admin Girişi Başarılı", "Hoşgeldiniz, Admin " + username + "!");
+                logMB.addLogEntry(username, "admin olarak sisteme başarıyla giriş yaptı!", serialVersionUID);
+                return "index.xhtml?faces-redirect=true"; // Admin anasayfasına yönlendir
+            } else {
+                // Normal kullanıcı için
+                messageView.showSuccess("Başarılı Giriş", "Hoşgeldiniz, " + username + "!");
+                logMB.addLogEntry(username, "kullanıcı sisteme başarıyla giriş yaptı!", serialVersionUID);
+                return "index.xhtml?faces-redirect=true"; // Kullanıcıyı anasayfaya yönlendir
+            }
         } else {
+            System.out.println("Giriş başarısız: " + username);
             loginError = true;
             messageView.showFailure("Giriş hatası", "Geçersiz kullanıcı adı ve şifre!");
-            return "login.xhtml?faces-redirect=true"; // Başarısız giriş
+            return "login.xhtml?faces-redirect=true"; // Başarısız giriş, loginde kal
         }
     }
 
@@ -111,5 +123,4 @@ public class LoginMB implements Serializable {
     public void setIsAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
-
 }

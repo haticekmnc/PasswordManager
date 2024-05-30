@@ -1,10 +1,6 @@
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.company.secrets.vault.security;
 
+import com.company.secrest.vault.password.AESUtil;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,27 +9,24 @@ import java.sql.SQLException;
 import javax.ejb.Stateless;
 import javax.inject.Named;
 
-/**
- *
- * @author hatice.kemence
- */
 @Named
 @Stateless
 public class AuthenticationService {
     private static final String URL = "jdbc:sqlite:C:\\Users\\Hatice Kemençe\\Desktop\\mydatabase\\haticeDatabase.db";
 
     public boolean authenticate(String username, String password) {
-        String dbUsername = "";
         String dbPassword = "";
         
         try (Connection connection = DriverManager.getConnection(URL)) {
-            String query = "SELECT username, password FROM users WHERE username = ?";
+            String query = "SELECT password FROM users WHERE username = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, username);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
-                        dbUsername = resultSet.getString("username");
                         dbPassword = resultSet.getString("password");
+                    } else {
+                        System.out.println("Kullanıcı bulunamadı: " + username);
+                        return false;
                     }
                 }
             }
@@ -42,7 +35,29 @@ public class AuthenticationService {
             return false;
         }
 
-        return username.equals(dbUsername) && password.equals(dbPassword);
+        // Kullanıcının girdiği şifreyi AESUtil ile hashleyip veritabanındaki hash ile karşılaştırıyoruz
+        String encryptedPassword = AESUtil.encrypt(password);
+        return encryptedPassword.equals(dbPassword);
     }
     
+    public boolean checkAdmin(String username) {
+        boolean isAdmin = false;
+        try (Connection connection = DriverManager.getConnection(URL)) {
+            String query = "SELECT isAdmin FROM users WHERE username = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, username);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        isAdmin = resultSet.getBoolean("isAdmin");
+                    } else {
+                        System.out.println("Kullanıcı bulunamadı: " + username);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return isAdmin;
+    }
 }

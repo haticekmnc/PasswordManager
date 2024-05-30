@@ -59,7 +59,7 @@
                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
                             </p:confirmDialog>
                             <p:commandButton value="Log" icon="pi pi-info-circle" styleClass="btn-log"
-                 actionListener="#{logMB.loadLogsForUser(user.id)}"  
+                                             actionListener="#{logMB.loadLogsForUser(user.id)}" rendered="#{loginMB.isAdmin}"  
                  update=":logDialog" oncomplete="PF('logDialog').show();" />                         
                         </p:column>
                     </p:dataTable>
