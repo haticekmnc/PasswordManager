@@ -24,16 +24,31 @@ public class LogMB implements Serializable {
     private List<Logs> filteredLogEntries;
     private Date startDate;
     private Date endDate;
-    private Date filterStartDate; // Ek filtreleme için başlangıç tarihi
-    private Date filterEndDate;   // Ek filtreleme için bitiş tarihi
-    // private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @PostConstruct
     public void init() {
         logEntries = new ArrayList<>();
-        filteredLogEntries = new ArrayList<>();
+        filteredLogEntries = new ArrayList<>(logEntries);
         loadLogs();
     }
+
+    public void filterLogs() {
+        filteredLogEntries.clear();
+        for (Logs log : logEntries) {
+            if ((log.getTimestamp().after(startDate) || log.getTimestamp().equals(startDate))
+                    && (log.getTimestamp().before(endDate) || log.getTimestamp().equals(endDate))) {
+                filteredLogEntries.add(log);
+            }
+        }
+    }
+    
+   public void resetDates() {
+    startDate = null;
+    endDate = null;
+    filteredLogEntries = new ArrayList<> (logEntries); // Veritabanından tüm logları yükler
+}
+
+
 
     SimpleDateFormat dbDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
@@ -49,56 +64,14 @@ public class LogMB implements Serializable {
                 log.setDescription(rs.getString("description"));
 
                 String timestampStr = rs.getString("timestamp");
-                Date parsedDate = dbDateFormat.parse(timestampStr);  // String'i Date'e çevir
-                Timestamp timestamp = new Timestamp(parsedDate.getTime());  // Date'i Timestamp'e çevir
-                log.setTimestamp(timestamp);
+                Date parsedDate = dbDateFormat.parse(timestampStr);
+                log.setTimestamp(parsedDate);
 
                 logEntries.add(log);
             }
             filteredLogEntries = new ArrayList<>(logEntries);
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
             System.err.println("Error loading all logs: " + e.getMessage());
-        } catch (ParseException e) {
-            System.err.println("Error parsing the timestamp: " + e.getMessage());
-        }
-    }
-
-    public void filterByDate() {
-        if (filterStartDate == null || filterEndDate == null) {
-            filteredLogEntries = new ArrayList<>(logEntries);
-            return;
-        }
-        filteredLogEntries.clear();
-
-        String startDateTime = dbDateFormat.format(filterStartDate);
-        String endDateTime = dbDateFormat.format(filterEndDate);
-
-        String sql = "SELECT * FROM log WHERE timestamp >= ? AND timestamp <= ?";
-        try ( Connection connection = DBConnection.getConnection();  PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, startDateTime);
-            statement.setString(2, endDateTime);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                Logs log = new Logs();
-                log.setId(rs.getLong("id"));
-                log.setUsername(rs.getString("username"));
-                log.setDescription(rs.getString("description"));
-
-                String timestampStr = rs.getString("timestamp");
-                Date parsedDate = null;
-                try {
-                    parsedDate = dbDateFormat.parse(timestampStr); // String'i Date'e çevir
-                } catch (ParseException e) {
-                    System.err.println("Error parsing the timestamp: " + e.getMessage());
-                    continue; // Parse hatası durumunda bu log kaydını atla
-                }
-                Timestamp timestamp = new Timestamp(parsedDate.getTime()); // Date'i Timestamp'e çevir
-                log.setTimestamp(timestamp);
-
-                filteredLogEntries.add(log);
-            }
-        } catch (SQLException e) {
-            System.err.println("Error filtering logs by date range: " + e.getMessage());
         }
     }
 
@@ -106,14 +79,24 @@ public class LogMB implements Serializable {
         Logs log = new Logs();
         log.setUsername(username);
         log.setDescription(description);
-        log.setTimestamp(new Date()); // Doğrudan tarih nesnesi oluşturuluyor
+        log.setTimestamp(new Date());
         LogBean logBean = new LogBean();
         logBean.createLogEntry(log, passwordId);
         logEntries.add(log);
     }
+    
+    public void addLogEntryUser(String username, String description, Long userId) {
+        Logs log = new Logs();
+        log.setUsername(username);
+        log.setDescription(description);
+        log.setTimestamp(new Date());
+        LogBean logBean = new LogBean();
+        logBean.createLogEntryUser(log, userId);
+        logEntries.add(log);
+    }
 
     public void loadLogsForPassword(Long passwordId) {
-        logEntries.clear(); // Önceki log kayıtlarını temizle
+        logEntries.clear();
         String sql = "SELECT * FROM log WHERE password_id = ?";
         try ( Connection connection = DBConnection.getConnection();  PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, passwordId);
@@ -125,32 +108,40 @@ public class LogMB implements Serializable {
                 log.setDescription(rs.getString("description"));
 
                 String timestampStr = rs.getString("timestamp");
-                Date parsedDate = null;
-                try {
-                    parsedDate = dbDateFormat.parse(timestampStr); // String'i Date'e çevir
-                } catch (ParseException e) {
-                    System.err.println("Error parsing the timestamp: " + e.getMessage());
-                    continue; // Parse hatası durumunda bu log kaydını atla
-                }
-                Timestamp timestamp = new Timestamp(parsedDate.getTime()); // Date'i Timestamp'e çevir
+                Date parsedDate = dbDateFormat.parse(timestampStr);
+                Timestamp timestamp = new Timestamp(parsedDate.getTime());
                 log.setTimestamp(timestamp);
                 log.setPasswordId(rs.getLong("password_id"));
                 logEntries.add(log);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
             System.err.println("Error loading logs for password: " + e.getMessage());
         }
     }
-
-    // Getter ve setter metotları
-    public List<Logs> getLogEntries() {
-        return logEntries;
+    
+    public void loadLogsForUser(Long userId) {
+    logEntries.clear();
+    String sql = "SELECT * FROM log WHERE user_id = ?";  // SQL sorgunuzu kullanıcı ID'sine göre uyarlayın
+    try (Connection connection = DBConnection.getConnection();
+         PreparedStatement statement = connection.prepareStatement(sql)) {
+        statement.setLong(1, userId);
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            Logs log = new Logs();
+            log.setId(rs.getLong("id"));
+            log.setUsername(rs.getString("username"));
+            log.setDescription(rs.getString("description"));
+            log.setTimestamp(rs.getTimestamp("timestamp"));  // Veritabanınıza göre düzenleyin
+            logEntries.add(log);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error loading logs for user: " + e.getMessage());
     }
+}
 
-    public void setLogEntries(List<Logs> logEntries) {
-        this.logEntries = logEntries;
-    }
-
+    
+   
+    // Getters and Setters
     public Date getStartDate() {
         return startDate;
     }
@@ -167,28 +158,20 @@ public class LogMB implements Serializable {
         this.endDate = endDate;
     }
 
+    public List<Logs> getLogEntries() {
+        return logEntries;
+    }
+
+    public void setLogEntries(List<Logs> logEntries) {
+        this.logEntries = logEntries;
+    }
+
     public List<Logs> getFilteredLogEntries() {
         return filteredLogEntries;
     }
 
     public void setFilteredLogEntries(List<Logs> filteredLogEntries) {
         this.filteredLogEntries = filteredLogEntries;
-    }
-
-    public Date getFilterStartDate() {
-        return filterStartDate;
-    }
-
-    public void setFilterStartDate(Date filterStartDate) {
-        this.filterStartDate = filterStartDate;
-    }
-
-    public Date getFilterEndDate() {
-        return filterEndDate;
-    }
-
-    public void setFilterEndDate(Date filterEndDate) {
-        this.filterEndDate = filterEndDate;
     }
 
 }

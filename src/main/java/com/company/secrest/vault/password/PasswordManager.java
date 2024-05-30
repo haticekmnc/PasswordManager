@@ -45,7 +45,7 @@ public class PasswordManager implements Serializable {
     public List<Passwords> loadPasswordsFromDatabase() {
 
         List<Passwords> passwords = new ArrayList<>();
-        String sql = "SELECT * FROM passwords";
+        String sql = "SELECT id, systemInformation, accessInformation, username, password, notes FROM passwords";
         try ( Connection connection = DBConnection.getConnection();  PreparedStatement statement = connection.prepareStatement(sql);  ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 Passwords password = new Passwords();
@@ -94,7 +94,8 @@ public class PasswordManager implements Serializable {
         selectedPassword.setAuditInfo(auditInfo);
 
         String sql = "INSERT INTO passwords (systemInformation, accessInformation, username, password, notes, addUser, addDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try ( Connection connection = DBConnection.getConnection();  PreparedStatement statement = connection.prepareStatement(sql)) {
+        try ( Connection connection = DBConnection.getConnection(); 
+                PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, selectedPassword.getSystemInformation());
             statement.setString(2, selectedPassword.getAccessInformation());
             statement.setString(3, selectedPassword.getUsername());

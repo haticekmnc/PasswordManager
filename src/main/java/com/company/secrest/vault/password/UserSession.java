@@ -59,8 +59,8 @@ public class UserSession implements Serializable {
         setUsername(username);
         setPassword(password);
         setUserId(userId); // User ID' yi de sessiona kaydet
-         LOGGER.info("User logged in: " + username);
-         //LOGGER.fine("Kullanıcı giriş yaptı: " + username);
+         
+        LOGGER.info("Kullanıcı giriş yaptı: " + username);
     }
 
     public void logoutUser() {

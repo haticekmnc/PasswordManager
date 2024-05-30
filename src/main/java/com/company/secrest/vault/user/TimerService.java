@@ -25,7 +25,7 @@ public class TimerService {
 
    public void schedule(Runnable task, long delay) {
     scheduler.schedule(task, delay, TimeUnit.SECONDS);
-    System.out.println("Zamanlayıcı tetiklendi.");
+    /*System.out.println("Zamanlayıcı tetiklendi.");*/
 }
 
 

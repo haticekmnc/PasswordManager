@@ -6,63 +6,129 @@
     <h:head>
         <title>User Records</title>
         <h:outputScript library="js" name="scripts.js" />
+        <h:outputScript name="js/togglePassword.js" target="head"/> 
         <h:outputStylesheet name="css/user_records_style.css" />
-        <h:outputStylesheet name="css/login_style.css"/>
+        <h:outputStylesheet name="css/common_style.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-***************************" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" />
         <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-        <h:outputScript name="js/togglePassword.js" target="head"/> 
-        <h:outputStylesheet name="css/password_list_style.css"/>
-        <h:outputScript library="primefaces" name="primefaces.js"/>
-        <h:outputScript library="primefaces" name="core.js"/>
     </h:head>
     <h:body>
         <div class="content-container">
             <div class="add-record-button-container">
-
-                <p:commandButton value="Add Record" oncomplete="PF('addRecordDialog').show();" rendered="#{loginMB.isAdmin}" icon="pi pi-plus" styleClass="add-password-button" />
+                <h:form id="addRecordForm">
+                    <p:commandButton value="Add Record" oncomplete="PF('addRecordDialog').show();" rendered="#{loginMB.isAdmin}" 
+                                     icon="pi pi-plus" styleClass="add-password-button" update=":userForm:dataTable" actionListener="#{userMB.resetAddUserForm()}" />
+                </h:form>
             </div>
             <div class="table-container">
                 <h:form id="userForm" class="form-container">
-                    <p:dataTable id="dataTable" var="user" value="#{userBean.users}" styleClass="custom-datatable" rows="10" paginator="true" paginatorPosition="bottom"
+                    <p:dataTable id="dataTable" var="user" value="#{userBean.users}" styleClass="custom-datatable" 
+                                 rows="10" paginator="true" paginatorPosition="bottom"
                                  currentPageReportTemplate="{startRecord}--{endRecord} of {totalRecords} records"
                                  rowsPerPageTemplate="5,10,15,10000" emptyMessage="No records found!!!">
-                        <p:column headerText="Username" filterBy="#{user.username}" filterMatchMode="contains">
+                        <p:column headerText="Username">
                             <h:outputText value="#{user.username}" />
                         </p:column>
-                        
                         <p:column headerText="Password">
                             <h:outputText value="********" styleClass="password-hidden" rendered="#{!user.showPassword}"/>
-                            <h:outputText value="#{user.password}" styleClass="password-visible" rendered="#{user.showPassword}" />
+                            <h:outputText value="#{user.decryptedUserPassword}" styleClass="password-visible" rendered="#{user.showPassword}" />
                             <p:commandLink title="Toggle Show/Hide Password" actionListener="#{userBean.toggleShowPassword(user, true)}" 
-                                           update="dataTable" onclick="handlePasswordVisibility(this, #{user.showPassword})" >
+                                           update=":userForm:dataTable" >
                                 <i class="#{user.showPassword ? 'pi pi-eye ' : 'pi pi-eye-slash'}" />
                             </p:commandLink>
                         </p:column>
-                        
-                        <p:column headerText="Email" filterBy="#{user.email}" filterMatchMode="contains">
+                        <p:column headerText="Email">
                             <h:outputText value="#{user.email}" />
                         </p:column>
                         <p:column headerText="Admin">
                             <h:outputText value="#{user.isAdmin ? 'Yes' : 'No'}" />
                         </p:column>
+                        <p:column headerText="Actions">
+                            <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="btn-edit"
+                                             actionListener="#{userMB.prepareUpdate(user)}"
+                                             oncomplete="PF('userEditDialog').show()" update=":editUserForm" />
+                            <p:commandButton value="Delete" icon="pi pi-trash" styleClass="btn-delete"
+                                             action="#{userMB.deleteUser(user)}"
+                                             update=":userForm:dataTable">
+                                <p:confirm header="Confirmation" message="Are you sure you want to delete this record?" icon="pi pi-exclamation-triangle" />
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                            </p:confirmDialog>
+                            <p:commandButton value="Log" icon="pi pi-info-circle" styleClass="btn-log"
+                 actionListener="#{logMB.loadLogsForUser(user.id)}"  
+                 update=":logDialog" oncomplete="PF('logDialog').show();" />                         
+                        </p:column>
                     </p:dataTable>
                 </h:form>
             </div>
         </div>
+        <!-- Log Dialog -->
+        <p:dialog  widgetVar="logDialog" modal="true" resizable="false" height="400" width="850" dynamic="true" styleClass="ui-dialog ui-widget-overlay" >
+            <div class="form-field back-button-container" styleClass="add-password-form">
+                <p:button value="&#8592; Back" outcome="index.xhtml" icon="pi pi-arrow-left" />
+            </div>
+            <p:dataTable id="logDialog" var="log" value="#{logMB.logEntries}" styleClass="custom-datatable">
+                <p:column headerText="Username">
+                    <h:outputText value="#{log.username}" />
+                </p:column>
+                <p:column headerText="Description">
+                    <h:outputText value="#{log.description}" />
+                </p:column>
+                <p:column headerText="Timestamp">
+                    <h:outputText value="#{log.timestamp}" />
+                </p:column>
+            </p:dataTable>
+        </p:dialog>
+        
+        
+        
+        
+        <!-- Edit Dialog -->
+        <p:dialog header="Edit User" widgetVar="userEditDialog" modal="true" resizable="false" appendTo="@(body)" styleClass="ui-dialog ui-widget-overlay">
+            <h:form id="editUserForm" styleClass="add-password-form">
+                <h2>Edit User</h2>
+                <div class="form-field">
+                    <label for="username">Username:</label>
+                    <h:inputTextarea id="username" value="#{userMB.selectedUser.username}" required="true" requiredMessage="Username is required!" styleClass="auto-expand" />
+                    <h:message for="username" style="color: red" />
+                </div>
+                <div class="form-field">
+                    <label for="password">Password:</label>
+                    <h:inputTextarea id="password" value="#{userMB.selectedUser.password}" required="true" styleClass="auto-expand" />
+                    <h:message for="password" style="color: red" />
+                </div>
+                <div class="form-field">
+                    <label for="email">Email:</label>
+                    <h:inputTextarea id="email" value="#{userMB.selectedUser.email}" required="true" requiredMessage="Email is required!" styleClass="auto-expand" />
+                    <h:message for="email" style="color: red" />
+                </div>
+                <div class="form-group">
+                    <h:selectBooleanCheckbox id="isAdminCheckbox" value="#{userMB.selectedUser.isAdmin}" styleClass="ui-chkbox" />
+                    <h:outputLabel for="isAdminCheckbox" value="Is Admin" styleClass="ui-outputlabel" />
+                </div>
+                <p:commandButton value="Save Changes" action="#{userMB.updateUser(userMB.selectedUser)}" oncomplete="PF('userEditDialog').hide()" update=":userForm:dataTable"/>
+            </h:form>
+            <div class="form-field" style="position: absolute; top: 20px; left: 20px;">
+                <h:button value="&#8592;" style="font-size: 20px;" outcome="index.xhtml" styleClass="back-button"/>
+            </div>
+        </p:dialog>
 
+        <!-- Add Record Dialog -->
         <p:dialog header="Add Record" widgetVar="addRecordDialog" modal="true" resizable="false" appendTo="@(body)" styleClass="add-password-form">
-            <h:form id="registerForm" class="add-password-form">
+            <h:form id="addUserForm" class="add-password-form">
                 <h2>Add New Record</h2>
                 <div class="form-field">
-                    <h:inputText id="username" value="#{registerMB.username}" required="true" requiredMessage="Username is required!">
-                        <f:passThroughAttribute name="placeholder" value="Username"/>
+                    <h:inputText id="username" value="#{registerMB.username}" required="true" requiredMessage="Username is required!" >
+                        <f:passThroughAttribute name="placeholder" value="Username" />
                     </h:inputText>
                 </div>
                 <div class="form-field">
                     <h:inputText id="email" value="#{registerMB.email}" required="true" requiredMessage="Email is required!">
-                        <f:passThroughAttribute name="placeholder" value="Email"/>
+                        <f:passThroughAttribute name="placeholder" value="Email" />
                     </h:inputText>
                 </div>
                 <div class="form-field">
@@ -85,35 +151,18 @@
                         </span>
                     </div>
                 </div>
-                <!-- Hata mesajlarını göstermek için -->
-                <!-- <p:growl id="messages" life="3000"/> --> 
-
-                <div class="form-field">
-
-                    <p:commandButton value="Add Record" action="#{registerMB.register}" ajax="true" styleClass="login-button" update=":userForm:dataTable" oncomplete="PF('addRecordDialog').hide();" />
+                <div class="form-group">
+                    <h:selectBooleanCheckbox id="isAdminCheckbox" value="#{registerMB.isAdmin}" styleClass="ui-chkbox" />
+                    <h:outputLabel for="isAdminCheckbox" value="Is Admin" styleClass="ui-outputlabel" />
                 </div>
-
+                <div class="form-field">
+                    <p:commandButton value="Add Record" action="#{registerMB.register}" ajax="true" update=":userForm:dataTable" oncomplete="PF('addRecordDialog').hide();" styleClass="login-button" />
+                </div>
             </h:form>
             <div class="form-field" style="position: absolute; top: 20px; left: 20px;">
                 <h:button value="&#8592;" style="font-size: 20px;" outcome="index.xhtml" styleClass="back-button"/>
             </div>
         </p:dialog>
-        
-        
-        <script type="text/javascript">
-    function handlePasswordVisibility(linkElement, isPasswordVisible) {
-        if (!isPasswordVisible) {
-            setTimeout(function() {
-                // Şifrenin hala gösterildiğinden emin ol
-                if (linkElement.querySelector('i').classList.contains('pi-eye')) {
-                    linkElement.click();
-                }
-            }, 3000); // 3000 milisaniye (3 saniye) sonra şifreyi gizle
-        }
-    }
-</script>
-
-        
 
     </h:body>
 </html>

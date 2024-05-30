@@ -1,97 +1,47 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-/* 
-    Created on : 24.Nis.2024, 16:05:46
-    Author     : hatice.kemence
-*/
-
-
-.table-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 5px; /* Navbar yüksekliğine göre ayarlayın */
-    height: calc(100vh - 5px); /* Navbar yüksekliğini düşerek ayarlayın */
-    width: 100%;
-    box-sizing: border-box;
+/* Header bölümü için genel stil tanımlamaları */
+.facet-header {
+    padding: 10px; /* İçeriği her yandan 10px dolgu ile genişletir */
+    display: flex; /* Flexbox modelini etkinleştirir */
+    align-items: center; /* Öğeleri dikey eksende ortalar */
+    justify-content: center; /* İçeriği yatay olarak ortalar */
 }
 
-
-/* DataTable Başlık ve Hücre Stilleri */
-.custom-datatable thead {
-    /*burası datatable header alanı*/
-    background-color: #7a7d7f; /*#D8BFD8;*/
-    color: white;
-    font-size: 16px;
-    text-align: left;
-}
-.custom-datatable .notes-cell {
-    word-wrap: break-word; /* Uzun metinleri satır içinde kırar */
-    max-width: 250px; /* Maksimum genişlik sınırlaması */
-    overflow: hidden; /* İçeriğin belirlenen boyutları aşması durumunda gizler */
-    text-overflow: ellipsis; /* İçerik taştığında sonuna üç nokta koyar */
+/* Tarih gruplarını yatay olarak düzenler */
+.calendar-grid {
+    display: flex; /* Flexbox modelini etkinleştirir */
+    flex-direction: row; /* Öğeleri yatay yönde sıralar */
+    align-items: center; /* İçerikleri dikey eksende ortalar */
+    justify-content: space-around; /* İçerikleri yatay eksende eşit aralıklarla dağıtır */
+    width: 100%; /* Genişliği ebeveynine göre %100 yapar */
 }
 
-
-.custom-datatable th, .custom-datatable td {
-    padding: 12px 15px; /* Artırılan padding ile daha ferah bir görünüm */
-    border-bottom: 1px solid #EDF2FB; /* Her hücreyi ayıran ince çizgi */
-    
-    /*buradaki renk de açık gri ve tablonun1,3,5.. satırların rengini veriyor*/
+.date-group {
+    display: flex; /* Flexbox kullanarak öğeleri yan yana sıralar */
+    align-items: center; /* İçerikleri dikey eksende ortalar */
 }
 
-.custom-datatable tr:nth-child(even) {
-    background-color: #d6d8d9; /* mor beyaz karışımı bir renk ve 2,4.. satırların rengini veriyo */
-}
-
-/* Sayfalandırma Kontrolleri Stili */
-.custom-datatable .ui-paginator {
-    padding: 10px;
-    /*burası paginator alanı*/
-    background-color: #F2E8F4; /* Çok açık mor-beyaz karışımı */
-    border-radius: 10px;
-    color: #5C415D; /* Mor'un koyu bir tonu */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.custom-datatable .ui-paginator .ui-paginator-page,
-.custom-datatable .ui-paginator .ui-paginator-prev,
-.custom-datatable .ui-paginator .ui-paginator-next {
-    padding: 5px 10px;
-    margin: 2px;
-    background-color: #957DAD; /* Lavanta tonu */
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.custom-datatable .ui-paginator .ui-paginator-page:hover,
-.custom-datatable .ui-paginator .ui-paginator-prev:hover,
-.custom-datatable .ui-paginator .ui-paginator-next:hover {
-    background-color: #D8BFD8;
-    color: white;
-}
-
-.ui-paginator {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: white;
-    z-index: 9999;
+.dateLabel {
+    margin-right: 5px; /* Etiketin sağında 5px boşluk */
+    font-weight: bold; /* Yazı tipini kalın yapar */
+    color: #5C415D; /* Yazı rengini koyu mor yapar */
 }
 
 .calendar-style {
-    margin-left: 5px;
-    width: auto; /* Or set a specific width */
+    width: 150px; /* Takvim genişliği */
+    border: 1px solid #303030; /* Çevresinde koyu mor renkte kenarlık */
+    /*background-color: #303030; */ /* Arka plan rengi */
+    color: #333; /* Yazı rengi */
 }
 
-.filter-button {
-    margin-left: 10px;
+.button-group {
+    display: flex; /* Flexbox kullanarak butonları yan yana sıralar */
+    justify-content: space-between; /* İçerikleri yatay eksende eşit aralıklarla dağıtır */
+    width: 100%; /* Genişliği ebeveynine göre %100 yapar */
+    max-width: 300px; /* Maksimum genişlik */
 }
 
+.filter-button, .reset-button {
+    padding: 10px 20px; /* İç dolgu */
+    background-color: #746AB0; /* Arka plan rengi koyu mor */
+    color: white; /* Yazı rengi beyaz */
+}

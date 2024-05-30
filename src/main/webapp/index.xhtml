@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -5,8 +6,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Password Manager</title>
-        <h:outputStylesheet name="css/index_style.css"/>
-        <h:outputStylesheet name="css/add_password_style.css"/>
+       
+        <h:outputStylesheet name="css/password_list_style.css"/>
+        <h:outputStylesheet name="css/common_style.css" />
+        <h:outputStylesheet name="css/log_page_style.css" />
+        <h:outputStylesheet name="css/user_records_style.css" />
         <h:outputScript library="js" name="scripts.js" />
 
     </h:head>
@@ -15,7 +19,7 @@
             <!-- Navbar -->
             <div class="navbar">
                 <p:commandButton value="Password List" action="#{navigationBean.showPasswordList}" update=":content" styleClass="logout" widgetVar="passwordListButton"/>
-                <p:commandButton value="Log Page" action="#{navigationBean.showLogPage}" update=":content" styleClass="logout" widgetVar="logPageButton"/>
+                <p:commandButton value="Log Page" action="#{navigationBean.showLogPage}" update=":content" styleClass="logout" widgetVar="logPageButton" rendered="#{loginMB.isAdmin}" />
                 <p:commandButton value="Records" action="#{navigationBean.showRecords}" update=":content" styleClass="logout" widgetVar="recordsButton"/>
                 <p:commandButton value="Logout" action="#{loginMB.logout}" styleClass="logout" widgetVar="logoutButton"/>
 
@@ -27,14 +31,6 @@
             <ui:include src="#{navigationBean.currentPage}" />
         </h:panelGroup>
 
-        <script>
-            function updateButtons() {
-                PF('passwordListButton').jq.click();
-                PF('logPageButton').jq.click();
-                PF('recordsButton').jq.click();
-                PF('logoutButton').jq.click();
-            }
-
-        </script>
+       
     </h:body>
 </html>

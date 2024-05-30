@@ -6,38 +6,49 @@
 
     <h:head>
         <title>Log Page</title>
-        <h:outputStylesheet name="css/log_page_style.css"/>
-        <h:outputStylesheet name="css/user_records_style.css"/>
-        <h:outputStylesheet name="primefaces.css" />
+        <h:outputStylesheet name="css/log_page_style.css" />
+        <h:outputStylesheet name="css/common_style.css" />
     </h:head>
 
     <h:body>
-        <div class="table-container">
         <h:form id="logForm" class="form-container">
             <p:dataTable id="dataTable" var="log" value="#{logMB.filteredLogEntries}" styleClass="custom-datatable"
                          widgetVar="logTableVar" rows="10" paginator="true" paginatorPosition="bottom"
                          currentPageReportTemplate="{startRecord}--{endRecord} of {totalRecords} records"
-                         rowsPerPageTemplate="5,10,15,10000" emptyMessage="No records found">
-
+                         rowsPerPageTemplate="5,10,15">
                 <p:column headerText="Username" filterBy="#{log.username}" filterMatchMode="contains">
                     <h:outputText value="#{log.username}" />
                 </p:column>
                 <p:column headerText="Description" filterBy="#{log.description}" filterMatchMode="contains">
                     <h:outputText value="#{log.description}" />
                 </p:column>
-                <p:column headerText="Timestamp" sortBy="#{log.timestamp}" filterBy="#{log.timestamp}">
+                <p:column headerText="Timestamp">
                     <f:facet name="header">
-                        <p:outputPanel style="display:flex; align-items:center; justify-content:space-between;">
-                            <h:outputText value="Timestamp" />
-                            <p:calendar id="fromTimestamp" value="#{logMB.filterStartDate}" pattern="dd.MM.yyyy HH:mm:ss" styleClass="calendar-style" navigator="true" widgetVar="fromTimestampWidget" />
-                            <p:calendar id="toTimestamp" value="#{logMB.filterEndDate}" pattern="dd.MM.yyyy HH:mm:ss" styleClass="calendar-style" navigator="true" widgetVar="toTimestampWidget" />
-                            <p:commandButton value="Filter" action="#{logMB.filterByDate}" update="dataTable" icon="pi pi-filter" styleClass="filter-button" />
-                        </p:outputPanel>
+                        <div class="facet-header">
+                            <div class="calendar-grid">
+                                <div class="date-group">
+                                    <span class="dateLabel">Başlangıç:</span>
+                                    <p:calendar id="startDate" value="#{logMB.startDate}" pattern="dd.MM.yyyy"
+                                                navigator="true" showOn="both" mode="popup" styleClass="calendar-style"/>
+                                </div>
+                                <div class="date-group">
+                                    <span class="dateLabel">Bitiş:</span>
+                                    <p:calendar id="endDate" value="#{logMB.endDate}" pattern="dd.MM.yyyy"
+                                                navigator="true" showOn="both" mode="popup" styleClass="calendar-style"/>
+                                </div>
+                                <div class="button-group">
+                                    <p:commandButton value="Filtrele" actionListener="#{logMB.filterLogs}" update="dataTable" icon="pi pi-filter" styleClass="filter-button"/>
+                                    <p:commandButton value="Sıfırla" actionListener="#{logMB.resetDates}" update="startDate endDate" icon="pi pi-times" styleClass="reset-button"/>
+                                </div>
+                            </div>
+                        </div>
                     </f:facet>
-                    <h:outputText value="#{log.timestamp}" />
+
+                    <h:outputText value="#{log.timestamp}">
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                    </h:outputText>
                 </p:column>
             </p:dataTable>
         </h:form>
-            </div>
     </h:body>
 </html>

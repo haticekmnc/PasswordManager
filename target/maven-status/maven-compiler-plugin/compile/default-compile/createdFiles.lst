@@ -1,4 +1,3 @@
-com\company\secrets\vault\security\authentication\service\AuthenticationService.class
 com\company\secrets\vault\security\LoginMB.class
 com\company\secrest\vault\password\AESUtil.class
 com\company\secrest\vault\user\User.class
@@ -19,6 +18,7 @@ com\company\secrets\vault\security\RegisterMB.class
 com\company\secrest\vault\util\DBConnection.class
 PasswordBean.class
 com\company\secrets\vault\mydatabase\SQLiteConnectionTest.class
+com\company\secrets\vault\security\AuthenticationService.class
 com\company\secrest\vault\user\UserMB.class
 com\mycompany\secrets\vault\JAXRSConfiguration.class
 com\company\secrest\vault\password\PasswordManager.class

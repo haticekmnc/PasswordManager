@@ -2,7 +2,6 @@ package com.company.secrets.vault.security;
 
 import com.company.secrest.vault.message.MessageView;
 import com.company.secrest.vault.password.UserSession;
-import com.company.secrets.vault.security.authentication.service.AuthenticationService;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import javax.faces.context.FacesContext;

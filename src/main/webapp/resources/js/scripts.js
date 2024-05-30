@@ -102,3 +102,7 @@ function autoExpandField(field) {
     field.style.height = 'auto';
     field.style.height = (field.scrollHeight) + 'px';
 }
+
+function logCheckboxClick() {
+    console.log('Checkbox clicked!');
+}

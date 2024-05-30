@@ -5,10 +5,10 @@
         <param-value>Development</param-value>
     </context-param>
     <!-- PrimeFaces Configuration -->
-<context-param>
-    <param-name>primefaces.THEME</param-name>
-    <param-value>none</param-value> <!-- Optional: PrimeFaces tema ayarlamak için -->
-</context-param>
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>none</param-value> <!-- Optional: PrimeFaces tema ayarlamak için -->
+    </context-param>
 
 
     <servlet>
@@ -20,20 +20,32 @@
     
 
 
-<servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/javax.faces.resource/*</url-pattern>
-</servlet-mapping>
-<servlet-mapping>
-    <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>/faces/*</url-pattern> <!-- PrimeFaces için bu pattern kullanılması tavsiye edilir -->
-    <url-pattern>*.xhtml</url-pattern>
-</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/javax.faces.resource/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern> <!-- PrimeFaces için bu pattern kullanılması tavsiye edilir -->
+        <url-pattern>*.xhtml</url-pattern>
+        <url-pattern>*.js</url-pattern>
+        <url-pattern>*.css</url-pattern>
+        <url-pattern>*.png</url-pattern>
+        <url-pattern>*.jpg</url-pattern>
+        <url-pattern>*.gif</url-pattern>
+        <url-pattern>*.svg</url-pattern>
+        <url-pattern>*.eot</url-pattern>
+        <url-pattern>*.woff</url-pattern>
+        <url-pattern>*.woff2</url-pattern>
+        <url-pattern>*.ttf</url-pattern>
+    </servlet-mapping>
+
 
     
     <session-config>
         <session-timeout>
-           60
+            60
         </session-timeout>
     </session-config>
     <welcome-file-list>

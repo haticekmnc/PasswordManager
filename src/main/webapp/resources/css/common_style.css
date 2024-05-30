@@ -1,0 +1,278 @@
+zz/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 23 May 2024, 10:27:56
+    Author     : Hatice Kemençe
+*/
+
+/* Genel İçerik Konteyneri:
+   Sayfa içeriğini merkezi olarak hizalar ve üstten 60px boşluk bırakır.
+   Ayrıca, yüksekliği ayarlayarak içeriğin tam ekrana yayılmasını sağlar.
+*/
+.content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;  /* Üst navbar için boşluk */
+    height: calc(100vh - 60px); /* Viewport yüksekliğinden navbar yüksekliği çıkarılır. */
+    width: 100%;
+    box-sizing: border-box;
+     background-color: #f2f2f2;
+    overflow-y: auto; /* Dikey kaydırma çubuğunu etkinleştirir */
+}
+/* Form Konteyneri:
+   Formların görünümünü ayarlar.
+*/
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f2f2f2;
+    width: 100%; /* Genişlik tam sayfa kaplar */
+    overflow-y: auto; /* Dikey kaydırma çubuğunu etkinleştirir */
+}
+
+/* DataTable Stili:
+   PrimeFaces DataTable'ın tam genişlikte ve esnekliğini ayarlar.
+*/
+.custom-datatable {
+    width: 100%;
+    flex-grow: 1; /* Datatable'ın tam yüksekliğini kaplamasını sağlar */
+     background-color: #f2f2f2;
+   
+}
+
+/* DataTable Header Stili:
+   PrimeFaces DataTable'ın header alanının görünümünü ayarlar.
+*/
+.custom-datatable thead th {
+    background-color: #BDBDBD; /* Header arka plan rengi - koyu mor */
+    color: black; /* Yazı rengi - beyaz */
+    padding: 10px; /* İç dolgu */
+    text-align: left; /* Yazı hizalaması - sola */
+    border-bottom: 2px solid #5C415D; /* Alt kenarlık - koyu mor */
+}
+
+
+/* DataTable Satır Rengi:
+   DataTable'ın her çift satırının arka plan rengini ayarlar.
+*/
+.custom-datatable tr:nth-child(even) {
+    background-color: #d6d8d9; /* mor beyaz karışımı bir renk ve 2,4.. satırların rengini veriyo */
+}
+
+/* Sayfalandırma Kontrolleri:
+   PrimeFaces DataTable'ın sayfalandırma kontrollerinin görünümünü ayarlar.
+*/
+.custom-datatable .ui-paginator {
+    padding: 10px;
+    background-color: #F2E8F4; /* Çok açık mor-beyaz karışımı */
+    border-radius: 10px;
+    color: #5C415D; /* Mor'un koyu bir tonu */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Sayfalandırma Butonları:
+   Sayfalandırma butonlarının görünümünü ayarlar.
+*/
+.custom-datatable .ui-paginator .ui-paginator-page,
+.custom-datatable .ui-paginator .ui-paginator-prev,
+.custom-datatable .ui-paginator .ui-paginator-next {
+    padding: 5px 10px;
+    margin: 2px;
+    background-color: #957DAD; /* Lavanta tonu */
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* Sayfalandırma Butonları Hover:
+   Sayfalandırma butonlarının hover (üzerine gelme) etkisini ayarlar.
+*/
+.custom-datatable .ui-paginator .ui-paginator-page:hover,
+.custom-datatable .ui-paginator .ui-paginator-prev:hover,
+.custom-datatable .ui-paginator .ui-paginator-next:hover {
+    background-color: #D8BFD8;
+    color: white;
+}
+
+/* Genel Sayfalandırma Konumu:
+   Sayfalandırma kontrollerinin konumunu ayarlar.
+*/
+.ui-paginator {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 9999;
+}
+
+/* Genel Buton Stilleri:
+   Ortak butonların stilini ayarlar.
+*/
+.add-record-button,
+.add-password-button {
+    background-color: #957DAD; /* lavanta tonu */
+    border-radius: 5px; 
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 1px;
+    width: 100px;
+    height: 40px;
+}
+
+/* Buton Hover Stili:
+   Butonlara hover (üzerine gelme) etkisi ekler.
+*/
+.add-record-button:hover,
+.add-password-button:hover {
+    background-color: #7E689F;
+}
+
+/* Buton Konumlandırma:
+   Butonların konumunu ayarlar.
+*/
+.add-record-button-container,
+.add-password-button-container {
+    display: flex;
+    justify-content: flex-start; /* Butonu sola hizalamak için */
+    width: 100%; /* Butonun tam genişliğini ayarlar */
+    padding: 10px 0; /* Butonun çevresine boşluk ekler */
+}
+
+/* Dialog Form Stili:
+   Dialog formunun stilini belirler.
+*/
+.add-record-form,
+.add-password-form {
+    width: 400px;
+    padding: 20px;
+    background-color: #F5F3F4; /* Çok açık gri bir ton */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dialog Başlık Stili:
+   Dialog başlığının stilini belirler.
+*/
+.add-record-form h2,
+.add-password-form h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Form Alanı Stili:
+   Form alanlarının stilini ayarlar.
+*/
+.form-field {
+    margin-bottom: 20px;
+}
+
+/* Form Etiket Stili:
+   Form alanı etiketlerinin stilini ayarlar.
+*/
+.form-field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Form Giriş Alanı Stili:
+   Form giriş alanlarının ve metin alanlarının stilini ayarlar.
+*/
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Kayıt Butonu Stili:
+   Kayıt butonunun stilini ayarlar.
+*/
+.save-button {
+    padding: 10px;
+    background-color: #957DAD; /* Lavanta tonu */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+/* Kayıt Butonu Hover:
+   Kayıt butonuna hover (üzerine gelme) etkisi ekler.
+*/
+.save-button:hover {
+    background-color: #5c005c;
+}
+
+/* Metin Alanı Otomatik Genişleme:
+   Metin alanlarının otomatik genişlemesini sağlar.
+*/
+.auto-expand {
+    overflow: hidden;
+    min-height: 40px; /* Başlangıç yüksekliği */
+    height: auto; /* Yükseklik otomatik olarak ayarlanacak */
+}
+
+/* Form Alanı Grupları:
+   Form alanı gruplarının düzenini ayarlar.
+*/
+.form-field-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Form Alanı Grupları İçindeki Form Alanları:
+   Form alanı gruplarının içindeki her bir form alanının stilini ayarlar.
+*/
+.form-field-group .form-field {
+    flex: 1;
+    margin-right: 20px;
+}
+
+/* Son Form Alanının Margin'i:
+   Form alanı gruplarının içindeki son form alanının stilini ayarlar.
+*/
+.form-field-group .form-field:last-child {
+    margin-right: 0;
+}
+
+/* Notlar Alanı:
+   Notlar alanının stilini ayarlar.
+*/
+.form-field.notes {
+    flex: 1;
+    margin-right: 0;
+}
+
+/* Notlar Alanındaki Metin Giriş Alanı:
+   Notlar alanındaki metin giriş alanının stilini ayarlar.
+*/
+.form-field.notes .ui-inputtextarea {
+    height: auto;
+    resize: none;
+}
+
+/* Dialog'un kendisinin arka planını beyaz yapar */
+.ui-dialog {
+    background-color: #FFFFFF; /* Tam beyaz */
+}
+
+/* Dialog açıldığında tüm sayfa üzerinde yarı saydam bir siyah kaplama oluşturur */
+.ui-widget-overlay {
+    background-color: rgba(0, 0, 0, 0.2); /* Yarı saydam siyah arka plan */
+}

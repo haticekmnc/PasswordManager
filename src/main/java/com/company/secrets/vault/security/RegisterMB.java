@@ -4,6 +4,8 @@
  */
 package com.company.secrets.vault.security;
 
+import com.company.secrest.vault.entity.AuditInfo;
+import com.company.secrest.vault.user.UserBean;
 import com.company.secrest.vault.password.UserSession;
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
@@ -12,7 +14,9 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import com.company.secrest.vault.log.LogMB;
-import com.company.secrest.vault.user.UserBean;
+import com.company.secrest.vault.password.AESUtil;
+import com.company.secrest.vault.user.User;
+import java.util.Date;
 
 /**
  *
@@ -26,6 +30,7 @@ public class RegisterMB implements Serializable {
     private String email;
     private String password;
     private String confirmPassword;
+    private boolean isAdmin;
     
     
     @Inject
@@ -41,8 +46,8 @@ public class RegisterMB implements Serializable {
     private UserBean userBean;
     
     
-      
-
+    
+   
     public String getUsername() {
         return username;
     }
@@ -75,43 +80,70 @@ public void setConfirmPassword(String confirmPassword) {
         this.email = email;
     }
 
+    public boolean isIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+    
+
 
     
-   public String register() {
-        // Yalnızca admin kullanıcılar kayıt yapabilsin
-        if (!loginMB.getIsAdmin()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Uyarı", "Yalnızca admin kayıt ekleyebilir!"));
-            return null; // Erişim reddedildi
-        }
+  public String register() {
+    if (!loginMB.getIsAdmin()) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Uyarı", "Yalnızca admin kayıt ekleyebilir!"));
+        return null;
+    }
+     FacesContext context = FacesContext.getCurrentInstance();
+        // Log ekle
+        System.out.println("Register metodu çağrıldı.");
+        System.out.println("Username: " + username);
+        System.out.println("Email: " + email);
+        System.out.println("Password: " + password);
+        System.out.println("Confirm Password: " + confirmPassword);
+        System.out.println("Is Admin: " + isAdmin);
 
+        // Parola ve confirmPassword eşleşmesi kontrolü
         if (!password.equals(confirmPassword)) {
-            // Parolalar eşleşmiyorsa
-            // Hata mesajı göster
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Şifreler eşleşmiyor!"));
-            return null; // Kayıt başarısız olduğu için null döndür
-        }
-        
-        // Parolalar eşleşiyorsa kullanıcıyı kaydet
-        UserDAO userDAO = new UserDAO();
-        boolean registerSuccess = userDAO.registerUser(username, password, email);
-
-        if (registerSuccess) {
-           
-
-            // Başarılı kayıt için log girişi ekle ve başarı mesajı göster
-            //logMB.addLog(username, "Yeni kullanıcı kaydı: " + username,Long.MAX_VALUE);
-            logMB.addLogEntry(userSession.getUsername(), "Yeni kullanıcı kaydı ekledi.", Long.MAX_VALUE);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Kayıt başarılı!"));
-            userBean.reloadUsers(); //kullanıcı kaydını yenile
-            return "index.xhtml?faces-redirect=true"; // Kayıt başarılı olduğu için giriş sayfasına yönlendir
-        } else {
-            // Kayıt işlemi başarısız olduysa hata mesajı göster
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Kayıt başarısız oldu!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Passwords do not match!", null));
             return null;
         }
+        // Kullanıcı kaydı (burada veritabanına kayıt işlemi yapılabilir)
+        // Örnek olarak FacesContext kullanılarak kullanıcıya mesaj gösteriliyor
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "User registered successfully", null));   
+        // Şifreyi şifrele
+    String encryptedPassword = AESUtil.encrypt(password);
+    if (encryptedPassword == null) {
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password encryption failed", null));
+        return null;
     }
+    // Yeni User nesnesi oluştur
+    User newUser = new User(username, encryptedPassword, email, isAdmin);
+
+    // AuditInfo nesnesi oluştur ve ayarla
+    AuditInfo auditInfo = new AuditInfo();
+    auditInfo.setAddUser(userSession.getUsername()); // Şu anki kullanıcı adını ayarla
+    auditInfo.setAddDate(new Date()); // Şu anki tarihi ayarla
+    newUser.setAuditInfo(auditInfo); // User nesnesine AuditInfo ekleyin
+
+    // DAO metodunu güncelleyin
+    UserDAO userDAO = new UserDAO();
+    boolean registerSuccess = userDAO.registerUser(newUser);
+
+    if (registerSuccess) {
+        logMB.addLogEntry(userSession.getUsername(), "Yeni kullanıcı kaydı ekledi.", Long.MAX_VALUE);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Kayıt başarılı!"));
+        userBean.reloadUsers();
+        return "index.xhtml?faces-redirect=true";
+    } else {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Kayıt başarısız oldu!"));
+        return null;
+    }
+}
+ 
 }
 
     
     
-

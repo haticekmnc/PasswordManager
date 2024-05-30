@@ -1,3 +1,4 @@
+
 package com.company.secrest.vault.user;
 
 import java.io.Serializable;
@@ -14,6 +15,8 @@ public class UserBean implements Serializable {
 
     private List<User> users;
     private boolean isAnyPasswordShowing = false; // Açık olan herhangi bir şifre var mı?
+    private User selectedUser;
+   
     
 
     @Inject
@@ -38,16 +41,8 @@ public class UserBean implements Serializable {
         userMB.loadUsers();
         users = userMB.getUsers();
     }
-
-    public UserMB getUserMB() {
-        return userMB;
-    }
-
-    public void setUserMB(UserMB userMB) {
-        this.userMB = userMB;
-    }
-
-    public void toggleShowPassword(User user, boolean manuallyTriggered) {
+    
+     public void toggleShowPassword(User user, boolean manuallyTriggered) {
         if (manuallyTriggered || user.isShowPassword()) {
             if (!isAnyPasswordShowing) {
                 user.setShowPassword(!user.isShowPassword());
@@ -61,6 +56,34 @@ public class UserBean implements Serializable {
             }
         }
     }
+     
+     
+     
+     // getters and setters
+
+    public UserMB getUserMB() {
+        return userMB;
+    }
+
+    public void setUserMB(UserMB userMB) {
+        this.userMB = userMB;
+    }
+
+    public User getSelectedUser() {
+        return selectedUser;
+    }
+
+    public void setSelectedUser(User selectedUser) {
+        this.selectedUser = selectedUser;
+    }
+    
+    
+
+   
+
+   
+    
+    
     
     
     
