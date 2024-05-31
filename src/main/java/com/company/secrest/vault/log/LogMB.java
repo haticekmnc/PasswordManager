@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.List;
 import java.util.ArrayList;
@@ -42,13 +41,11 @@ public class LogMB implements Serializable {
         }
     }
     
-   public void resetDates() {
-    startDate = null;
-    endDate = null;
-    filteredLogEntries = new ArrayList<> (logEntries); // Veritabanından tüm logları yükler
-}
-
-
+    public void resetDates() {
+        startDate = null;
+        endDate = null;
+        filteredLogEntries = new ArrayList<>(logEntries); 
+    }
 
     SimpleDateFormat dbDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
@@ -67,6 +64,9 @@ public class LogMB implements Serializable {
                 Date parsedDate = dbDateFormat.parse(timestampStr);
                 log.setTimestamp(parsedDate);
 
+                log.setPasswordId(rs.getLong("password_id"));
+                log.setUserId(rs.getLong("user_id"));
+
                 logEntries.add(log);
             }
             filteredLogEntries = new ArrayList<>(logEntries);
@@ -75,23 +75,23 @@ public class LogMB implements Serializable {
         }
     }
 
-    public void addLogEntry(String username, String description, Long passwordId) {
+    public void addLogEntryForPassword(String username, String description, Long passwordId) {
         Logs log = new Logs();
         log.setUsername(username);
         log.setDescription(description);
         log.setTimestamp(new Date());
         LogBean logBean = new LogBean();
-        logBean.createLogEntry(log, passwordId);
+        logBean.createLogEntry(log, passwordId, null);
         logEntries.add(log);
     }
-    
-    public void addLogEntryUser(String username, String description, Long userId) {
+
+    public void addLogEntryForUser(String username, String description, Long userId) {
         Logs log = new Logs();
         log.setUsername(username);
         log.setDescription(description);
         log.setTimestamp(new Date());
         LogBean logBean = new LogBean();
-        logBean.createLogEntryUser(log, userId);
+        logBean.createLogEntry(log, null, userId);
         logEntries.add(log);
     }
 
@@ -109,8 +109,8 @@ public class LogMB implements Serializable {
 
                 String timestampStr = rs.getString("timestamp");
                 Date parsedDate = dbDateFormat.parse(timestampStr);
-                Timestamp timestamp = new Timestamp(parsedDate.getTime());
-                log.setTimestamp(timestamp);
+                log.setTimestamp(parsedDate);
+
                 log.setPasswordId(rs.getLong("password_id"));
                 logEntries.add(log);
             }
@@ -120,27 +120,29 @@ public class LogMB implements Serializable {
     }
     
     public void loadLogsForUser(Long userId) {
-    logEntries.clear();
-    String sql = "SELECT * FROM log WHERE user_id = ?";  // SQL sorgunuzu kullanıcı ID'sine göre uyarlayın
-    try (Connection connection = DBConnection.getConnection();
-         PreparedStatement statement = connection.prepareStatement(sql)) {
-        statement.setLong(1, userId);
-        ResultSet rs = statement.executeQuery();
-        while (rs.next()) {
-            Logs log = new Logs();
-            log.setId(rs.getLong("id"));
-            log.setUsername(rs.getString("username"));
-            log.setDescription(rs.getString("description"));
-            log.setTimestamp(rs.getTimestamp("timestamp"));  // Veritabanınıza göre düzenleyin
-            logEntries.add(log);
-        }
-    } catch (SQLException e) {
-        System.err.println("Error loading logs for user: " + e.getMessage());
-    }
-}
+        logEntries.clear();
+        String sql = "SELECT * FROM log WHERE user_id = ?";
+        try ( Connection connection = DBConnection.getConnection();  PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, userId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Logs log = new Logs();
+                log.setId(rs.getLong("id"));
+                log.setUsername(rs.getString("username"));
+                log.setDescription(rs.getString("description"));
 
-    
-   
+                String timestampStr = rs.getString("timestamp");
+                Date parsedDate = dbDateFormat.parse(timestampStr);
+                log.setTimestamp(parsedDate);
+
+                log.setUserId(rs.getLong("user_id"));
+                logEntries.add(log);
+            }
+        } catch (SQLException | ParseException e) {
+            System.err.println("Error loading logs for user: " + e.getMessage());
+        }
+    }
+
     // Getters and Setters
     public Date getStartDate() {
         return startDate;

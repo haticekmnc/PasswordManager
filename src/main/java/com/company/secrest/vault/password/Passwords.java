@@ -13,6 +13,7 @@ public class Passwords {
     private boolean showPassword; // UI'da şifrenin gösterilip gösterilmeyeceğini kontrol eder
     private String email;
     private AuditInfo auditInfo;
+    
    
     
     
@@ -112,15 +113,6 @@ public class Passwords {
         this.email = email;
     }
 
-    
-    
-
-    
-    
-    
-    
-    
-    
     
     // DECRYPT , ENCRYPT İŞLEMLERİ
     public String getDecryptedPassword() {

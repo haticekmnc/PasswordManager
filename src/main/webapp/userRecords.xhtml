@@ -59,8 +59,10 @@
                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
                             </p:confirmDialog>
                             <p:commandButton value="Log" icon="pi pi-info-circle" styleClass="btn-log"
-                                             actionListener="#{logMB.loadLogsForUser(user.id)}" rendered="#{loginMB.isAdmin}"  
-                 update=":logDialog" oncomplete="PF('logDialog').show();" />                         
+                                             actionListener="#{logMB.loadLogsForUser(user.id)}"
+                                             rendered="#{loginMB.isAdmin}"
+                                             update=":logDialog" oncomplete="PF('logDialog').show();" />
+
                         </p:column>
                     </p:dataTable>
                 </h:form>
@@ -68,7 +70,7 @@
         </div>
         <!-- Log Dialog -->
         <p:dialog  widgetVar="logDialog" modal="true" resizable="false" height="400" width="850" dynamic="true" styleClass="ui-dialog ui-widget-overlay" >
-            <div class="form-field back-button-container" styleClass="add-password-form">
+            <div class="form-field back-button-container" styleClass="add-log-form">
                 <p:button value="&#8592; Back" outcome="index.xhtml" icon="pi pi-arrow-left" />
             </div>
             <p:dataTable id="logDialog" var="log" value="#{logMB.logEntries}" styleClass="custom-datatable">
@@ -83,10 +85,10 @@
                 </p:column>
             </p:dataTable>
         </p:dialog>
-        
-        
-        
-        
+
+
+
+
         <!-- Edit Dialog -->
         <p:dialog header="Edit User" widgetVar="userEditDialog" modal="true" resizable="false" appendTo="@(body)" styleClass="ui-dialog ui-widget-overlay">
             <h:form id="editUserForm" styleClass="add-password-form">

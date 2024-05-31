@@ -78,6 +78,12 @@ public class UserMB implements Serializable {
             int rowsDeleted = statement.executeUpdate();
             if (rowsDeleted > 0) {
                 LOGGER.info("Successfully deleted user with ID: " + user.getId());
+                
+                // Log message
+                String logMessage = String.format("Kullanıcı %s, kullanıcı %s'yi sildi", userSession.getUsername(), user.getUsername());
+                logMB.addLogEntryForUser(userSession.getUsername(), logMessage, user.getId());
+                
+               
                 loadUsers();
             }
         } catch (SQLException e) {
@@ -116,10 +122,12 @@ public class UserMB implements Serializable {
         if (rowsInserted > 0) {
             LOGGER.info("User successfully added to the database with encrypted password.");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User successfully added with encrypted password."));
-            if (selectedUser != null) {
-                    logMB.addLogEntryUser(userSession.getUsername(), "yeni kullanıcı kaydı ekledi:" + selectedUser.getUsername(), selectedUser.getId());
-                }
-            loadUsers();
+            // Log message
+                String logMessage = String.format("Kullanıcı %s, kullanıcı %s'yi ekledi", userSession.getUsername(), selectedUser.getUsername());
+                logMB.addLogEntryForUser(userSession.getUsername(), logMessage, selectedUser.getId());
+
+                loadUsers();
+           
             return "index.xhtml?faces-redirect=true";
         }
     } catch (SQLException e) {
@@ -164,7 +172,7 @@ public class UserMB implements Serializable {
             if (rowsUpdated > 0) {
                 LOGGER.info("User successfully updated.");
                 if (user != null) {
-                    logMB.addLogEntryUser(userSession.getUsername(), "User güncellendi: " + user.getUsername(), user.getId());
+                    logMB.addLogEntryForUser(userSession.getUsername(), "User güncellendi: " + user.getUsername(), user.getId());
                 }
             }
         } catch (SQLException e) {
@@ -179,7 +187,12 @@ public class UserMB implements Serializable {
             // Şu anki kullanıcı adını ve tarihi set edin
             this.selectedUser.getAuditInfo().setUpdUser(userSession.getUsername());
             this.selectedUser.getAuditInfo().setUpdDate(new Date());
+            
+             // Log message
+            String logMessage = String.format("Kullanıcı %s, kullanıcı %s'yi güncelledi.", userSession.getUsername(), this.selectedUser.getUsername());
+            logMB.addLogEntryForUser(userSession.getUsername(), logMessage, this.selectedUser.getId());
         }
+        
     }
 
     //user eknen formu temizle

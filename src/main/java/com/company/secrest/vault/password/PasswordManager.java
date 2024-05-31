@@ -111,7 +111,7 @@ public class PasswordManager implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Password saved successfully."));
                 // Yeni şifre kaydedildiğinde log girişi ekleyin
                 if (selectedPassword != null) {
-                    logMB.addLogEntry(userSession.getUsername(), "İçin yeni şifre eklendi: " + selectedPassword.getSystemInformation(), selectedPassword.getId());
+                    logMB.addLogEntryForPassword(userSession.getUsername(), "İçin yeni şifre eklendi: " + selectedPassword.getSystemInformation(), selectedPassword.getId());
                 }
 
                 loadPasswordsFromDatabase();
@@ -200,7 +200,7 @@ public void deletePassword(Passwords password) {
 
                 // Güncellenen şifre için log girişi ekle
                 if (password != null) {
-                    logMB.addLogEntry(userSession.getUsername(), "Şifre güncellendi: " + password.getSystemInformation(), password.getId());
+                    logMB.addLogEntryForPassword(userSession.getUsername(), "Şifre güncellendi: " + password.getSystemInformation(), password.getId());
                 }
 
             } else {
@@ -216,7 +216,6 @@ public void deletePassword(Passwords password) {
 
     public void prepareUpdate(Passwords password) {
         this.selectedPassword = password;
-
     }
 
     public void resetForm() {
@@ -226,7 +225,6 @@ public void deletePassword(Passwords password) {
     public boolean isUrl(String value) {
     return value != null && (value.startsWith("http://") || value.startsWith("https://"));
 }
-
 
     public Passwords getSelectedPassword() {
         return selectedPassword;

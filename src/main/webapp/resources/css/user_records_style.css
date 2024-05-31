@@ -50,6 +50,15 @@ input[type="text"], input[type="email"], input[type="password"] {
     height: 25px;
 }
 
+/*log dialog stilleri*/
+.add-log-form {
+    width: 400px;
+    padding: 20px;
+    background-color: #F5F3F4; /* Çok açık gri bir ton */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 /* button {
     background-color: #4CAF50;
     color: white;

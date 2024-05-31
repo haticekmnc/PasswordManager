@@ -13,13 +13,13 @@ import com.company.secrest.vault.util.DBConnection;
 @ViewScoped
 public class LogBean implements Serializable {
 
-    public void createLogEntry(Logs log, Long passwordId) {
+    public void createLogEntry(Logs log, Long passwordId, Long userId) {
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
             connection = DBConnection.getConnection();
-            String sql = "INSERT INTO log (username, description, timestamp, password_id) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO log (username, description, timestamp, password_id, user_id) VALUES (?, ?, ?, ?, ?)";
             statement = connection.prepareStatement(sql);
             statement.setString(1, log.getUsername());
             statement.setString(2, log.getDescription());

@@ -55,12 +55,12 @@ public class LoginMB implements Serializable {
             if(isAdmin) {
                 // Admin kullanıcı için
                 messageView.showSuccess("Admin Girişi Başarılı", "Hoşgeldiniz, Admin " + username + "!");
-                logMB.addLogEntry(username, "admin olarak sisteme başarıyla giriş yaptı!", serialVersionUID);
+                logMB.addLogEntryForPassword(username, "admin olarak sisteme başarıyla giriş yaptı!", serialVersionUID);
                 return "index.xhtml?faces-redirect=true"; // Admin anasayfasına yönlendir
             } else {
                 // Normal kullanıcı için
                 messageView.showSuccess("Başarılı Giriş", "Hoşgeldiniz, " + username + "!");
-                logMB.addLogEntry(username, "kullanıcı sisteme başarıyla giriş yaptı!", serialVersionUID);
+                logMB.addLogEntryForPassword(username, "kullanıcı sisteme başarıyla giriş yaptı!", serialVersionUID);
                 return "index.xhtml?faces-redirect=true"; // Kullanıcıyı anasayfaya yönlendir
             }
         } else {
@@ -76,7 +76,7 @@ public class LoginMB implements Serializable {
         String currentUsername = userSession.getUsername(); // Mevcut kullanıcı adını geçici bir değişkene kaydet
         userSession.logoutUser(); // Kullanıcı oturumunu sonlandır
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession(); // Oturum verilerini temizle
-        logMB.addLogEntry(currentUsername, "kullanıcısı sistemden başarıyla çıkış yaptı!", serialVersionUID); // Loglama işlemi oturum temizlenmeden önce yapılıyor
+        logMB.addLogEntryForPassword(currentUsername, "kullanıcısı sistemden başarıyla çıkış yaptı!", serialVersionUID); // Loglama işlemi oturum temizlenmeden önce yapılıyor
         messageView.showInfo("Başarılı Çıkış", "Başarıyla çıkış yaptınız.");
         username = null; // Username alanını temizle
         password = null; // Password alanını temizle

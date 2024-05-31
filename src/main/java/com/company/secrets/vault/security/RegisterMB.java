@@ -133,7 +133,7 @@ public void setConfirmPassword(String confirmPassword) {
     boolean registerSuccess = userDAO.registerUser(newUser);
 
     if (registerSuccess) {
-        logMB.addLogEntry(userSession.getUsername(), "Yeni kullanıcı kaydı ekledi.", Long.MAX_VALUE);
+        logMB.addLogEntryForPassword(userSession.getUsername(), "Yeni kullanıcı kaydı ekledi.", Long.MAX_VALUE);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Kayıt başarılı!"));
         userBean.reloadUsers();
         return "index.xhtml?faces-redirect=true";

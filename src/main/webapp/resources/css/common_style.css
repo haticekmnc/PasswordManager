@@ -49,8 +49,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
    PrimeFaces DataTable'ın header alanının görünümünü ayarlar.
 */
 .custom-datatable thead th {
-    background-color: #BDBDBD; /* Header arka plan rengi - koyu mor */
-    color: black; /* Yazı rengi - beyaz */
+    background-color: #D0D0D0; /* Header arka plan rengi -  gri */ /* bi önceki: B8B8B8 daha koyu bi gri*/
+    color: black; /* Yazı rengi - siyah */
     padding: 10px; /* İç dolgu */
     text-align: left; /* Yazı hizalaması - sola */
     border-bottom: 2px solid #5C415D; /* Alt kenarlık - koyu mor */
@@ -61,7 +61,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
    DataTable'ın her çift satırının arka plan rengini ayarlar.
 */
 .custom-datatable tr:nth-child(even) {
-    background-color: #d6d8d9; /* mor beyaz karışımı bir renk ve 2,4.. satırların rengini veriyo */
+    background-color:  #E0E0E0; /* mor beyaz karışımı bir renk ve 2,4.. satırların rengini veriyo  #d6d8d9 */
 }
 
 /* Sayfalandırma Kontrolleri:
@@ -274,5 +274,5 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
 /* Dialog açıldığında tüm sayfa üzerinde yarı saydam bir siyah kaplama oluşturur */
 .ui-widget-overlay {
-    background-color: rgba(0, 0, 0, 0.2); /* Yarı saydam siyah arka plan */
+    background-color: rgba(0, 0, 0, 0.1); /* Yarı saydam siyah arka plan */
 }

@@ -14,9 +14,6 @@ import javax.faces.context.FacesContext;
 import com.company.secrest.vault.log.LogMB;
 import org.primefaces.model.LazyDataModel;
 
-
-
-
 @Named("passwordBean")
 @ViewScoped
 
@@ -30,8 +27,8 @@ public class PasswordBean implements Serializable {
     private String verifyPassword;
 
     private TimerService timerService; // zamanlayıcı için
-    
-    private LazyDataModel <Passwords> lazyModel;
+
+    private LazyDataModel<Passwords> lazyModel;
 
     @Inject
     private PasswordManager passwordManager;
@@ -40,12 +37,10 @@ public class PasswordBean implements Serializable {
     private UserSession userSession; // Kullanıcı oturum bilgileri için
     @Inject
     private LogMB logMB;
-    
-   
 
     @PostConstruct
     public void init() {
-        
+
         loadPasswordsFromDatabase();
         timerService = new TimerService(); // timer başlatma
         // Test the timer service with a simple scheduled task
@@ -53,8 +48,8 @@ public class PasswordBean implements Serializable {
             System.out.println("Zamanlayıcı servis testi: Bu, 5 saniye sonra günlüklerde görünmelidir.");
         }, 5000);
     }
-    
-     public LazyDataModel<Passwords> getLazyModel() {
+
+    public LazyDataModel<Passwords> getLazyModel() {
         return lazyModel;
     }
 
@@ -134,38 +129,36 @@ public class PasswordBean implements Serializable {
 
     private boolean isAnyPasswordShowing = false; // Açık olan herhangi bir şifre var mı?
 
-public void toggleShowPassword(Passwords password, boolean manuallyTriggered) {
-    if (manuallyTriggered || password.isShowPassword()) {
-        if (!isAnyPasswordShowing) {
-            password.setShowPassword(!password.isShowPassword());
-            isAnyPasswordShowing = password.isShowPassword();
+    public void toggleShowPassword(Passwords password, boolean manuallyTriggered) {
+        if (manuallyTriggered || password.isShowPassword()) {
+            if (!isAnyPasswordShowing) {
+                password.setShowPassword(!password.isShowPassword());
+                isAnyPasswordShowing = password.isShowPassword();
 
-            /// Log the message
-            String logMessage = String.format("%s şifresini görüntüledi: %s", userSession.getUsername(), password.getSystemInformation());
-            logMB.addLogEntry(userSession.getUsername(), logMessage, password.getId());
-            //logMB.addLogEntry(userSession.getUsername(), "şifreyi görüntüledi.", password.getId());
-            schedulePasswordHide(password, 3); // 3 saniye sonra şifreyi otomatik olarak gizle
-        } else if (isAnyPasswordShowing && password.isShowPassword()) {
-            password.setShowPassword(false);
-            isAnyPasswordShowing = false;
+                // Log the message
+                String logMessage = String.format("%s şifresini görüntüledi: %s", userSession.getUsername(), password.getSystemInformation());
+                logMB.addLogEntryForPassword(userSession.getUsername(), logMessage, password.getId());
+
+                //logMB.addLogEntry(userSession.getUsername(), "şifreyi görüntüledi.", password.getId());
+                schedulePasswordHide(password, 3); // 3 saniye sonra şifreyi otomatik olarak gizle
+            } else if (isAnyPasswordShowing && password.isShowPassword()) {
+                password.setShowPassword(false);
+                isAnyPasswordShowing = false;
+            }
         }
     }
-}
 
-
-private void schedulePasswordHide(final Passwords password, int delaySeconds) {
-    timerService.schedule(() -> {
-        password.setShowPassword(false);
-        isAnyPasswordShowing = false;
-        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("passwordForm:dataTable");
-    }, delaySeconds * 1000);
-}
-
+    private void schedulePasswordHide(final Passwords password, int delaySeconds) {
+        timerService.schedule(() -> {
+            password.setShowPassword(false);
+            isAnyPasswordShowing = false;
+            FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("passwordForm:dataTable");
+        }, delaySeconds * 1000);
+    }
 
     public void prepareForVerification(Passwords password) {
         this.selectedPassword = password;
         System.out.println("Doğrulama için hazırlanıyor: " + password.getSystemInformation());
     }
 
-    
 }
